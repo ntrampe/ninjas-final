@@ -188,6 +188,13 @@ void matrix_base<T>::resize(const size_t aRows, const size_t aColumns)
 
 
 template <class T>
+size_t matrix_base<T>::lengthOfDiagonal(const size_t aRow) const
+{
+  return columns() - aRow;
+}
+
+
+template <class T>
 bool matrix_base<T>::isEqualTo(const matrix_base<T>& aMatrix) const
 {
 	if (rows() != aMatrix.rows() || columns() != aMatrix.columns())

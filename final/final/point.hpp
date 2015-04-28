@@ -49,3 +49,12 @@ T point<T>::y() const
 {
 	return m_y;
 }
+
+
+template <class U>
+std::ostream& operator<<(std::ostream& aOutput, const point<U>& aPoint)
+{
+  aOutput << "(" << aPoint.x() << ", " << aPoint.y() << ")";
+  
+  return aOutput;
+}

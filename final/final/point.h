@@ -69,6 +69,13 @@ public:
 	//Pre:         none
 	//Post:        returns y location
 	T y() const;
+  
+  //Pre:         none
+  //             class used in template needs to overload << operator
+  //Post:        outputs aVector elements to aOutput
+  //Description: output vector data
+  template <class U>
+  friend std::ostream& operator<<(std::ostream& aOutput, const vector<U>& aVector);
 };
 
 #include "point.hpp"

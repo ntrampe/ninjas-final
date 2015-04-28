@@ -139,6 +139,8 @@ public:
 	//Pre:         none
 	//Post:        returns user-defined description of matrix class
 	virtual std::string description() const;
+  
+  size_t lengthOfDiagonal(const size_t aRow) const;
 
 	//Description: Clear the matrix
 	//Pre:         none

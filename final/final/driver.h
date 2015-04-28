@@ -21,6 +21,7 @@
 #include "matrix_tridiagonal.h"
 #include "matrix_symmetrical.h"
 #include "matrix_banded.h"
+#include "matrix_poisson.h"
 
 
 typedef enum

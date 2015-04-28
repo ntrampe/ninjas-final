@@ -12,82 +12,27 @@
 #include "driver.h"
 
 int main(int argc, const char * argv[])
-{
-  // James: Just a couple examples to play around with below.
-  //        Also, a lot of examples are provided in the testMatrices() function
+{ 
+  matrix_poisson<double> m(4);
+  vector<point<double>> x;
+  point<double> p;
+  size_t s = m.slices();
   
-  const size_t SIZE = 5;
-  matrix<double> dense1(SIZE,SIZE), dense2(SIZE,SIZE), dense3(SIZE,SIZE);
-  matrix_triangular_lower<double> lower1(SIZE), lower2(SIZE), lower3(SIZE);
-  matrix_tridiagonal<double> tridi1(SIZE);
-  vector<double> b, x;
   
-  for (size_t i = 0; i < SIZE; i++)
+  for (size_t i = 1; i < s; i++)
   {
-    b.push_back(i + 1);
+    for (size_t j = 1; j < s; j++)
+    {
+      p.set(j, i);
+      x.push_back(p);
+    }
   }
   
-  lower1.randomize();
-  lower2.randomize();
+  //m.order(1);
   
-  dense1 = lower1;
-  dense2 = lower2;
-  
-  
-  std::cout << dense1.description() << ": ";
-  dense1.printMemory();
-  std::cout << std::endl;
-  std::cout << dense1 << std::endl;
-  std::cout << std::endl;
-  
-  std::cout << lower1.description() << ": ";
-  lower1.printMemory();
-  std::cout << std::endl;
-  std::cout << lower1 << std::endl;
-  std::cout << std::endl;
-  
-  
-  //  this will call the friend function in matrix_triangular_lower.hpp:
-  //  friend matrix_triangular_lower<U> operator*(const matrix_triangular_lower<U>& aLHS, const matrix_triangular_lower<U>& aRHS);
-  //  it results in a lower triangular matrix
-  lower3 = lower1 * lower2;
-  std::cout << "Lower * Lower = Lower" << std::endl;
-  std::cout << lower3 << std::endl;
-  std::cout << std::endl;
-  
-  //  this will call the friend function in matrix.hpp:
-  //  friend matrix<U> operator*(const matrix_base<U>& aLHS, const matrix_base<U>& aRHS);
-  //  it results in a dense matrix
-  dense3 = lower1 * dense2;
-  std::cout << "Lower * Dense = Dense" << std::endl;
-  std::cout << dense3 << std::endl;
-  std::cout << std::endl;
-  std::cout << std::endl;
-  
-  
-  tridi1.randomize();
-  dense3 = tridi1;
-  
-  // this will invoke the Thomas algorithm in matrix_tridiagonal.hpp
-  tridi1.solveMatrix(b, x);
-  
-  std::cout << "Solve Tridiagonal" << std::endl;
-  std::cout << tridi1 << std::endl;
-  std::cout << std::endl;
+  std::cout << m << std::endl;
+  m.printMemory();
   std::cout << x << std::endl;
-  std::cout << std::endl;
-  
-  // this will invoke the Gaussian Elimination With Scaled Partial Pivoting algorithm in matrix.hpp
-  dense3.solveMatrix(b, x);
-  
-  std::cout << "Solve Dense" << std::endl;
-  std::cout << dense3 << std::endl;
-  std::cout << std::endl;
-  std::cout << x << std::endl;
-  std::cout << std::endl;
-  
-  
-  //testMatrices();
   
   return 0;
   
