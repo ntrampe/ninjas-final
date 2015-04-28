@@ -21,6 +21,8 @@ int main(int argc, const char * argv[])
   size_t s = m.slices();
   point<double> bounds(0,s);
   
+  //testing push notifications
+  
   //create solution mapping
   for (size_t i = 1; i < s; i++)
   {
