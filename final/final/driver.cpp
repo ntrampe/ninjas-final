@@ -12,13 +12,16 @@
 #include "driver.h"
 
 int main(int argc, const char * argv[])
-{ 
+{   
   matrix_poisson<double> m(4);
   vector<point<double>> x;
+  vector<point<double>> v;
+  vector<vector<point<double>>> b;
   point<double> p;
   size_t s = m.slices();
+  point<double> bounds(0,s);
   
-  
+  //create solution mapping
   for (size_t i = 1; i < s; i++)
   {
     for (size_t j = 1; j < s; j++)
@@ -28,11 +31,54 @@ int main(int argc, const char * argv[])
     }
   }
   
-  //m.order(1);
+  //create b 
+  for (size_t i = 1; i < s; i++)
+  { 
+    for (size_t j = 1; j < s; j++)
+    {
+      p.set(j, i);
+      v.clear();
+      
+      for (size_t k = 0; k < 4; k++)
+      {
+        double x = j, y = i;
+        
+        switch (k)
+        {
+          case 0:
+            x--;
+            break;
+            
+          case 1:
+            y--;
+            break;
+            
+          case 2:
+            x++;
+            break;
+            
+          case 3:
+            y++;
+            break;
+            
+          default:
+            break;
+        }
+        
+        if (x == bounds.x() || y == bounds.x() || x == bounds.y() || y == bounds.y())
+        {
+          p.set(x, y);
+          v.push_back(p);
+        }
+      }
+      b.push_back(v);
+    }
+  }
   
   std::cout << m << std::endl;
   m.printMemory();
   std::cout << x << std::endl;
+  std::cout << b << std::endl;
   
   return 0;
   
@@ -481,7 +527,11 @@ void test(bool aExpression, std::string aName)
 }
 
 
-
+template <class T_method>
+bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
+{
+  return aMethod(aX, aMatrix, aB);
+}
 
 
 

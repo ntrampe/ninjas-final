@@ -22,6 +22,8 @@
 #include "matrix_symmetrical.h"
 #include "matrix_banded.h"
 #include "matrix_poisson.h"
+#include "nt_gaussSPP.h"
+#include "pdeBounds.h"
 
 
 typedef enum
@@ -63,6 +65,9 @@ void solveFile(const char * aFile, kMatrixType aType);
 //Post:        aMatrix, aVector are set up with the contents of a file called aFile
 bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
 
+
+template <class T_method>
+bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
 void displayMatrixTypes();
 

@@ -39,7 +39,7 @@ protected:
   //Description: Determine if an element is in the diagonal area
   //Pre:         aRow and aColumn should be within the dimensions of the matrix
   //Post:        returns true if an element is in the diagonal area
-  virtual bool withinDiagonal(const size_t aRow, const size_t aColumn) const;
+  virtual bool withinData(const size_t aRow, const size_t aColumn) const;
   
   //Description: Retrieve an element to modify
   //Pre:         aRow and aColumn must be within the matrix bounds
@@ -64,14 +64,6 @@ protected:
 	//Pre:         none
 	//Post:        sets size to min of aRow and aColumn
 	virtual void setupMatrix(const size_t aRow, const size_t aColumn);
-  
-  size_t bandWidth() const;
-  size_t widthAtRow(const size_t aRow) const;
-  size_t startAtRow(const size_t aRow) const;
-  size_t endAtRow(const size_t aRow) const;
-  size_t widthAtColumn(const size_t aColumn) const;
-  size_t startAtColumn(const size_t aColumn) const;
-  size_t endAtColumn(const size_t aColumn) const;
 
 public:
 
@@ -170,50 +162,7 @@ public:
 	//Description: Base assignment operator
 	//Pre:         class used in template needs to overload = operator
 	//Post:        sets matrix dimensions and data to aRHS'
-	matrix_poisson<T>& operator=(const matrix_base<T>& aRHS);
-
-	//Description: Negation operator
-	//Pre:         class used in template needs to overload - operator
-	//Post:        returns a matrix that is the negative of aRHS
-	template <class U>
-	friend matrix_poisson<U> operator-(const matrix_poisson<U>& aRHS);
-
-	//Description: Default addition operator for any derived matrix class
-	//             including matrix_poisson
-	//Pre:         class used in template needs to overload + operator
-	//Post:        returns a matrix that is the addition of aLHS and aRHS
-	template <class U>
-	friend matrix_poisson<U> operator+(const matrix_poisson<U>& aLHS, const matrix_poisson<U>& aRHS);
-
-	//Description: Subtraction operator
-	//Pre:         class used in template needs to overload - operator
-	//Post:        returns a matrix that is the subtraction of aLHS and aRHS
-	template <class U>
-	friend matrix_poisson<U> operator-(const matrix_poisson<U>& aLHS, const matrix_poisson<U>& aRHS);
-
-	//Description: Scalar Multiplication operator
-	//Pre:         class used in template needs to overload * (double) operator
-	//Post:        returns a matrix where all elements of aRHS are multiplied by aLHS
-	template <class U>
-	friend matrix_poisson<U> operator*(const double& aLHS, const matrix_poisson<U>& aRHS);
-
-	//Description: Scalar Multiplication operator
-	//Pre:         class used in template needs to overload * (double) operator
-	//Post:        returns a matrix where all elements of aLHS are multiplied by aRHS
-	template <class U>
-	friend matrix_poisson<U> operator*(const matrix_poisson<U>& aLHS, const double& aRHS);
-
-	//Description: Vector Multiplication operator
-	//Pre:         class used in template needs to overload * (vector) operator
-	//Post:        returns a matrix that is the multiplication of aLHS and aRHS
-	template <class U>
-	friend vector<U> operator*(const vector<U>& aLHS, const matrix_poisson<U>& aRHS);
-
-	//Description: Vector Multiplication operator
-	//Pre:         class used in template needs to overload * (vector) operator
-	//Post:        returns a matrix that is the multiplication of aRHS and aLHS
-	template <class U>
-	friend vector<U> operator*(const matrix_poisson<U>& aLHS, const vector<U>& aRHS);
+	matrix_poisson<T>& operator=(const matrix_poisson<T>& aRHS);
 };
 
 #include "matrix_poisson.hpp"

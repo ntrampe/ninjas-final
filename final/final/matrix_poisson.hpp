@@ -63,9 +63,7 @@ size_t matrix_poisson<T>::columns() const
 template <class T>
 size_t matrix_poisson<T>::memorySize() const
 {
-  return  matrix_base<T>::lengthOfDiagonal(0) + 
-          matrix_base<T>::lengthOfDiagonal(1) - (m_slices-1-1) +
-          matrix_base<T>::lengthOfDiagonal(m_slices-1);
+  return 2;
 }
 
 
@@ -253,125 +251,18 @@ bool matrix_poisson<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
 
 
 template <class T>
-matrix_poisson<T>& matrix_poisson<T>::operator=(const matrix_base<T>& aRHS)
+matrix_poisson<T>& matrix_poisson<T>::operator=(const matrix_poisson<T>& aRHS)
 {
+  m_slices = aRHS.slices();
 	matrix_base<T>::operator=(aRHS);
 	return *this;
 }
 
 
-template <class U>
-matrix_poisson<U> operator-(const matrix_poisson<U>& aRHS)
-{
-	matrix_poisson<U> res(aRHS.size());
-
-	for (size_t i = 0; i < res.memorySize(); i++)
-	{
-		res.m_data[i] = -aRHS.m_data[i];
-	}
-
-	return res;
-}
-
-
-template <class U>
-matrix_poisson<U> operator+(const matrix_poisson<U>& aLHS, const matrix_poisson<U>& aRHS)
-{
-	if (aLHS.size() != aRHS.size())
-	{
-		throw std::invalid_argument("matrix_poisson: matrices must be the same size to perform matrix addition");
-	}
-
-	matrix_poisson<U> res(aRHS.size());
-
-	for (size_t i = 0; i < res.memorySize(); i++)
-	{
-		res.m_data[i] = aLHS.m_data[i] + aRHS.m_data[i];
-	}
-
-	return res;
-}
-
-
-template <class U>
-matrix_poisson<U> operator-(const matrix_poisson<U>& aLHS, const matrix_poisson<U>& aRHS)
-{
-	if (aLHS.size() != aRHS.size())
-	{
-		throw std::invalid_argument("matrix_poisson: matrices must be the same size to perform matrix subtraction");
-	}
-
-	matrix_poisson<U> res(aRHS.size());
-
-	for (size_t i = 0; i < res.memorySize(); i++)
-	{
-		res.m_data[i] = aLHS.m_data[i] - aRHS.m_data[i];
-	}
-
-	return res;
-}
-
-
-template <class U>
-matrix_poisson<U> operator*(const double& aLHS, const matrix_poisson<U>& aRHS)
-{
-	matrix_poisson<U> res(aRHS.size());
-
-	for (size_t i = 0; i < res.memorySize(); i++)
-	{
-		res.m_data[i] = aLHS * aRHS.m_data[i];
-	}
-
-	return res;
-}
-
-
-template <class U>
-matrix_poisson<U> operator*(const matrix_poisson<U>& aLHS, const double& aRHS)
-{
-	return (aRHS * aLHS);
-}
-
-
-template <class U>
-vector<U> operator*(const vector<U>& aLHS, const matrix_poisson<U>& aRHS)
-{
-	if (aLHS.size() != aRHS.size())
-	{
-		throw std::invalid_argument("matrix_poisson: Matrix-vector multiplication must be performed where vector size equals matrix columns");
-	}
-
-	vector<U> res;
-
-	for (size_t i = 0; i < aRHS.size(); i++)
-	{
-		res.push_back(U());
-	}
-
-	for (size_t i = 0; i < aRHS.rows(); i++)
-	{
-		for (size_t j = 0; j <= i; j++)
-		{
-			res[i] += aLHS[j] * aRHS(i, j);
-		}
-	}
-
-	return res;
-}
-
-
-template <class U>
-vector<U> operator*(const matrix_poisson<U>& aLHS, const vector<U>& aRHS)
-{
-	return (aRHS * aLHS);
-}
-
-
-
 template <class T>
 void matrix_poisson<T>::convertCoordinatesToIndex(size_t& aIndex, const size_t aRow, const size_t aColumn) const
 {
-	if (!this->withinDiagonal(aRow, aColumn))
+	if (!this->withinData(aRow, aColumn))
 	{
 		throw std::out_of_range("matrix_poisson: provided row, column must be within diagonal");
 	}
@@ -384,46 +275,42 @@ void matrix_poisson<T>::convertCoordinatesToIndex(size_t& aIndex, const size_t a
 		realRow = aColumn;
 		realCol = aRow;
 	}
-
-	aIndex = 0;
-
-//  for (size_t i = 0; i < realRow; i++)
-//  {
-//    aIndex += widthAtRow(i);
-//  }
-//  
-//  for (size_t i = startAtRow(realRow); i < realCol; i++)
-//  {
-//    aIndex++;
-//  }
-  
   
   if (realRow == realCol)
   {
-    aIndex = realRow;
+    aIndex = 0;
   }
-  else if (realRow == realCol+1 && (realRow % (m_slices - 1) != 0))
+  else
   {
-    aIndex = matrix_base<T>::lengthOfDiagonal(0);
-    
-    for (size_t i = 1; i < realRow; i++)
-    {
-      if (i % (m_slices - 1) != 0)
-      {
-        aIndex++;
-      }
-    }
+    aIndex = 1;
   }
-  else if (realRow == realCol+(m_slices - 1))
-  {
-    aIndex =  matrix_base<T>::lengthOfDiagonal(0) + 
-              matrix_base<T>::lengthOfDiagonal(1) - (m_slices-1-1);
-    
-    for (size_t i = (m_slices - 1); i < realRow; i++)
-    {
-      aIndex++;
-    }
-  }
+  
+//  if (realRow == realCol)
+//  {
+//    aIndex = realRow;
+//  }
+//  else if (realRow == realCol+1 && (realRow % (m_slices - 1) != 0))
+//  {
+//    aIndex = matrix_base<T>::lengthOfDiagonal(0);
+//    
+//    for (size_t i = 1; i < realRow; i++)
+//    {
+//      if (i % (m_slices - 1) != 0)
+//      {
+//        aIndex++;
+//      }
+//    }
+//  }
+//  else if (realRow == realCol+(m_slices - 1))
+//  {
+//    aIndex =  matrix_base<T>::lengthOfDiagonal(0) + 
+//    matrix_base<T>::lengthOfDiagonal(1) - (m_slices-1-1);
+//    
+//    for (size_t i = (m_slices - 1); i < realRow; i++)
+//    {
+//      aIndex++;
+//    }
+//  }
 }
 
 
@@ -438,21 +325,12 @@ void matrix_poisson<T>::convertIndexToCoordinates(size_t& aRow, size_t& aColumn,
 	aRow = 0;
 	aColumn = 0;
 
-  for (size_t i = 0; i < aIndex; i++)
-  {
-    aColumn++;
-    
-    if (aColumn == endAtRow(aRow)+1)
-    {
-      aRow++;
-      aColumn = startAtRow(aRow);
-    }
-  }
+  //TODO
 }
 
 
 template<class T>
-bool matrix_poisson<T>::withinDiagonal(const size_t aRow, const size_t aColumn) const
+bool matrix_poisson<T>::withinData(const size_t aRow, const size_t aColumn) const
 {
   if (!this->withinDimensions(aRow, aColumn))
   {
@@ -480,7 +358,7 @@ bool matrix_poisson<T>::withinDiagonal(const size_t aRow, const size_t aColumn) 
 template <class T>
 T& matrix_poisson<T>::at(const size_t aRow, const size_t aColumn)
 {
-  if (!withinDiagonal(aRow, aColumn))
+  if (!withinData(aRow, aColumn))
   {
     return m_outsideElement;
   }
@@ -497,7 +375,7 @@ T& matrix_poisson<T>::at(const size_t aRow, const size_t aColumn)
 template <class T>
 T matrix_poisson<T>::at(const size_t aRow, const size_t aColumn) const
 {
-  if (!withinDiagonal(aRow, aColumn))
+  if (!withinData(aRow, aColumn))
   {
     return m_outsideElement;
   }
@@ -522,103 +400,11 @@ template <class T>
 void matrix_poisson<T>::initMatrix(const size_t aMemorySize)
 {
   matrix_base<T>::initMatrix(aMemorySize);
-  size_t s = size();
   
-  for (size_t i = 0; i < memorySize(); i++)
-  {
-    if (i < s)
-    {
-      this->m_data[i] = 4;
-    }
-    else
-    {
-      this->m_data[i] = -1;
-    }
-  }
+  this->m_data[0] = T(4);
+  this->m_data[1] = T(-1);
   
   m_outsideElement = T();
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::bandWidth() const
-{
-  return band() + 1;
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::widthAtRow(const size_t aRow) const
-{
-  size_t res = 0;
-  
-  if (aRow < band())
-  {
-    res = bandWidth() - band() + aRow;
-  }
-  else
-  {
-    res = bandWidth();
-  }
-  
-  return res;
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::startAtRow(const size_t aRow) const
-{
-  size_t res = 0;
-  
-  if (aRow <= band())
-  {
-    res = 0;
-  }
-  else
-  {
-    res = aRow - band();
-  }
-  
-  return res;
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::endAtRow(const size_t aRow) const
-{
-  size_t res = 0;
-  
-  if (aRow > (size() - 1) - band())
-  {
-    res = size() - 1;
-  }
-  else
-  {
-    res = aRow + band();
-  }
-  
-  return res;
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::widthAtColumn(const size_t aColumn) const
-{
-  return widthAtRow(aColumn);
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::startAtColumn(const size_t aColumn) const
-{
-  return startAtRow(aColumn);
-}
-
-
-template<class T>
-size_t matrix_poisson<T>::endAtColumn(const size_t aColumn) const
-{
-  return endAtRow(aColumn);
 }
 
 

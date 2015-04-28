@@ -75,7 +75,7 @@ public:
   //Post:        outputs aVector elements to aOutput
   //Description: output vector data
   template <class U>
-  friend std::ostream& operator<<(std::ostream& aOutput, const vector<U>& aVector);
+  friend std::ostream& operator<<(std::ostream& aOutput, const point<U>& aPoint);
 };
 
 #include "point.hpp"

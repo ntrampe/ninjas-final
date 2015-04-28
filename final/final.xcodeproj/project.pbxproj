@@ -26,6 +26,10 @@
 /* Begin PBXFileReference section */
 		E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix_poisson.h; sourceTree = "<group>"; };
 		E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = matrix_poisson.hpp; sourceTree = "<group>"; };
+		E14737131AF0163300E09674 /* nt_gaussSPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nt_gaussSPP.h; sourceTree = "<group>"; };
+		E14737141AF0163300E09674 /* nt_gaussSPP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nt_gaussSPP.hpp; sourceTree = "<group>"; };
+		E14737181AF0259200E09674 /* pdeBounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pdeBounds.h; sourceTree = "<group>"; };
+		E14737191AF0259200E09674 /* pdeBounds.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pdeBounds.hpp; sourceTree = "<group>"; };
 		E15239171AEAE227002A8FFC /* final */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = final; sourceTree = BUILT_PRODUCTS_DIR; };
 		E152391A1AEAE227002A8FFC /* driver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = driver.cpp; sourceTree = "<group>"; };
 		E15239211AEAE2C9002A8FFC /* matrix_base.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix_base.hpp; sourceTree = "<group>"; };
@@ -115,6 +119,10 @@
 				E15239341AEAE2C9002A8FFC /* matrix_symmetrical.hpp */,
 				E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */,
 				E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */,
+				E14737181AF0259200E09674 /* pdeBounds.h */,
+				E14737191AF0259200E09674 /* pdeBounds.hpp */,
+				E14737131AF0163300E09674 /* nt_gaussSPP.h */,
+				E14737141AF0163300E09674 /* nt_gaussSPP.hpp */,
 			);
 			path = final;
 			sourceTree = "<group>";
