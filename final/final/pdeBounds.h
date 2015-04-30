@@ -18,6 +18,7 @@ template <class T>
 class pdeBounds
 {
 private:
+  
   T (*m_xLower)(T);
   T (*m_xUpper)(T);
   T (*m_yLower)(T);

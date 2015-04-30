@@ -11,6 +11,7 @@
 #define hw3_driver_h
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <vector>
 
@@ -35,6 +36,27 @@ typedef enum
 	kMatrixTypeTridiagonal = 4,
 	kMatrixTypeSymmetrical = 5
 } kMatrixType;
+
+
+double lowerXFunction(double aY)
+{
+  return cos(M_PI*aY);
+}
+
+double upperXFunction(double aY)
+{
+  return exp(M_PI)*cos(M_PI*aY);
+}
+
+double lowerYFunction(double aX)
+{
+  return exp(M_PI*aX);
+}
+
+double upperYFunction(double aX)
+{
+  return -exp(M_PI*aX);
+}
 
 
 //Description: Find solution, b for Ax = b for the matrix and vector

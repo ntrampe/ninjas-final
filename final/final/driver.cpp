@@ -14,53 +14,55 @@
 int main(int argc, const char * argv[])
 {   
   matrix_poisson<double> m(4);
-  vector<point<double>> x;
+  vector<point<double>> xMapping;
   vector<point<double>> v;
-  vector<vector<point<double>>> b;
+  vector<vector<point<double>>> bMapping;
+  vector<double> b;
+  vector<double> x;
   point<double> p;
-  size_t s = m.slices();
-  point<double> bounds(0,s);
-  
-  //testing push notifications
+  int s = static_cast<int>(m.slices());
+  point<double> bounds(0,1);
+  double inc = (bounds.y() - bounds.x()) / s;
+  pdeBounds<double> pde(lowerXFunction, upperXFunction, lowerYFunction, upperYFunction, bounds);
   
   //create solution mapping
-  for (size_t i = 1; i < s; i++)
+  for (double i = inc; i < bounds.y(); i += inc)
   {
-    for (size_t j = 1; j < s; j++)
+    for (double j = inc; j < bounds.y(); j += inc)
     {
       p.set(j, i);
-      x.push_back(p);
+      xMapping.push_back(p);
     }
   }
   
-  //create b 
-  for (size_t i = 1; i < s; i++)
-  { 
-    for (size_t j = 1; j < s; j++)
+  //create b points
+  for (double i = inc; i < bounds.y(); i += inc)
+  {
+    for (double j = inc; j < bounds.y(); j += inc)
     {
       p.set(j, i);
       v.clear();
       
-      for (size_t k = 0; k < 4; k++)
+      for (int k = 0; k < 4; k++)
       {
         double x = j, y = i;
         
         switch (k)
         {
           case 0:
-            x--;
+            x -= inc;
             break;
             
           case 1:
-            y--;
+            y -= inc;
             break;
             
           case 2:
-            x++;
+            x += inc;
             break;
             
           case 3:
-            y++;
+            y += inc;
             break;
             
           default:
@@ -73,14 +75,57 @@ int main(int argc, const char * argv[])
           v.push_back(p);
         }
       }
-      b.push_back(v);
+      bMapping.push_back(v);
     }
   }
   
-  std::cout << m << std::endl;
-  m.printMemory();
-  std::cout << x << std::endl;
-  std::cout << b << std::endl;
+  //go through the points and find the pde values
+  for (size_t i = 0; i < bMapping.size(); i++)
+  {
+    vector<point<double>> bv = bMapping[i];
+    double bValue = 0;
+    
+    for (size_t j = 0; j < bv.size(); j++)
+    {
+      point<double> *bp = &bv[j];
+      
+      bValue += pde(bp->x(), bp->y());
+    }
+    
+    b.push_back(bValue*0.25); // TODO: make sure we actually have to multiply b by 1/4
+  }
+  
+  std::cout << "Poisson Matrix:\n" << m << std::endl;
+  std::cout << "Solution Mapping:\n" << xMapping << std::endl;
+  std::cout << "b Mapping:\n" << bMapping << std::endl;
+  
+  std::cout << "b:\n" << b << std::endl;
+  
+  solveMatrix(x, m, b, gaussSPP<double>());
+  
+  std::cout << "Solution:\n" << x << std::endl;
+  
+  std::cout << "\nResults:\n" << std::endl;
+  
+  // unknowns
+  for (size_t i = 0; i < x.size(); i++)
+  {
+    std::cout << "u" << xMapping[i] << " = " << std::setw(15) << x[i] << std::endl;
+  }
+  
+  // knowns
+  for (double i = bounds.x(); i <= bounds.y(); i += inc)
+  {
+    for (double j = bounds.x(); j <= bounds.y(); j += inc)
+    {
+      p.set(j, i);
+      
+      if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
+      {
+        std::cout << "u" << p << " = " << std::setw(15) << pde(j, i) << std::endl;
+      }
+    }
+  }
   
   return 0;
   

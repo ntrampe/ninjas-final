@@ -13,6 +13,8 @@
 #ifndef __hw6__poi_
 #define __hw6__poi_
 
+#include <iomanip>
+
 template <class T>
 class point
 {
@@ -69,6 +71,12 @@ public:
 	//Pre:         none
 	//Post:        returns y location
 	T y() const;
+  
+  point<T>& operator=(const point<T>& aRHS);
+  template <class U>
+  friend bool operator==(const point<U>& aLHS, const point<U>& aRHS);
+  template <class U>
+  friend bool operator!=(const point<U>& aLHS, const point<U>& aRHS);
   
   //Pre:         none
   //             class used in template needs to overload << operator

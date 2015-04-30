@@ -51,10 +51,37 @@ T point<T>::y() const
 }
 
 
+template <class T>
+point<T>& point<T>::operator=(const point<T>& aRHS)
+{
+  if (this != &aRHS)
+  {
+    setX(aRHS.x());
+    setY(aRHS.y());
+  }
+  
+  return *this;
+}
+
+
+template <class U>
+bool operator==(const point<U>& aLHS, const point<U>& aRHS)
+{
+  return (aLHS.x() == aRHS.x() && aLHS.y() == aRHS.y());
+}
+
+
+template <class U>
+bool operator!=(const point<U>& aLHS, const point<U>& aRHS)
+{
+  return !(aLHS == aRHS);
+}
+
+
 template <class U>
 std::ostream& operator<<(std::ostream& aOutput, const point<U>& aPoint)
 {
-  aOutput << "(" << aPoint.x() << ", " << aPoint.y() << ")";
+  aOutput << "(" << std::setw(4) << aPoint.x() << ", " << std::setw(4) << aPoint.y() << ")";
   
   return aOutput;
 }

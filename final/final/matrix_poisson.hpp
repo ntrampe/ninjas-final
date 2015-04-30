@@ -401,8 +401,8 @@ void matrix_poisson<T>::initMatrix(const size_t aMemorySize)
 {
   matrix_base<T>::initMatrix(aMemorySize);
   
-  this->m_data[0] = T(4);
-  this->m_data[1] = T(-1);
+  this->m_data[0] = T(1);
+  this->m_data[1] = T(-0.25);
   
   m_outsideElement = T();
 }

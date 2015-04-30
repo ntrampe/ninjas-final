@@ -19,7 +19,11 @@ pdeBounds<T>::pdeBounds()
 template <class T>
 pdeBounds<T>::pdeBounds(T (*aXLower)(T), T (*aXUpper)(T), T (*aYLower)(T), T (*aYUpper)(T), point<T> aBounds)
 {
-  
+  m_xLower = aXLower;
+  m_xUpper = aXUpper;
+  m_yLower = aYLower;
+  m_yUpper = aYUpper;
+  m_bounds = aBounds;
 }
 
 
@@ -37,5 +41,19 @@ T pdeBounds<T>::operator()(const T aX, const T aY)
   {
     return m_xLower(aY);
   }
+  else if (aX == m_bounds.y())
+  {
+    return m_xUpper(aY);
+  }
+  else if (aY == m_bounds.x())
+  {
+    return m_yLower(aX);
+  }
+  else if (aY == m_bounds.y())
+  {
+    return m_yUpper(aX);
+  }
+  
+  return T(0);
 }
 
