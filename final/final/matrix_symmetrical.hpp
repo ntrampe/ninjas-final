@@ -36,6 +36,13 @@ matrix_symmetrical<T>::matrix_symmetrical(const matrix_symmetrical<T>& aCopy)
 
 
 template <class T>
+matrix_symmetrical<T>::matrix_symmetrical(const matrix_base<T>& aCopy)
+{
+  *this = aCopy;
+}
+
+
+template <class T>
 matrix_symmetrical<T>::~matrix_symmetrical()
 {
 	m_size = 0;

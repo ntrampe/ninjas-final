@@ -23,7 +23,7 @@
 #include "matrix_symmetrical.h"
 #include "matrix_banded.h"
 #include "matrix_poisson.h"
-#include "nt_gaussSPP.h"
+#include "cholesky.h"
 #include "pdeBounds.h"
 
 
@@ -40,22 +40,27 @@ typedef enum
 
 double lowerXFunction(double aY)
 {
-  return cos(M_PI*aY);
+  return sin(aY);
 }
 
 double upperXFunction(double aY)
 {
-  return exp(M_PI)*cos(M_PI*aY);
+  return 0;
 }
 
 double lowerYFunction(double aX)
 {
-  return exp(M_PI*aX);
+  return sin(aX);
 }
 
 double upperYFunction(double aX)
 {
-  return -exp(M_PI*aX);
+  return 0;
+}
+
+double actualSolution(double aX, double aY)
+{
+  return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
 
 
@@ -87,9 +92,10 @@ void solveFile(const char * aFile, kMatrixType aType);
 //Post:        aMatrix, aVector are set up with the contents of a file called aFile
 bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
 
+void run(const size_t aN);
 
 template <class T_method>
-bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
+bool solveMatrix(vector<double>& aX, matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
 void displayMatrixTypes();
 

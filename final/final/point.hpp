@@ -81,7 +81,11 @@ bool operator!=(const point<U>& aLHS, const point<U>& aRHS)
 template <class U>
 std::ostream& operator<<(std::ostream& aOutput, const point<U>& aPoint)
 {
-  aOutput << "(" << std::setw(4) << aPoint.x() << ", " << std::setw(4) << aPoint.y() << ")";
+  std::stringstream ss;
+  
+  ss << "(" << aPoint.x() << ", " << aPoint.y() << ")";
+  
+  aOutput << ss.str();
   
   return aOutput;
 }

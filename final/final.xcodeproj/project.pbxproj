@@ -24,10 +24,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E123134A1AF2B2BA00BD0088 /* cholesky.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cholesky.hpp; sourceTree = "<group>"; };
+		E123134C1AF2B2BA00BD0088 /* cholesky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cholesky.h; sourceTree = "<group>"; };
 		E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix_poisson.h; sourceTree = "<group>"; };
 		E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = matrix_poisson.hpp; sourceTree = "<group>"; };
-		E14737131AF0163300E09674 /* nt_gaussSPP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nt_gaussSPP.h; sourceTree = "<group>"; };
-		E14737141AF0163300E09674 /* nt_gaussSPP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = nt_gaussSPP.hpp; sourceTree = "<group>"; };
 		E14737181AF0259200E09674 /* pdeBounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pdeBounds.h; sourceTree = "<group>"; };
 		E14737191AF0259200E09674 /* pdeBounds.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pdeBounds.hpp; sourceTree = "<group>"; };
 		E15239171AEAE227002A8FFC /* final */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = final; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,8 +121,8 @@
 				E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */,
 				E14737181AF0259200E09674 /* pdeBounds.h */,
 				E14737191AF0259200E09674 /* pdeBounds.hpp */,
-				E14737131AF0163300E09674 /* nt_gaussSPP.h */,
-				E14737141AF0163300E09674 /* nt_gaussSPP.hpp */,
+				E123134C1AF2B2BA00BD0088 /* cholesky.h */,
+				E123134A1AF2B2BA00BD0088 /* cholesky.hpp */,
 			);
 			path = final;
 			sourceTree = "<group>";
@@ -271,6 +271,10 @@
 		E152391F1AEAE227002A8FFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-O3",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -278,6 +282,10 @@
 		E15239201AEAE227002A8FFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-O3",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

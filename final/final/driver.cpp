@@ -12,120 +12,8 @@
 #include "driver.h"
 
 int main(int argc, const char * argv[])
-{   
-  matrix_poisson<double> m(4);
-  vector<point<double>> xMapping;
-  vector<point<double>> v;
-  vector<vector<point<double>>> bMapping;
-  vector<double> b;
-  vector<double> x;
-  point<double> p;
-  int s = static_cast<int>(m.slices());
-  point<double> bounds(0,1);
-  double inc = (bounds.y() - bounds.x()) / s;
-  pdeBounds<double> pde(lowerXFunction, upperXFunction, lowerYFunction, upperYFunction, bounds);
-  
-  //create solution mapping
-  for (double i = inc; i < bounds.y(); i += inc)
-  {
-    for (double j = inc; j < bounds.y(); j += inc)
-    {
-      p.set(j, i);
-      xMapping.push_back(p);
-    }
-  }
-  
-  //create b points
-  for (double i = inc; i < bounds.y(); i += inc)
-  {
-    for (double j = inc; j < bounds.y(); j += inc)
-    {
-      p.set(j, i);
-      v.clear();
-      
-      for (int k = 0; k < 4; k++)
-      {
-        double x = j, y = i;
-        
-        switch (k)
-        {
-          case 0:
-            x -= inc;
-            break;
-            
-          case 1:
-            y -= inc;
-            break;
-            
-          case 2:
-            x += inc;
-            break;
-            
-          case 3:
-            y += inc;
-            break;
-            
-          default:
-            break;
-        }
-        
-        if (x == bounds.x() || y == bounds.x() || x == bounds.y() || y == bounds.y())
-        {
-          p.set(x, y);
-          v.push_back(p);
-        }
-      }
-      bMapping.push_back(v);
-    }
-  }
-  
-  //go through the points and find the pde values
-  for (size_t i = 0; i < bMapping.size(); i++)
-  {
-    vector<point<double>> bv = bMapping[i];
-    double bValue = 0;
-    
-    for (size_t j = 0; j < bv.size(); j++)
-    {
-      point<double> *bp = &bv[j];
-      
-      bValue += pde(bp->x(), bp->y());
-    }
-    
-    b.push_back(bValue*0.25); // TODO: make sure we actually have to multiply b by 1/4
-  }
-  
-  std::cout << "Poisson Matrix:\n" << m << std::endl;
-  std::cout << "Solution Mapping:\n" << xMapping << std::endl;
-  std::cout << "b Mapping:\n" << bMapping << std::endl;
-  
-  std::cout << "b:\n" << b << std::endl;
-  
-  solveMatrix(x, m, b, gaussSPP<double>());
-  
-  std::cout << "Solution:\n" << x << std::endl;
-  
-  std::cout << "\nResults:\n" << std::endl;
-  
-  // unknowns
-  for (size_t i = 0; i < x.size(); i++)
-  {
-    std::cout << "u" << xMapping[i] << " = " << std::setw(15) << x[i] << std::endl;
-  }
-  
-  // knowns
-  for (double i = bounds.x(); i <= bounds.y(); i += inc)
-  {
-    for (double j = bounds.x(); j <= bounds.y(); j += inc)
-    {
-      p.set(j, i);
-      
-      if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
-      {
-        std::cout << "u" << p << " = " << std::setw(15) << pde(j, i) << std::endl;
-      }
-    }
-  }
+{
+  run(15);
   
   return 0;
   
@@ -286,6 +174,142 @@ bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char 
   }
   
   return false;
+}
+
+
+void run(const size_t aN)
+{
+  const size_t SIZE = (aN-1)*(aN-1);
+  matrix_poisson<double> m(aN);
+  vector<point<double>> xMapping;
+  vector<double> b;
+  vector<double> x;
+  point<double> p;
+  point<double> bounds(0,M_PI);
+  double inc = (bounds.y() - bounds.x()) / aN;
+  pdeBounds<double> pde(lowerXFunction, upperXFunction, lowerYFunction, upperYFunction, bounds);
+  size_t count = 0;
+  double bValue = 0;
+  double upperBound = bounds.y();
+  std::stringstream ssX, ssY, ssZ;
+  
+  b.reserve(SIZE, true);
+  xMapping.reserve(SIZE, true);
+  count = 0;
+  
+  for (double i = inc; !equivalent(i, upperBound); i += inc)
+  {
+    for (double j = inc; !equivalent(j, upperBound); j += inc)
+    { 
+      xMapping[count].set(j, i);
+      bValue = 0;
+      
+      for (int k = 0; k < 4; k++)
+      {
+        double x = j, y = i;
+        
+        switch (k)
+        {
+          case 0:
+            x -= inc;
+            break;
+            
+          case 1:
+            y -= inc;
+            break;
+            
+          case 2:
+            x += inc;
+            break;
+            
+          case 3:
+            y += inc;
+            break;
+            
+          default:
+            break;
+        }
+        
+        if (x == bounds.x() || y == bounds.x() || x == bounds.y() || y == bounds.y())
+        {
+          bValue += pde(x, y);
+        }
+      }
+      b[count++] = bValue*0.25;
+    }
+  }
+  
+  solveMatrix(x, m, b, cholesky<double>());
+  
+  if (DEBUGGING)
+  {
+    std::cout << "Poisson Matrix:\n" << m << std::endl;
+    std::cout << "Solution Mapping:\n" << xMapping << std::endl;
+    std::cout << "b " << b.size() << ":\n" << b << std::endl;
+    std::cout << "Solution:\n" << x << std::endl;
+    
+    std::cout << "\nResults:\n" << std::endl;
+    
+    std::cout << "Unknowns:\n" << std::endl;
+    for (size_t i = 0; i < x.size(); i++)
+    {
+      std::cout << "u" << std::setw(20) << xMapping[i] << " = \t" << "est(" << std::setw(8)  << x[i] << ")\t\tact(" << std::setw(8)  << actualSolution(xMapping[i].x(), xMapping[i].y()) << ")" << std::endl;
+    }
+    
+    std::cout << "\nKnowns:\n" << std::endl;
+    for (double i = bounds.x(); i <= bounds.y(); i += inc)
+    {
+      for (double j = bounds.x(); j <= bounds.y(); j += inc)
+      {
+        p.set(j, i);
+        
+        if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
+        {
+          std::cout << "u" << std::setw(20) << p << " = \t" << "pde(" << std::setw(11) << pde(j, i) << ")\tact(" << actualSolution(j, i) << ")" << std::endl;
+        }
+      }
+    }
+  }
+  
+  // output matlab code
+  
+  // TODO: fix bounds. certain N values will result in a truncated graph (try 25)
+  for (double i = bounds.x(); i <= bounds.y(); i += inc)
+  {
+    for (double j = bounds.x(); j <= bounds.y(); j += inc)
+    {
+      p.set(j, i);
+      
+      if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
+      {        
+        ssX << p.x() << ", ";
+        ssY << p.y() << ", ";
+        ssZ << pde(j, i) << ", ";
+      }
+    }
+  }
+  
+  for (size_t i = 0; i < x.size(); i++)
+  {
+    ssX << xMapping[i].x() << ", ";
+    ssY << xMapping[i].y() << ", ";
+    ssZ << x[i] << ", ";
+  }
+  
+  std::cout << "clear;" << std::endl;
+  std::cout << "X = [" << ssX.str() << "];" << std::endl;
+  std::cout << "Y = [" << ssY.str() << "];" << std::endl;
+  std::cout << "Z = [" << ssZ.str() << "];" << std::endl;
+  
+  std::cout << "tri = delaunay(X,Y);" << std::endl;
+  std::cout << "trisurf(tri, X, Y, Z" << (aN >= 26 ? ",'EdgeColor','none'" : "") << ");";
+}
+
+
+template <class T_method>
+bool solveMatrix(vector<double>& aX, matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
+{
+  return aMethod(aX, aMatrix, aB);
 }
 
 
@@ -572,14 +596,6 @@ void test(bool aExpression, std::string aName)
   
   std::cout << (aExpression ? "PASS" : "**** FAIL") << std::endl;
 }
-
-
-template <class T_method>
-bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
-{
-  return aMethod(aX, aMatrix, aB);
-}
-
 
 
 

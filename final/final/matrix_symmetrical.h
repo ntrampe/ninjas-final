@@ -71,6 +71,11 @@ public:
 	//Pre:         none
 	//Post:        copies aCopy's dimensions and data over to matrix
 	matrix_symmetrical(const matrix_symmetrical<T>& aCopy);
+  
+  //Description: Base copy constructor
+  //Pre:         none
+  //Post:        copies aCopy's dimensions and data over to matrix
+  matrix_symmetrical(const matrix_base<T>& aCopy);
 
 	//Description: Destructor
 	//Pre:         none
