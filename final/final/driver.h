@@ -78,7 +78,7 @@ bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char 
 void run(const size_t aN, pde_base<double>& aPDE);
 
 template <class T_method>
-bool solveMatrix(vector<double>& aX, matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
+bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
 void displayMatrixTypes();
 

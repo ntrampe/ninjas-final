@@ -309,8 +309,11 @@ bool matrix<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
 		{
 			if (augMat(row, col) != 0)
 			{
+        vector<double> tRow, tCol;
+        augMat.vectorAtRow(row, tRow);
+        augMat.vectorAtRow(col, tCol);
 				mult = -augMat(col, col) / augMat(row, col);
-				augMat.replaceVectorAtRow(mult * augMat.vectorAtRow(row) + augMat.vectorAtRow(col), row);
+				augMat.replaceVectorAtRow(mult * tRow + tCol, row);
 			}
 		}
 

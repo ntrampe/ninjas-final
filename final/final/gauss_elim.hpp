@@ -61,7 +61,7 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
 		// located at the pivot by switching the rows
 		if (maxRow != col)
 		{
-			augMat.switchRows(maxRow, col);
+      augMat.switchRows(maxRow, col);
 		}
 
 		// forward elimination
@@ -70,8 +70,11 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
 		{
 			if (augMat(row, col) != 0)
 			{
+        vector<double> tRow, tCol;
+        augMat.vectorAtRow(row, tRow);
+        augMat.vectorAtRow(col, tCol);
 				mult = -augMat(col, col) / augMat(row, col);
-				augMat.replaceVectorAtRow(mult * augMat.vectorAtRow(row) + augMat.vectorAtRow(col), row);
+				augMat.replaceVectorAtRow(mult * tRow + tCol, row);
 			}
 		}
 

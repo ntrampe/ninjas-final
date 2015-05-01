@@ -216,40 +216,36 @@ bool matrix_base<T>::isEqualTo(const matrix_base<T>& aMatrix) const
 
 
 template <class T>
-vector<T> matrix_base<T>::vectorAtRow(const size_t aRow) const
+void matrix_base<T>::vectorAtRow(const size_t aRow, vector<T>& aVector) const
 {
 	if (aRow >= rows())
 	{
 		throw std::out_of_range("matrix_base: provided row >= matrix rows");
 	}
 
-	vector<T> res;
+  aVector.clear();
 
 	for (size_t i = 0; i < columns(); i++)
 	{
-		res.push_back(this->at(aRow, i));
+		aVector.push_back(this->at(aRow, i));
 	}
-
-	return res;
 }
 
 
 template <class T>
-vector<T> matrix_base<T>::vectorAtColumn(const size_t aColumn) const
+void matrix_base<T>::vectorAtColumn(const size_t aColumn, vector<T>& aVector) const
 {
 	if (aColumn >= columns())
 	{
 		throw std::out_of_range("matrix_base: provided column >= matrix column");
 	}
 
-	vector<T> res;
+  aVector.clear();
 
 	for (size_t i = 0; i < rows(); i++)
 	{
-		res.push_back(this->at(i, aColumn));
+		aVector.push_back(this->at(i, aColumn));
 	}
-
-	return res;
 }
 
 
@@ -338,8 +334,10 @@ void matrix_base<T>::switchRows(const size_t aSource, const size_t aDestination)
 
 	if (aSource != aDestination)
 	{
-		vector<T> temp = this->vectorAtRow(aSource);
-		this->replaceVectorAtRow(this->vectorAtRow(aDestination), aSource);
+    vector<T> temp, dest;
+    this->vectorAtRow(aSource, temp);
+    this->vectorAtRow(aDestination, dest);
+		this->replaceVectorAtRow(dest, aSource);
 		this->replaceVectorAtRow(temp, aDestination);
 	}
 }
@@ -352,8 +350,10 @@ void matrix_base<T>::scaleRow(const size_t aSource, const double aScalar, const 
 	{
 		throw std::out_of_range("matrix_base: row scaling must occur within matrix");
 	}
-
-	this->replaceVectorAtRow(aScalar * this->vectorAtRow(aSource), aDestination);
+  
+  vector<T> temp;
+  this->vectorAtRow(aSource, temp);
+	this->replaceVectorAtRow(aScalar * temp, aDestination);
 }
 
 

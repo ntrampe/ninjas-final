@@ -13,9 +13,9 @@
 
 int main(int argc, const char * argv[])
 {
-  pde_final<double> pde(-M_PI,M_PI);
+  pde_final<double> pde(0,M_PI);
   
-  run(40, pde);  // N, lowerBound, upperBound
+  run(15, pde);  // N, lowerBound, upperBound
   
   std::cout << pde.matlabOutput() << std::endl;
   
@@ -242,7 +242,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
     }
   }
   
-  solveMatrix(x, m, b, cholesky<double>());
+  solveMatrix(x, m, b, gauss_elim<double>());
   
   if (DEBUGGING)
   {
@@ -274,9 +274,9 @@ void run(const size_t aN, pde_base<double>& aPDE)
     }
   }
   
-  for (double i = lowerBound; i < upperBound + inc/aN; i += inc)
+  for (double i = lowerBound; i <= upperBound; i += inc)
   {
-    for (double j = lowerBound; j < upperBound + inc/aN; j += inc)
+    for (double j = lowerBound; j <= upperBound; j += inc)
     {
       if (j == lowerBound || i == lowerBound || j == upperBound || i == upperBound)
       {
@@ -294,7 +294,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
 
 
 template <class T_method>
-bool solveMatrix(vector<double>& aX, matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
+bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
 {
   return aMethod(aX, aMatrix, aB);
 }

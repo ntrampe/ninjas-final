@@ -191,12 +191,12 @@ public:
 	//Description: Retrieve a vector at a row
 	//Pre:         aRow must be within matrix dimensions
 	//Post:        returns a vector of the elements at aRow
-	vector<T> vectorAtRow(const size_t aRow) const;
+	void vectorAtRow(const size_t aRow, vector<T>& aVector) const;
 
 	//Description: Retrieve a vector at a column
 	//Pre:         aColumn must be within matrix dimensions
 	//Post:        returns a vector of the elements at aColumn
-	vector<T> vectorAtColumn(const size_t aColumn) const;
+	void vectorAtColumn(const size_t aColumn, vector<T>& aVector) const;
 
 	//Description: Replace (aRow, aVector[i]) with the contents of aVector
 	//Pre:         aVector's size must be equal to the matrix's columns
