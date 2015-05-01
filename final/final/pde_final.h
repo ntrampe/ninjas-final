@@ -16,7 +16,7 @@
 template <class T>
 class pde_final : public pde_base<T>
 {
-protected:
+private:
   
   virtual T xLower(T aY) const;
   virtual T xUpper(T aY) const;
