@@ -25,6 +25,7 @@
 #include "matrix_poisson.h"
 #include "cholesky.h"
 #include "gauss_elim.h"
+#include "gauss_seidel.h"
 #include "pde_test.h"
 #include "pde_final.h"
 

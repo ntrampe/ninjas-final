@@ -8,13 +8,31 @@
 //
 //
 
+template <class T>
+gauss_seidel<T>::gauss_seidel()
+{
+	m_error_tol = 1;
+}
+
+template <class T>
+gauss_seidel<T>::~gauss_seidel()
+{
+
+}
+
+template <class T>
+gauss_seidel<T>::gauss_seidel(const double aErrorTolerance)
+{
+	m_error_tol = aErrorTolerance;
+}
+
 
 template <class T>
 bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const vector<T>& aB)
 {
-  for (unsigned i = 0; i < aMatrix.size(); i++)
+  for (unsigned i = 0; i < aA.columns(); i++)
   {
-    if (aMatrix[i].size() <= aMatrix.size())
+    if (aA[i].columns() <= aA.columns())
       throw std::invalid_argument("Matrix must contain enough columns");
   }
   
@@ -33,20 +51,20 @@ bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const 
   
   // continue computing new x values until
   // we are close enough to a solution
-  while (error >= aErrorTolerance)
+  while (error >= m_error_tol)
   {
     // loop through every row of the matrix
-    for (unsigned int i = 0; i < aA.row(); i++)
+    for (unsigned int i = 0; i < aA.rows(); i++)
     {
       csum = 0;
       
       // compute sum of the coefficients time the old
       // x values
-      for (unsigned int j = 0; j < aMatrix.size(); j++)
+      for (unsigned int j = 0; j < aA.columns(); j++)
       {
         if (j != i)
         {
-          csum += a[i][j]*x[j];
+          csum += aA[i][j]*aX[j];
         }
       }
       
@@ -55,20 +73,20 @@ bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const 
       // coefficient corresponding to the current x
       //
       // xi = (an - (a1 + a2 + ... + an-1 (not including ai))) / ai
-      newx = ((a[i][aMatrix.size()] - csum) / a[i][i]);
+      newx = ((aA[i][aA.columns()] - csum) / aA[i][i]);
       
       // error is the difference in the old and new values
-      error = fabs(x[i] - newx);
+      error = fabs(aX[i] - newx);
       
       //update computed x value
-      x[i] = newx;
+      aX[i] = newx;
     }
   }
 
 	// check for no solution
 	// could move this check into the back substitution loop,
 	// but this is prettier
-	for (size_t i = 0; i < aX.size(); i++)
+	for (size_t i = 0; i < aX.columns(); i++)
 	{
 		if (aX[i] != aX[i])
 		{
