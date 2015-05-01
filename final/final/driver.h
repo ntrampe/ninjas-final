@@ -25,7 +25,8 @@
 #include "matrix_poisson.h"
 #include "cholesky.h"
 #include "gauss_elim.h"
-#include "pdeBounds.h"
+#include "pde_test.h"
+#include "pde_final.h"
 
 
 typedef enum
@@ -38,26 +39,6 @@ typedef enum
 	kMatrixTypeSymmetrical = 5
 } kMatrixType;
 
-
-double lowerXFunction(double aY)
-{
-  return sin(aY);
-}
-
-double upperXFunction(double aY)
-{
-  return 0;
-}
-
-double lowerYFunction(double aX)
-{
-  return sin(aX);
-}
-
-double upperYFunction(double aX)
-{
-  return 0;
-}
 
 double actualSolution(double aX, double aY)
 {
@@ -93,7 +74,7 @@ void solveFile(const char * aFile, kMatrixType aType);
 //Post:        aMatrix, aVector are set up with the contents of a file called aFile
 bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
 
-void run(const size_t aN);
+void run(const size_t aN, pde_base<double>& aPDE);
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);

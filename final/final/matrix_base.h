@@ -46,7 +46,7 @@
 
 #include "math.h"
 #include "vector.h"
-#include "point.h"
+#include "point2d.h"
 
 template <class T>
 class matrix_base
@@ -260,12 +260,12 @@ public:
 	//Description: Retrieve an element to modify
 	//Pre:         aPoint must be within the matrix bounds
 	//Post:        returns a reference to the element at (aPoint.x(), aPoint.y())
-	T& operator()(const point<size_t>& aPoint);
+	T& operator()(const point2d<size_t>& aPoint);
 
 	//Description: Retrieve an element to read only
 	//Pre:         aPoint must be within the matrix bounds
 	//Post:        returns a copy of the element at (aPoint.x(), aPoint.y())
-	T operator()(const point<size_t>& aPoint) const;
+	T operator()(const point2d<size_t>& aPoint) const;
 
 	//// Operators
 

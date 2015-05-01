@@ -24,12 +24,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E10210C21AF3DE18005D8F41 /* pde_base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pde_base.hpp; sourceTree = "<group>"; };
+		E10210C31AF3DE18005D8F41 /* pde_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pde_base.h; sourceTree = "<group>"; };
+		E10210C41AF3DF54005D8F41 /* pde_final.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pde_final.hpp; sourceTree = "<group>"; };
+		E10210C51AF3DF54005D8F41 /* pde_final.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pde_final.h; sourceTree = "<group>"; };
+		E10210C61AF3E3BE005D8F41 /* pde_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pde_test.h; sourceTree = "<group>"; };
+		E10210C71AF3E3BE005D8F41 /* pde_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pde_test.hpp; sourceTree = "<group>"; };
+		E10210CA1AF3E9CA005D8F41 /* point3d.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point3d.hpp; sourceTree = "<group>"; };
+		E10210CB1AF3E9CA005D8F41 /* point3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point3d.h; sourceTree = "<group>"; };
+		E10210CC1AF3E9DE005D8F41 /* point2d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point2d.h; sourceTree = "<group>"; };
+		E10210CD1AF3E9DE005D8F41 /* point2d.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point2d.hpp; sourceTree = "<group>"; };
 		E123134A1AF2B2BA00BD0088 /* cholesky.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cholesky.hpp; sourceTree = "<group>"; };
 		E123134C1AF2B2BA00BD0088 /* cholesky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cholesky.h; sourceTree = "<group>"; };
 		E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix_poisson.h; sourceTree = "<group>"; };
 		E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = matrix_poisson.hpp; sourceTree = "<group>"; };
-		E14737181AF0259200E09674 /* pdeBounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pdeBounds.h; sourceTree = "<group>"; };
-		E14737191AF0259200E09674 /* pdeBounds.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pdeBounds.hpp; sourceTree = "<group>"; };
 		E15239171AEAE227002A8FFC /* final */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = final; sourceTree = BUILT_PRODUCTS_DIR; };
 		E152391A1AEAE227002A8FFC /* driver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = driver.cpp; sourceTree = "<group>"; };
 		E15239211AEAE2C9002A8FFC /* matrix_base.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix_base.hpp; sourceTree = "<group>"; };
@@ -56,8 +64,10 @@
 		E15239381AEAE2C9002A8FFC /* matrix_triangular_base.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix_triangular_base.hpp; sourceTree = "<group>"; };
 		E152393A1AEAE2C9002A8FFC /* matrix_diagonal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix_diagonal.hpp; sourceTree = "<group>"; };
 		E152393B1AEAE2C9002A8FFC /* math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = math.cpp; sourceTree = "<group>"; };
-		E152393F1AEAE48C002A8FFC /* point.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point.hpp; sourceTree = "<group>"; };
-		E15239401AEAE48C002A8FFC /* point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		E197E07A1AF3A3E3006B9DF5 /* gauss_elim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gauss_elim.h; sourceTree = "<group>"; };
+		E197E07B1AF3A3E3006B9DF5 /* gauss_elim.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gauss_elim.hpp; sourceTree = "<group>"; };
+		E197E07C1AF3A3E3006B9DF5 /* gauss_seidel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gauss_seidel.h; sourceTree = "<group>"; };
+		E197E07D1AF3A3E3006B9DF5 /* gauss_seidel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gauss_seidel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +107,10 @@
 				E152393B1AEAE2C9002A8FFC /* math.cpp */,
 				E15239321AEAE2C9002A8FFC /* vector.h */,
 				E15239361AEAE2C9002A8FFC /* vector.hpp */,
-				E15239401AEAE48C002A8FFC /* point.h */,
-				E152393F1AEAE48C002A8FFC /* point.hpp */,
+				E10210CC1AF3E9DE005D8F41 /* point2d.h */,
+				E10210CD1AF3E9DE005D8F41 /* point2d.hpp */,
+				E10210CB1AF3E9CA005D8F41 /* point3d.h */,
+				E10210CA1AF3E9CA005D8F41 /* point3d.hpp */,
 				E15239281AEAE2C9002A8FFC /* matrix_base.h */,
 				E15239211AEAE2C9002A8FFC /* matrix_base.hpp */,
 				E15239301AEAE2C9002A8FFC /* matrix.h */,
@@ -119,10 +131,18 @@
 				E15239341AEAE2C9002A8FFC /* matrix_symmetrical.hpp */,
 				E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */,
 				E13BB6761AEF1BFC00A0CB5F /* matrix_poisson.hpp */,
-				E14737181AF0259200E09674 /* pdeBounds.h */,
-				E14737191AF0259200E09674 /* pdeBounds.hpp */,
+				E10210C31AF3DE18005D8F41 /* pde_base.h */,
+				E10210C21AF3DE18005D8F41 /* pde_base.hpp */,
+				E10210C51AF3DF54005D8F41 /* pde_final.h */,
+				E10210C41AF3DF54005D8F41 /* pde_final.hpp */,
+				E10210C61AF3E3BE005D8F41 /* pde_test.h */,
+				E10210C71AF3E3BE005D8F41 /* pde_test.hpp */,
 				E123134C1AF2B2BA00BD0088 /* cholesky.h */,
 				E123134A1AF2B2BA00BD0088 /* cholesky.hpp */,
+				E197E07A1AF3A3E3006B9DF5 /* gauss_elim.h */,
+				E197E07B1AF3A3E3006B9DF5 /* gauss_elim.hpp */,
+				E197E07C1AF3A3E3006B9DF5 /* gauss_seidel.h */,
+				E197E07D1AF3A3E3006B9DF5 /* gauss_seidel.hpp */,
 			);
 			path = final;
 			sourceTree = "<group>";

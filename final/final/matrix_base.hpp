@@ -152,7 +152,7 @@ void matrix_base<T>::resize(const size_t aRows, const size_t aColumns)
 {
 	size_t mem = memorySize();
 	T* temp = new T[mem];
-	point<size_t>* oldLoc = new point<size_t>[mem];
+	point2d<size_t>* oldLoc = new point2d<size_t>[mem];
 	size_t oldArea = mem;
 	size_t col = 0;
 	size_t row = 0;
@@ -384,14 +384,14 @@ T matrix_base<T>::operator()(const size_t aRow, const size_t aColumn) const
 
 
 template <class T>
-T& matrix_base<T>::operator()(const point<size_t>& aPoint)
+T& matrix_base<T>::operator()(const point2d<size_t>& aPoint)
 {
 	return at(aPoint.x(), aPoint.y());
 }
 
 
 template <class T>
-T matrix_base<T>::operator()(const point<size_t>& aPoint) const
+T matrix_base<T>::operator()(const point2d<size_t>& aPoint) const
 {
 	return at(aPoint.x(), aPoint.y());
 }

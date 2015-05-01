@@ -13,7 +13,11 @@
 
 int main(int argc, const char * argv[])
 {
-  run(25);
+  pde_test<double> pde(-10,10);
+  
+  run(40, pde);  // N, lowerBound, upperBound
+  
+  std::cout << pde.matlabOutput() << std::endl;
   
   return 0;
   
@@ -177,29 +181,28 @@ bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char 
 }
 
 
-void run(const size_t aN)
+void run(const size_t aN, pde_base<double>& aPDE)
 {
   const size_t SIZE = (aN-1)*(aN-1);
   matrix_poisson<double> m(aN);
-  vector<point<double>> xMapping;
+  vector<point2d<double>> xMapping;
   vector<double> b;
   vector<double> x;
-  point<double> p;
-  point<double> bounds(0,M_PI);
-  double inc = (bounds.y() - bounds.x()) / aN;
-  pdeBounds<double> pde(lowerXFunction, upperXFunction, lowerYFunction, upperYFunction, bounds);
+  point2d<double> p;
+  double lowerBound = aPDE.lowerBound();
+  double upperBound = aPDE.upperBound();
+  double inc = fabs((upperBound - lowerBound)) / aN;
   size_t count = 0;
   double bValue = 0;
-  double upperBound = bounds.y();
   std::stringstream ssX, ssY, ssZ;
   
   b.reserve(SIZE, true);
   xMapping.reserve(SIZE, true);
   count = 0;
   
-  for (double i = inc; !equivalent(i, upperBound); i += inc)
+  for (double i = lowerBound + inc; !equivalent(i, upperBound); i += inc)
   {
-    for (double j = inc; !equivalent(j, upperBound); j += inc)
+    for (double j = lowerBound + inc; !equivalent(j, upperBound); j += inc)
     { 
       xMapping[count].set(j, i);
       bValue = 0;
@@ -230,9 +233,9 @@ void run(const size_t aN)
             break;
         }
         
-        if (x == bounds.x() || y == bounds.x() || x == bounds.y() || y == bounds.y())
+        if (x == lowerBound || y == lowerBound || x == upperBound || y == upperBound)
         {
-          bValue += pde(x, y);
+          bValue += aPDE(x, y);
         }
       }
       b[count++] = bValue*0.25;
@@ -257,57 +260,36 @@ void run(const size_t aN)
     }
     
     std::cout << "\nKnowns:\n" << std::endl;
-    for (double i = bounds.x(); i <= bounds.y(); i += inc)
+    for (double i = lowerBound; i <= upperBound; i += inc)
     {
-      for (double j = bounds.x(); j <= bounds.y(); j += inc)
+      for (double j = lowerBound; j <= upperBound; j += inc)
       {
         p.set(j, i);
         
-        if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
+        if (j == lowerBound || i == lowerBound || j == upperBound || i == upperBound)
         {
-          std::cout << "u" << std::setw(20) << p << " = \t" << "pde(" << std::setw(11) << pde(j, i) << ")\tact(" << actualSolution(j, i) << ")" << std::endl;
+          std::cout << "u" << std::setw(20) << p << " = \t" << "pde(" << std::setw(11) << aPDE(j, i) << ")\tact(" << actualSolution(j, i) << ")" << std::endl;
         }
       }
     }
   }
   
-  // output matlab code
-  double pp;
-  
-  for (double i = bounds.x(); i < bounds.y() + inc/aN; i += inc)
+  for (double i = lowerBound; i < upperBound + inc/aN; i += inc)
   {
-    for (double j = bounds.x(); j < bounds.y() + inc/aN; j += inc)
+    for (double j = lowerBound; j < upperBound + inc/aN; j += inc)
     {
-      p.set(j, i);
-      
-      if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
+      if (j == lowerBound || i == lowerBound || j == upperBound || i == upperBound)
       {
-        pp = pde(j, i);
-        
-        ssX << p.x() << ", ";
-        ssY << p.y() << ", ";
-        ssZ << (pp < 0 ? 0 : pp) << ", ";
+        p.set(j, i);
+        aPDE.addKnownPoint(p);
       }
     }
   }
   
   for (size_t i = 0; i < x.size(); i++)
   {
-    ssX << xMapping[i].x() << ", ";
-    ssY << xMapping[i].y() << ", ";
-    ssZ << x[i] << ", ";
+    aPDE.addPoint(xMapping[i], x[i]);
   }
-  
-  std::cout << "clear;" << std::endl;
-  std::cout << "X = [" << ssX.str() << "];" << std::endl;
-  std::cout << "Y = [" << ssY.str() << "];" << std::endl;
-  std::cout << "Z = [" << ssZ.str() << "];" << std::endl;
-  
-  std::cout << "tri = delaunay(X,Y);" << std::endl;
-  std::cout << "fig = trisurf(tri, X, Y, Z" << (aN >= 26 ? ",'EdgeColor','none'" : "") << ");" << std::endl;
-  std::cout << "axis vis3d;" << std::endl;
-  std::cout << "axis manual;" << std::endl;
-  std::cout << "while ishandle(fig); camorbit(0.5,0.0); drawnow; end" << std::endl;
 }
 
 
