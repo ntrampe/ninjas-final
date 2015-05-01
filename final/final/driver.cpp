@@ -13,7 +13,7 @@
 
 int main(int argc, const char * argv[])
 {
-  run(15);
+  run(25);
   
   return 0;
   
@@ -272,19 +272,21 @@ void run(const size_t aN)
   }
   
   // output matlab code
+  double pp;
   
-  // TODO: fix bounds. certain N values will result in a truncated graph (try 25)
-  for (double i = bounds.x(); i <= bounds.y(); i += inc)
+  for (double i = bounds.x(); i < bounds.y() + inc/aN; i += inc)
   {
-    for (double j = bounds.x(); j <= bounds.y(); j += inc)
+    for (double j = bounds.x(); j < bounds.y() + inc/aN; j += inc)
     {
       p.set(j, i);
       
       if (j == bounds.x() || i == bounds.x() || j == bounds.y() || i == bounds.y())
-      {        
+      {
+        pp = pde(j, i);
+        
         ssX << p.x() << ", ";
         ssY << p.y() << ", ";
-        ssZ << pde(j, i) << ", ";
+        ssZ << (pp < 0 ? 0 : pp) << ", ";
       }
     }
   }
@@ -302,7 +304,10 @@ void run(const size_t aN)
   std::cout << "Z = [" << ssZ.str() << "];" << std::endl;
   
   std::cout << "tri = delaunay(X,Y);" << std::endl;
-  std::cout << "trisurf(tri, X, Y, Z" << (aN >= 26 ? ",'EdgeColor','none'" : "") << ");";
+  std::cout << "fig = trisurf(tri, X, Y, Z" << (aN >= 26 ? ",'EdgeColor','none'" : "") << ");" << std::endl;
+  std::cout << "axis vis3d;" << std::endl;
+  std::cout << "axis manual;" << std::endl;
+  std::cout << "while ishandle(fig); camorbit(0.5,0.0); drawnow; end" << std::endl;
 }
 
 
