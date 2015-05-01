@@ -15,7 +15,7 @@ int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
   
-  run(15, pde);  // N, lowerBound, upperBound
+  run(4, pde);  // N, lowerBound, upperBound
   
   std::cout << pde.matlabOutput() << std::endl;
   
@@ -243,6 +243,21 @@ void run(const size_t aN, pde_base<double>& aPDE)
   }
   
   solveMatrix(x, m, b, gauss_elim<double>());
+
+	std::cout << "Gaussian Elimination Solution: " << x << std::endl;
+
+
+	solveMatrix(x, m, b, cholesky<double>());
+
+	std::cout << "Cholesky Solution: " << x << std::endl;
+
+	int seidel_iters = 5;
+	for (int i = 0; i < seidel_iters; i++)
+	{
+		double error_mult = pow(10, -i);
+		solveMatrix(x, m, b, gauss_seidel<double>(.01 * error_mult));
+		std::cout << "Gauss-Seidel Iteration Solution: " << x << std::endl;
+	}
   
   if (DEBUGGING)
   {

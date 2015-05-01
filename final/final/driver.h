@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include <cmath>
 
 #include "matrix.h"
 #include "matrix_triangular_upper.h"
