@@ -13,7 +13,7 @@
 
 int main(int argc, const char * argv[])
 {
-  pde_test<double> pde(-10,10);
+  pde_final<double> pde(-M_PI,M_PI);
   
   run(40, pde);  // N, lowerBound, upperBound
   
