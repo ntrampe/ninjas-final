@@ -24,6 +24,7 @@
 #include "matrix_banded.h"
 #include "matrix_poisson.h"
 #include "cholesky.h"
+#include "gauss_elim.h"
 #include "pdeBounds.h"
 
 
