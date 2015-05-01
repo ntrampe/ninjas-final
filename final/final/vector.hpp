@@ -261,7 +261,7 @@ U operator*(const vector<U>& aLHS, const vector<U>& aRHS)
 
 
 template <class U>
-vector<U> operator*(const double& aLHS, const vector<U>& aRHS)
+vector<U> operator*(const double aLHS, const vector<U>& aRHS)
 {
 	vector<U> res;
 
@@ -274,7 +274,7 @@ vector<U> operator*(const double& aLHS, const vector<U>& aRHS)
 }
 
 template <class U>
-vector<U> operator*(const vector<U>& aLHS, const double& aRHS)
+vector<U> operator*(const vector<U>& aLHS, const double aRHS)
 {
 	return aRHS * aLHS;
 }

@@ -15,7 +15,7 @@ int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
   
-  run(15, pde);  // N, lowerBound, upperBound
+  run(13, pde);  // N, lowerBound, upperBound
   
   std::cout << pde.matlabOutput() << std::endl;
   

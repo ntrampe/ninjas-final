@@ -34,17 +34,13 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
 	// create solution array
 
 	aX.clear();
-	aX.reserve(augMat.columns() - 1);
-
-	for (size_t i = 0; i < augMat.columns() - 1; i++)
-	{
-		aX.push_back(0);
-	}
+	aX.reserve(augMat.columns() - 1, true);
 
 	// elimination
 	// loop through all columns
 	for (size_t col = 0; col < augMat.columns() - 1; col++)
 	{
+    
 		// set the largest row to the current pivot
 		maxRow = col;
 
@@ -63,7 +59,7 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
 		{
       augMat.switchRows(maxRow, col);
 		}
-
+    
 		// forward elimination
 		// (zero-out) all elements underneath the pivot
 		for (size_t row = col + 1; row < augMat.rows(); row++)
@@ -73,11 +69,17 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
         vector<double> tRow, tCol;
         augMat.vectorAtRow(row, tRow);
         augMat.vectorAtRow(col, tCol);
-				mult = -augMat(col, col) / augMat(row, col);
-				augMat.replaceVectorAtRow(mult * tRow + tCol, row);
+        mult = -augMat(col, col) / augMat(row, col);
+        
+        for (size_t i = 0; i < augMat.columns(); i++)
+        {
+          augMat(row, i) = 1.0 * augMat(row, i) + augMat(col, i);
+        }
+        
+//				augMat.replaceVectorAtRow(mult * tRow + tCol, row);
 			}
 		}
-
+    
 		// scale all pivots to 1
 		augMat.scaleRow(col, 1.0f / augMat(col,col), col);
 	}

@@ -176,14 +176,14 @@ public:
 	//             in aRHS with aLHS
 	//Description: multiply a vector by a constant
 	template <class U>
-	friend vector<U> operator*(const double& aLHS, const vector<U>& aRHS);
+	friend vector<U> operator*(const double aLHS, const vector<U>& aRHS);
 
 	//Pre:         class used in template needs to overload * with a double on the right
 	//Post:        returns a vector containing the multiplication of every element
 	//             in aLHS with aRHS
 	//Description: multiply a vector by a constant
 	template <class U>
-	friend vector<U> operator*(const vector<U>& aLHS, const double& aRHS);
+	friend vector<U> operator*(const vector<U>& aLHS, const double aRHS);
 
 	//Pre:         class used in template needs to overload negation operator
 	//Post:        returns the negation of aVector
