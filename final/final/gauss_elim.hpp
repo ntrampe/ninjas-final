@@ -129,5 +129,77 @@ bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const ve
 
 	// aX now contains the solution
 	return true;
+
+	/* NOT SURE IF IT WILL HELP, BUT HERE'S MY IMPLEMENTATION:
+
+	//Build augmented matrix
+	Matrix<T> aug_matrix(matrix.rows(), matrix.cols() + 1);
+	for (int i = 0; i < matrix.rows(); i++)
+	{
+		for (int j = 0; j < matrix.cols(); j++)
+		{
+			aug_matrix[i][j] = matrix[i][j];
+		}
+
+		aug_matrix[i][matrix.cols()] = vector[i];
+	}
+
+	//Forward elimination with partial pivoting
+	for (int pivot = 0; pivot < aug_matrix.rows(); pivot++)
+	{
+		//find row with largest pivot
+		T max = T();
+		int max_row = pivot;
+		for (int i = pivot; i < aug_matrix.rows(); i++)
+		{
+			//get absolute value of potential pivot
+			T current = aug_matrix[pivot][i];
+			if (current < 0)
+			{
+				current *= -1;
+			}
+			if (current > max)
+			{
+				max = current;
+				max_row = i;
+			}
+		}
+
+		//swap max row with top
+		Vector<T> temp = aug_matrix[pivot];
+		aug_matrix[pivot] = aug_matrix[max_row];
+		aug_matrix[max_row] = temp;
+		
+		//divide row by pivot
+		if (aug_matrix[pivot][pivot] == 0)
+		{
+			//all entries in column are 0, move to next column
+			continue;
+		}
+
+		T val = 1/aug_matrix[pivot][pivot];
+		aug_matrix[pivot] = aug_matrix[pivot] * val;
+		for (int i = pivot + 1; i < aug_matrix.rows(); i++)
+		{
+			aug_matrix[i] = aug_matrix[i] + ((aug_matrix[pivot] * T(-1)) = (aug_matrix[pivot] * T(-1)) * aug_matrix[i][pivot]);
+		}
+	}
+
+	//Back Substitution
+	Vector<T> solution(vector.size());
+ 	for (int i = matrix.rows() - 1; i >= 0; i--)
+  	{
+    	solution[i] = aug_matrix[i][matrix.cols()];;
+    	for (int j = i + 1; j < matrix.rows(); j++)
+    	{
+      	solution[i] -= aug_matrix[i][j] * solution[j];
+    	}
+
+    	solution[i] = solution[i] / aug_matrix[i][i];
+  	}
+
+  	return solution;
+
+	*/
 }
 
