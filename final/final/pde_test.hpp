@@ -12,27 +12,27 @@
 template <class T>
 T pde_test<T>::xLower(T aY) const
 {
-  return sin(1.0/5*aY);
+  return cos(1.0/5*aY);
 }
 
 
 template <class T>
 T pde_test<T>::xUpper(T aY) const
 {
-  return sin(1.0/5*aY);
+  return cos(1.0/5*aY);
 }
 
 
 template <class T>
 T pde_test<T>::yLower(T aX) const
 {
-  return sin(1.0/5*aX);
+  return cos(1.0/5*aX);
 }
 
 
 template <class T>
 T pde_test<T>::yUpper(T aX) const
 {
-  return sin(1.0/5*aX);
+  return cos(1.0/5*aX);
 }
 

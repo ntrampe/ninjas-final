@@ -38,7 +38,7 @@ bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const 
   double csum;
   
   // new value x
-  double newx;
+  double newx, oldx;
   
   aX.clear();
   aX.reserve(aA.columns(), true);
@@ -69,12 +69,14 @@ bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const 
       // xi = (an - (a1 + a2 + ... + an-1 (not including ai))) / ai
       newx = (aB[i] - csum) / aA(i, i);
       
-      // error is the difference in the old and new values
-      error = fabs(aX[i] - newx);
-      
       //update computed x value
+      if (i == 0)
+        oldx = aX[i];
       aX[i] = newx;
     }
+    
+    // error is the difference in the old and new values
+    error = fabs(aX[0] - oldx);
   }
 
 	// check for no solution

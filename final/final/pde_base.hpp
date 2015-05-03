@@ -89,7 +89,7 @@ void pde_base<T>::addKnownPoint(const point2d<T>& aPoint)
 
 
 template <class T>
-std::string pde_base<T>::matlabOutput() const
+std::string pde_base<T>::matlabOutput(bool isAnimated) const
 {
   std::stringstream res, ssX, ssY, ssZ;
   
@@ -107,9 +107,13 @@ std::string pde_base<T>::matlabOutput() const
   res << "tri = delaunay(X,Y);" << std::endl;
   res << "fig = trisurf(tri, X, Y, Z);" << std::endl;
   res << "set(fig,'LineWidth',0.01);" << std::endl;
-  res << "axis vis3d;" << std::endl;
-  res << "axis manual;" << std::endl;
-  res << "while ishandle(fig); camorbit(0.5,0.0); drawnow; end" << std::endl;
+  
+  if (isAnimated)
+  {
+    res << "axis vis3d;" << std::endl;
+    res << "axis manual;" << std::endl;
+    res << "while ishandle(fig); camorbit(0.5,0.0); drawnow; end" << std::endl;
+  }
   
   return res.str();
 }

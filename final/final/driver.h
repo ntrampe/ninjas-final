@@ -29,7 +29,7 @@
 #include "gauss_seidel.h"
 #include "pde_test.h"
 #include "pde_final.h"
-
+#include "runtime.h"
 
 typedef enum
 {

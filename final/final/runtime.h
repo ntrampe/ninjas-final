@@ -17,7 +17,6 @@
 
 #include <iostream>
 #include <sys/time.h> // for gettimeofday()
-using namespace std;
 
 class runtime
 {

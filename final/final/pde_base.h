@@ -46,7 +46,7 @@ public:
   void addKnownPoint(const T aX, const T aY);
   void addKnownPoint(const point2d<T>& aPoint);
   
-  std::string matlabOutput() const;
+  std::string matlabOutput(bool isAnimated = false) const;
   
   T operator()(const T aX, const T aY) const;
 };

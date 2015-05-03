@@ -16,10 +16,11 @@ bool cholesky<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const vect
   matrix_symmetrical<T> aAug;
   vector<T> y;
   double sum = 0;
+  int size = static_cast<int>(aL.size());
   
   y = aB;
   
-  for (int k = 0; k < static_cast<int>(aL.size()); k++)
+  for (int k = 0; k < size; k++)
   {
     for (int i = 0; i <= k-1; i++)
     {

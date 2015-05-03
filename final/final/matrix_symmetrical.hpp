@@ -371,11 +371,8 @@ void matrix_symmetrical<T>::convertCoordinatesToIndex(size_t& aIndex, const size
 	{
 		aIndex += i+1;
 	}
-
-	for (size_t i = 0; i < realCol; i++)
-	{
-		aIndex++;
-	}
+  
+  aIndex += realCol;
 }
 
 

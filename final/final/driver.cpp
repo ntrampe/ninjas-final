@@ -15,9 +15,9 @@ int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
   
-  run(26, pde);  // N, lowerBound, upperBound
+  run(40, pde);
   
-  //std::cout << pde.matlabOutput() << std::endl;
+//  std::cout << pde.matlabOutput() << std::endl;
   
   return 0;
   
@@ -194,7 +194,9 @@ void run(const size_t aN, pde_base<double>& aPDE)
   double inc = fabs((upperBound - lowerBound)) / aN;
   size_t count = 0;
   double bValue = 0;
+  int seidel_iters = 10;
   std::stringstream ssX, ssY, ssZ;
+  runtime timer;
   
   b.reserve(SIZE, true);
   xMapping.reserve(SIZE, true);
@@ -241,23 +243,35 @@ void run(const size_t aN, pde_base<double>& aPDE)
       b[count++] = bValue*0.25;
     }
   }
+
+  solveMatrix(x, m, b, cholesky<double>());
   
-  solveMatrix(x, m, b, gauss_elim<double>());
-
-	std::cout << "Gaussian Elimination Solution: " << std::endl;
-
-
-	solveMatrix(x, m, b, cholesky<double>());
-
-	std::cout << "Cholesky Solution: " << std::endl;
-
-	int seidel_iters = 5;
-	for (int i = 0; i < seidel_iters; i++)
-	{
-		double error_mult = pow(10, -i);
-		solveMatrix(x, m, b, gauss_seidel<double>(.01 * error_mult));
-		std::cout << "Gauss-Seidel Iteration Solution: " << std::endl;
-	}
+//  std::cout << "N = " << aN << std::endl;
+//  
+//  timer.begin();
+//  solveMatrix(x, m, b, gauss_elim<double>());
+//  timer.end();
+//
+//  std::cout << "Gaussian Elimination Method:" << std::endl;
+//  std::cout << "time: " << timer.elapsed() << std::endl;
+//  
+//  timer.begin();
+//	solveMatrix(x, m, b, cholesky<double>());
+//  timer.end();
+//
+//	std::cout << "Cholesky Method:" << std::endl;
+//  std::cout << "time - " << timer.elapsed() << std::endl;
+//
+//  std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
+//  
+//	for (int i = 0; i < seidel_iters; i++)
+//	{
+//		double error_tol = pow(10, -i)*0.1;
+//    timer.begin();
+//		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
+//    timer.end();
+//    std::cout << "error tolerance - " << error_tol << "\ntime - " << timer.elapsed() << std::endl;
+//	}
   
   if (DEBUGGING)
   {
