@@ -12,9 +12,6 @@
 template <class T>
 bool gauss_elim<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const vector<T>& aB)
 {
-  //// Gaussian Elimination With Scaled Partial Pivoting
-
-	// augmented matrix
 	matrix<T> augMat(aA);
   
   vector<T> b(aB);

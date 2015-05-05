@@ -13,7 +13,7 @@ template <class T>
 bool cholesky<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const vector<T>& aB)
 {
   matrix_symmetrical<T> aL(aA);
-  matrix_symmetrical<T> aAug;
+//  matrix_symmetrical<T> aAug;
   vector<T> y;
   double sum = 0;
   int size = static_cast<int>(aL.size());
@@ -42,24 +42,24 @@ bool cholesky<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const vect
     aL(k,k) = sqrt(aL(k,k) - sum);
   }
   
-  aAug = aL;
-  
-  for (size_t col = 0; col < aAug.size(); col++)
-  {
-    if (aAug(col, col) != 0 && aAug(col, col) != 1)
-    {
-      y[col] = y[col] / aAug(col, col);
-      
-      aAug(col, col) = 1;
-    }
-    
-    for (size_t row = col + 1; row < aAug.size(); row++)
-    {
-      y[row] = -aAug(row, col) * y[col] + y[row];
-      
-      aAug(row, col) = 0;
-    }
-  }
+//  aAug = aL;
+//  
+//  for (size_t col = 0; col < aAug.size(); col++)
+//  {
+//    if (aAug(col, col) != 0 && aAug(col, col) != 1)
+//    {
+//      y[col] = y[col] / aAug(col, col);
+//      
+//      aAug(col, col) = 1;
+//    }
+//    
+//    for (size_t row = col + 1; row < aAug.size(); row++)
+//    {
+//      y[row] = -aAug(row, col) * y[col] + y[row];
+//      
+//      aAug(row, col) = 0;
+//    }
+//  }
   
   double csum = 0;
   

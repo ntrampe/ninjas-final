@@ -38,7 +38,7 @@ bool gauss_seidel<T>::operator()(vector<T>& aX, const matrix_base<T>& aA, const 
   double csum;
   
   // new value x
-  double newx, oldx;
+  double newx = 0, oldx = 0;
   
   aX.clear();
   aX.reserve(aA.columns(), true);
