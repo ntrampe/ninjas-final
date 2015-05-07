@@ -15,9 +15,9 @@ int main(int argc, const char * argv[])
 {
   pde_test<double> pde(-10,10);
   
-  run(40, pde);
+  run(25, pde);
   
-  std::cout << pde.matlabOutput(true) << std::endl;
+  std::cout << pde.matlabOutput(0.5, false) << std::endl;
   
   return 0;
   
@@ -189,9 +189,12 @@ void run(const size_t aN, pde_base<double>& aPDE)
   vector<double> b;
   vector<double> x;
   point2d<double> p;
+  double iBound = 0;
+  double jBound = 0;
   double lowerBound = aPDE.lowerBound();
   double upperBound = aPDE.upperBound();
   double inc = fabs((upperBound - lowerBound)) / aN;
+  double tolerance = inc / 2.0;
   size_t count = 0;
   double bValue = 0;
   int seidel_iters = 10;
@@ -235,7 +238,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
             break;
         }
         
-        if (x == lowerBound || y == lowerBound || x == upperBound || y == upperBound)
+        if (equivalent(x, lowerBound) || equivalent(y, lowerBound) || equivalent(x, upperBound) || equivalent(y, upperBound))
         {
           bValue += aPDE(x, y);
         }
@@ -273,46 +276,28 @@ void run(const size_t aN, pde_base<double>& aPDE)
 //    std::cout << "error tolerance - " << error_tol << "\ntime - " << timer.elapsed() << std::endl;
 //	}
   
-  if (DEBUGGING)
-  {
-    std::cout << "Poisson Matrix:\n" << m << std::endl;
-    std::cout << "Solution Mapping:\n" << xMapping << std::endl;
-    std::cout << "b " << b.size() << ":\n" << b << std::endl;
-    std::cout << "Solution:\n" << x << std::endl;
-    
-    std::cout << "\nResults:\n" << std::endl;
-    
-    std::cout << "Unknowns:\n" << std::endl;
-    for (size_t i = 0; i < x.size(); i++)
-    {
-      std::cout << "u" << std::setw(20) << xMapping[i] << " = \t" << "est(" << std::setw(8)  << x[i] << ")\t\tact(" << std::setw(8)  << actualSolution(xMapping[i].x(), xMapping[i].y()) << ")" << std::endl;
-    }
-    
-    std::cout << "\nKnowns:\n" << std::endl;
-    for (double i = lowerBound; i <= upperBound; i += inc)
-    {
-      for (double j = lowerBound; j <= upperBound; j += inc)
-      {
-        p.set(j, i);
-        
-        if (j == lowerBound || i == lowerBound || j == upperBound || i == upperBound)
-        {
-          std::cout << "u" << std::setw(20) << p << " = \t" << "pde(" << std::setw(11) << aPDE(j, i) << ")\tact(" << actualSolution(j, i) << ")" << std::endl;
-        }
-      }
-    }
-  }
+  // changing the previous for loops with while loops prevents
+  // round-off error
   
-  for (double i = lowerBound; i <= upperBound; i += inc)
+  iBound = lowerBound;
+  
+  while (std::abs(iBound-(upperBound+inc)) >= tolerance)
   {
-    for (double j = lowerBound; j <= upperBound; j += inc)
-    {
-      if (j == lowerBound || i == lowerBound || j == upperBound || i == upperBound)
+    jBound = lowerBound;
+    
+    while (std::abs(jBound-(upperBound+inc)) >= tolerance)
+    { 
+      if (equivalent(jBound, lowerBound) || equivalent(iBound, lowerBound) || equivalent(jBound, upperBound) || equivalent(iBound, upperBound))
       {
-        p.set(j, i);
+        p.set(jBound, iBound);
+//        std::cout << p << " " << aPDE(p.x(), p.y()) << std::endl;
         aPDE.addKnownPoint(p);
       }
+      
+      jBound += inc;
     }
+    
+    iBound += inc;
   }
   
   for (size_t i = 0; i < x.size(); i++)

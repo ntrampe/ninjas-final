@@ -15,6 +15,7 @@
 #include "vector.h"
 #include "point2d.h"
 #include "point3d.h"
+#include "math.h"
 
 template <class T>
 class pde_base
@@ -46,7 +47,7 @@ public:
   void addKnownPoint(const T aX, const T aY);
   void addKnownPoint(const point2d<T>& aPoint);
   
-  std::string matlabOutput(bool isAnimated = false) const;
+  std::string matlabOutput(float aAnimationFactor = 0.0, const bool aDrawLines = false) const;
   
   T operator()(const T aX, const T aY) const;
 };

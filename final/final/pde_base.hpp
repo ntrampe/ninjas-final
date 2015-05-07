@@ -89,7 +89,7 @@ void pde_base<T>::addKnownPoint(const point2d<T>& aPoint)
 
 
 template <class T>
-std::string pde_base<T>::matlabOutput(bool isAnimated) const
+std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLines) const
 {
   std::stringstream res, ssX, ssY, ssZ;
   
@@ -106,13 +106,21 @@ std::string pde_base<T>::matlabOutput(bool isAnimated) const
   res << "Z = [" << ssZ.str() << "];" << std::endl;
   res << "tri = delaunay(X,Y);" << std::endl;
   res << "fig = trisurf(tri, X, Y, Z);" << std::endl;
-  res << "set(fig,'LineWidth',0.01);" << std::endl;
   
-  if (isAnimated)
+  if (aDrawLines)
+  {
+    res << "set(fig,'LineWidth',0.01);" << std::endl;
+  }
+  else
+  {
+    res << "set(fig,'EdgeColor','None');" << std::endl;
+  }
+  
+  if (aAnimationFactor != 0)
   {
     res << "axis vis3d;" << std::endl;
     res << "axis manual;" << std::endl;
-    res << "while ishandle(fig); camorbit(0.5,0.0); drawnow; end" << std::endl;
+    res << "while ishandle(fig); camorbit(" << aAnimationFactor << ",0.0); drawnow; end" << std::endl;
   }
   
   return res.str();
@@ -122,19 +130,19 @@ std::string pde_base<T>::matlabOutput(bool isAnimated) const
 template <class T>
 T pde_base<T>::operator()(const T aX, const T aY) const
 {
-  if (aX == m_bounds.x())
+  if (equivalent(aX, m_bounds.x()))
   {
     return xLower(aY);
   }
-  else if (aX == m_bounds.y())
+  else if (equivalent(aX, m_bounds.y()))
   {
     return xUpper(aY);
   }
-  else if (aY == m_bounds.x())
+  else if (equivalent(aY, m_bounds.x()))
   {
     return yLower(aX);
   }
-  else if (aY == m_bounds.y())
+  else if (equivalent(aY, m_bounds.y()))
   {
     return yUpper(aX);
   }
