@@ -14,6 +14,7 @@ int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
 
+//	MATLAB OUTPUT
 //  solvePDE(25, pde);
 //  std::cout << pde.matlabOutput() << std::endl;
   
@@ -204,6 +205,7 @@ bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const v
 {
   return aMethod(aX, aMatrix, aB);
 }
+
 
 void testMatrices()
 {
@@ -477,7 +479,4 @@ void test(bool aExpression, std::string aName)
   
   std::cout << (aExpression ? "PASS" : "**** FAIL") << std::endl;
 }
-
-
-
 

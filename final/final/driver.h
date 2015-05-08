@@ -52,8 +52,7 @@ double actualSolution(double aX, double aY)
 
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none
-//Post:        aB and aXMapping are populated with the approprate
-//             values for N
+//Post:        aB and aXMapping are populated with the approprate values for N
 void createSystem(const size_t aN, const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping);
 
 
@@ -76,8 +75,10 @@ double checkError(const vector<double>& aX, const vector<point2d<double>>& aXMap
 
 
 //Description: Calculates and returns the actual solution for the
-//Pre:
-//Post:
+//Pre: 				 matrix aA must be a (n x n) matrix
+//             vector aB must be of size n
+//						 T_method must be one of the defined solving methods
+//Post:				 vector aX will contain the size n solution to Ax = b
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
