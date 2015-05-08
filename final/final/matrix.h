@@ -24,8 +24,8 @@
 //                A(n, m) = the element at the nth row and the mth column
 //
 
-#ifndef __hw6__matrix__
-#define __hw6__matrix__
+#ifndef __final__matrix__
+#define __final__matrix__
 
 #include "matrix_base.h"
 
@@ -226,4 +226,4 @@ public:
 
 #include "matrix.hpp"
 
-#endif /* defined(__hw6__matrix__) */
+#endif /* defined(__final__matrix__) */

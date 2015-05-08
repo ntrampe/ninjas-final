@@ -2,7 +2,7 @@
 //  Filename:     cholesky.hpp
 //  Programmer:   Nicholas Trampe
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   4 - A Parameterized Matrix Class and Gaussian Elimination
+//  Assignment:   Final - A Parameterized Matrix Class and Gaussian Elimination
 //
 //  Description:  Here are the definitions of the functions declared in the cholesky class
 //

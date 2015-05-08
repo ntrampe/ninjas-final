@@ -8,8 +8,8 @@
 //                The matrix_diagonal template class represents an (n x n) diagonal matrix
 //
 
-#ifndef __hw6__matrix_diagonal__
-#define __hw6__matrix_diagonal__
+#ifndef __final__matrix_diagonal__
+#define __final__matrix_diagonal__
 
 #include "matrix_banded.h"
 
@@ -124,4 +124,4 @@ public:
 
 #include "matrix_diagonal.hpp"
 
-#endif /* defined(__hw6__matrix_diagonal__) */
+#endif /* defined(__final__matrix_diagonal__) */

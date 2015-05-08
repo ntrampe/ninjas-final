@@ -7,11 +7,6 @@
 //  Description:  Class used to get measure the runtime of different solving methods
 //
 
-/*
- Run Time class
- Time a block of code.
- */
-
 #ifndef __Sorting__nt_runtime__
 #define __Sorting__nt_runtime__
 

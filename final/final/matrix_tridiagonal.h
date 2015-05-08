@@ -8,8 +8,8 @@
 //                The matrix_tridiagonal template class represents an (n x n) tridiagonal matrix
 //
 
-#ifndef __hw6__matrix_tridiagonal__
-#define __hw6__matrix_tridiagonal__
+#ifndef __final__matrix_tridiagonal__
+#define __final__matrix_tridiagonal__
 
 #include "matrix_banded.h"
 
@@ -82,4 +82,4 @@ public:
 
 #include "matrix_tridiagonal.hpp"
 
-#endif /* defined(__hw6__matrix_tridiagonal__) */
+#endif /* defined(__final__matrix_tridiagonal__) */

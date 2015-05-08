@@ -37,8 +37,8 @@
 //                      sizeof(matrix_triangular_upper<T>(n)) = sizeof(T)*(((1 + n) * n) / 2 + 1)
 //
 
-#ifndef __hw6__matrix_base__
-#define __hw6__matrix_base__
+#ifndef __final__matrix_base__
+#define __final__matrix_base__
 
 #include <iostream>
 #include <iomanip>
@@ -317,4 +317,4 @@ public:
 
 #include "matrix_base.hpp"
 
-#endif /* defined(__hw6__matrix_base__) */
+#endif /* defined(__final__matrix_base__) */

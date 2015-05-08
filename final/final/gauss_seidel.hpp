@@ -2,7 +2,7 @@
 //  Filename:     gauss_seidel.hpp
 //  Programmer:   James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   7 - A Parameterized Gaussian-Seidel Iteration Class
+//  Assignment:   Final - A Parameterized Gaussian-Seidel Iteration Class
 //
 //  Description:  Here are the definitions of the functions declared in the gauss_seidel class
 //

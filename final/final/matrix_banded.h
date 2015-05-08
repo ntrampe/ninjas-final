@@ -8,8 +8,8 @@
 //                The matrix_banded template class represents an (n x n) banded matrix
 //
 
-#ifndef __hw6__matrix_banded__
-#define __hw6__matrix_banded__
+#ifndef __final__matrix_banded__
+#define __final__matrix_banded__
 
 #include "matrix_base.h"
 
@@ -225,4 +225,4 @@ public:
 
 #include "matrix_banded.hpp"
 
-#endif /* defined(__hw6__matrix_banded__) */
+#endif /* defined(__final__matrix_banded__) */

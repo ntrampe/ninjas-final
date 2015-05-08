@@ -8,8 +8,8 @@
 //                The vector template class represents a dynamic array
 //
 
-#ifndef __hw6__vector__
-#define __hw6__vector__
+#ifndef __final__vector__
+#define __final__vector__
 
 #include <stdio.h>
 #include <cstdlib>
@@ -213,4 +213,4 @@ public:
 
 #include "vector.hpp"
 
-#endif /* defined(__hw6__vector__) */
+#endif /* defined(__final__vector__) */

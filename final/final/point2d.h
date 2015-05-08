@@ -10,8 +10,8 @@
 //                Or for this project, a location in a matrix
 //
 
-#ifndef __hw6__poi_
-#define __hw6__poi_
+#ifndef __final__poi_
+#define __final__poi_
 
 #include <iomanip>
 
@@ -88,4 +88,4 @@ public:
 
 #include "point2d.hpp"
 
-#endif /* defined(__hw6__poi_) */
+#endif /* defined(__final__poi_) */

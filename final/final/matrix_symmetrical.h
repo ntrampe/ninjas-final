@@ -8,8 +8,8 @@
 //                The matrix_symmetrical template class represents an (n x n) symmetrical matrix
 //
 
-#ifndef __hw6__matrix_symmetrical__
-#define __hw6__matrix_symmetrical__
+#ifndef __final__matrix_symmetrical__
+#define __final__matrix_symmetrical__
 
 #include "matrix_base.h"
 

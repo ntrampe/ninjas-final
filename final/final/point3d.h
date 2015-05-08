@@ -10,8 +10,8 @@
 //                Or for this project, a location in a matrix
 //
 
-#ifndef __hw6__point3d__
-#define __hw6__point3d__
+#ifndef __final__point3d__
+#define __final__point3d__
 
 #include "point2d.h"
 
@@ -75,4 +75,4 @@ public:
 
 #include "point3d.hpp"
 
-#endif /* defined(__hw6__point3d__) */
+#endif /* defined(__final__point3d__) */

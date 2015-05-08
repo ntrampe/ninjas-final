@@ -8,8 +8,8 @@
 //                matrix.
 //
 
-#ifndef __hw6__matrix_triangular_upper__
-#define __hw6__matrix_triangular_upper__
+#ifndef __final__matrix_triangular_upper__
+#define __final__matrix_triangular_upper__
 
 #include "matrix_triangular_base.h"
 
@@ -148,4 +148,4 @@ public:
 
 #include "matrix_triangular_upper.hpp"
 
-#endif /* defined(__hw6__matrix_triangular_upper__) */
+#endif /* defined(__final__matrix_triangular_upper__) */

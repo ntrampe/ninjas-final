@@ -8,8 +8,8 @@
 //                matrix.
 //
 
-#ifndef __hw6__matrix_triangular_lower__
-#define __hw6__matrix_triangular_lower__
+#ifndef __final__matrix_triangular_lower__
+#define __final__matrix_triangular_lower__
 
 #include "matrix_triangular_base.h"
 
@@ -147,4 +147,4 @@ public:
 
 #include "matrix_triangular_lower.hpp"
 
-#endif /* defined(__hw6__matrix_triangular_lower__) */
+#endif /* defined(__final__matrix_triangular_lower__) */

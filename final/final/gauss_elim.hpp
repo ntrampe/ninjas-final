@@ -2,7 +2,7 @@
 //  Filename:     gauss_elim.hpp
 //  Programmer:   James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   7 - A Parameterized Gaussian Elimination Class
+//  Assignment:   Final - A Parameterized Gaussian Elimination Class
 //
 //  Description:  Here are the definitions of the functions declared in the gauss_elim class
 //

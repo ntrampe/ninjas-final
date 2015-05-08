@@ -10,8 +10,8 @@
 //                a large amount of implementation.
 //
 
-#ifndef __hw6__matrix_triangular_base__
-#define __hw6__matrix_triangular_base__
+#ifndef __final__matrix_triangular_base__
+#define __final__matrix_triangular_base__
 
 #include "matrix_base.h"
 
