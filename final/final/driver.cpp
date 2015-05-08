@@ -10,7 +10,7 @@
 
 #include "driver.h"
 
-int main(int argc, const char * argv[])
+int main()
 {
   pde_final<double> pde(0,M_PI);
 
@@ -18,7 +18,7 @@ int main(int argc, const char * argv[])
 //  solvePDE(25, pde);
 //  std::cout << pde.matlabOutput() << std::endl;
   
-  for (size_t n = 5; n <= 20; n++)
+  for (size_t n = 5; n <= 30; n++)
   {
     runSolvers(n, pde);
   }
@@ -161,6 +161,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE)
   std::cout << "Time: " << timer.elapsed() << std::endl;
   std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 
+	/*
   timer.begin();
 	solveMatrix(x, m, b, cholesky<double>());
   timer.end();
@@ -183,6 +184,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE)
 		std::cout << "Time: " << timer.elapsed() << std::endl;
     std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 	}
+	*/
 
 }
 
