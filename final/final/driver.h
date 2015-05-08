@@ -63,6 +63,8 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 //Description:
 //Pre:
 //Post:
+double checkError(const vector<double>& aX, const vector<point2d<double>>& aXMapping);
+
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
