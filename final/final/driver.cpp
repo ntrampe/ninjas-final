@@ -1,5 +1,5 @@
 //
-//  Filename:
+//  Filename:			driver.cpp
 //  Programmer:   Nicholas Trampe, James Kellerman
 //  Class:        CS 5201 - Clayton Price
 //  Assignment:   Final - Solving Poisson's Equation
@@ -14,12 +14,12 @@ int main(int argc, const char * argv[])
 {
   pde_test<double> pde(0,M_PI);
   
-  for (size_t n = 5; n <= 30; n++)
+  for (size_t n = 5; n <= 20; n++)
   {
     run(n, pde);
+		//This outputs the matlab code used to create the 3D models
+		//std::cout << pde.matlabOutput(0.5, false) << std::endl;
   }
-  
-  //std::cout << pde.matlabOutput(0.5, false) << std::endl;
   
   return 0;
 
@@ -108,7 +108,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
       if (equivalent(jBound, lowerBound) || equivalent(iBound, lowerBound) || equivalent(jBound, upperBound) || equivalent(iBound, upperBound))
       {
         p.set(jBound, iBound);
-//        std::cout << p << " " << aPDE(p.x(), p.y()) << std::endl;
+				//std::cout << p << " " << aPDE(p.x(), p.y()) << std::endl;
         aPDE.addKnownPoint(p);
       }
       

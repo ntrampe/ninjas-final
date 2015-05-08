@@ -42,42 +42,22 @@ typedef enum
 } kMatrixType;
 
 
+//Description: Calculates and returns the actual solution for the given problem
+//Pre:
+//Post:
 double actualSolution(double aX, double aY)
 {
   return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
 
-
-//Description: Find solution, b for Ax = b for the matrix and vector
-//             contained in aFile
-//Pre:         see openFile for format conditions
-//Post:        results are diaplayed in console
-//void solveFile(const char * aFile, kMatrixType aType);
-
-//Description: Open a file for matrix input
-//Pre:         file should be in proper format
-//
-//                  n
-//                  A(0,0) .. A(0,n)
-//
-//                  .   .     .
-//
-//                  .      .  .
-//
-//                  A(n,0) .. A(n,n)
-//
-//                  x[0] .. x[n]
-//
-//             where:
-//                n       = the number of rows, columns and equations
-//                A(i, j) = the element of aMatrix at the ith row and jth column
-//                x[i]    = the ith element of aVector
-//
-//Post:        aMatrix, aVector are set up with the contents of a file called aFile
-//bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
-
+//Description: Calculates and returns the actual solution for the 
+//Pre:
+//Post:
 void run(const size_t aN, pde_base<double>& aPDE);
 
+//Description: Calculates and returns the actual solution for the 
+//Pre:
+//Post:
 void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
 
 template <class T_method>
