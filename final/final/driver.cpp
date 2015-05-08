@@ -16,7 +16,7 @@ int main(int argc, const char * argv[])
   
   for (size_t n = 5; n <= 20; n++)
   {
-    run(n, pde);
+    runSolvers(n, pde);
 		//This outputs the matlab code used to create the 3D models
 		//std::cout << pde.matlabOutput(0.5, false) << std::endl;
   }
@@ -25,34 +25,28 @@ int main(int argc, const char * argv[])
 
 }
 
-void run(const size_t aN, pde_base<double>& aPDE)
+
+void createSystem(const size_t aN, const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping)
 {
   const size_t SIZE = (aN-1)*(aN-1);
-  matrix_poisson<double> m(aN);
-  vector<point2d<double>> xMapping;
-  vector<double> b;
-  vector<double> x;
-  point2d<double> p;
-  double iBound = 0;
-  double jBound = 0;
   double lowerBound = aPDE.lowerBound();
   double upperBound = aPDE.upperBound();
   double inc = fabs((upperBound - lowerBound)) / aN;
-  double tolerance = inc / 2.0;
   size_t count = 0;
   double bValue = 0;
-  std::stringstream ssX, ssY, ssZ;
-
-  aPDE.clearPoints();
-  b.reserve(SIZE, true);
-  xMapping.reserve(SIZE, true);
+  
+  aB.clear();
+  aXMapping.clear();
+  
+  aB.reserve(SIZE, true);
+  aXMapping.reserve(SIZE, true);
   count = 0;
   
   for (double i = lowerBound + inc; !equivalent(i, upperBound); i += inc)
   {
     for (double j = lowerBound + inc; !equivalent(j, upperBound); j += inc)
-    { 
-      xMapping[count].set(j, i);
+    {
+      aXMapping[count].set(j, i);
       bValue = 0;
       
       for (int k = 0; k < 4; k++)
@@ -86,16 +80,33 @@ void run(const size_t aN, pde_base<double>& aPDE)
           bValue += aPDE(x, y);
         }
       }
-      b[count++] = bValue*0.25;
+      aB[count] = bValue*0.25;
+      count++;
     }
   }
+}
 
-  std::cout << "N = " << aN << std::endl;
-  
-  runSolvers(x, m, b);
-  
-  std::cout << "Error: " << checkError(x, xMapping) << std::endl;
 
+void solvePDE(const size_t aN, pde_base<double>& aPDE)
+{
+  matrix_poisson<double> m(aN);
+  vector<point2d<double>> xMapping;
+  vector<double> b;
+  vector<double> x;
+  point2d<double> p;
+  double iBound = 0;
+  double jBound = 0;
+  double lowerBound = aPDE.lowerBound();
+  double upperBound = aPDE.upperBound();
+  double inc = fabs((upperBound - lowerBound)) / aN;
+  double tolerance = inc / 2.0;
+  
+  aPDE.clearPoints();
+  
+  createSystem(aN, aPDE, b, xMapping);
+  
+  solveMatrix(x, m, b, cholesky<double>());
+  
   // changing the previous for loops with while loops prevents
   // round-off error
   
@@ -106,11 +117,10 @@ void run(const size_t aN, pde_base<double>& aPDE)
     jBound = lowerBound;
     
     while (std::abs(jBound-(upperBound+inc)) >= tolerance)
-    { 
+    {
       if (equivalent(jBound, lowerBound) || equivalent(iBound, lowerBound) || equivalent(jBound, upperBound) || equivalent(iBound, upperBound))
       {
         p.set(jBound, iBound);
-				//std::cout << p << " " << aPDE(p.x(), p.y()) << std::endl;
         aPDE.addKnownPoint(p);
       }
       
@@ -127,10 +137,18 @@ void run(const size_t aN, pde_base<double>& aPDE)
 }
 
 
-void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b)
+void runSolvers(const size_t aN, const pde_base<double>& aPDE)
 {
+  matrix_poisson<double> m(aN);
+  vector<point2d<double>> xMapping;
+  vector<double> b;
+  vector<double> x;
   runtime timer;
   int seidel_iters = 10;
+  
+  std::cout << "N = " << aN << std::endl;
+  
+  createSystem(aN, aPDE, b, xMapping);
   
   timer.begin();
   solveMatrix(x, m, b, gauss_elim<double>());
@@ -138,7 +156,8 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 
   std::cout << "Gaussian Elimination Method:" << std::endl;
  	//std::cout << "Solution: " << x << std::endl;
-  std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+  std::cout << "Time: " << timer.elapsed() << std::endl;
+  std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 
   timer.begin();
 	solveMatrix(x, m, b, cholesky<double>());
@@ -146,7 +165,8 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 
 	std::cout << "Cholesky Method:" << std::endl;
 	//std::cout << "Solution: " << x << std::endl;
-  std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+  std::cout << "Time: " << timer.elapsed() << std::endl;
+  std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 
   std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
   
@@ -158,7 +178,8 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
     timer.end();
     std::cout << "Error Tolerance: " << error_tol << std::endl;
 		//std::cout << "Solution: " << x << std::endl;
-		std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+		std::cout << "Time: " << timer.elapsed() << std::endl;
+    std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 	}
 
 }
@@ -173,7 +194,7 @@ double checkError(const vector<double>& aX, const vector<point2d<double>>& aXMap
     res += fabs((aX[i] - actualSolution(aXMapping[i].x(), aXMapping[i].y())));
   }
   
-  return (res / aX.size());
+  return (res / aX.size())*100.0;
 }
 
 
