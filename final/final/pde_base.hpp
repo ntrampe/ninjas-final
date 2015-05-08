@@ -89,6 +89,13 @@ void pde_base<T>::addKnownPoint(const point2d<T>& aPoint)
 
 
 template <class T>
+void pde_base<T>::clearPoints()
+{
+  m_points.clear();
+}
+
+
+template <class T>
 std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLines) const
 {
   std::stringstream res, ssX, ssY, ssZ;

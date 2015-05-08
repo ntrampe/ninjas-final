@@ -14,7 +14,10 @@ int main(int argc, const char * argv[])
 {
   pde_test<double> pde(0,M_PI);
   
-  run(9, pde);
+  for (size_t n = 5; n <= 30; n++)
+  {
+    run(n, pde);
+  }
   
   //std::cout << pde.matlabOutput(0.5, false) << std::endl;
   
@@ -202,7 +205,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
   double bValue = 0;
   std::stringstream ssX, ssY, ssZ;
 
-  
+  aPDE.clearPoints();
   b.reserve(SIZE, true);
   xMapping.reserve(SIZE, true);
   count = 0;
@@ -249,12 +252,9 @@ void run(const size_t aN, pde_base<double>& aPDE)
     }
   }
 
-  //solveMatrix(x, m, b, cholesky<double>());
+  std::cout << "N = " << aN << std::endl;
   
-	for (int n = 5; n <= 10; n++)
-	{
-		runSolvers(n, x, m, b);
-	}  
+  runSolvers(x, m, b); 
 
   // changing the previous for loops with while loops prevents
   // round-off error
@@ -286,19 +286,24 @@ void run(const size_t aN, pde_base<double>& aPDE)
   }
 }
 
-void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m, const vector<double>& b)
+
+void createSystem(matrix_poisson<double>& aMatrix, vector<double>& aB, vector<double>& aXMapping)
+{
+  
+}
+
+
+void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b)
 {
   runtime timer;
   int seidel_iters = 10;
-
-  std::cout << "N = " << aN << std::endl;
   
   timer.begin();
   solveMatrix(x, m, b, gauss_elim<double>());
   timer.end();
 
   std::cout << "Gaussian Elimination Method:" << std::endl;
-  std::cout << "Solution: " << x << std::endl;
+//  std::cout << "Solution: " << x << std::endl;
   std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 
   timer.begin();
@@ -306,7 +311,7 @@ void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m
   timer.end();
 
 	std::cout << "Cholesky Method:" << std::endl;
-  std::cout << "Solution: " << x << std::endl;
+//  std::cout << "Solution: " << x << std::endl;
   std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 
   std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
@@ -318,7 +323,7 @@ void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m
 		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
     timer.end();
     std::cout << "Error Tolerance: " << error_tol << std::endl;
-  	std::cout << "Solution: " << x << std::endl;
+//  	std::cout << "Solution: " << x << std::endl;
 		std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 	}
 

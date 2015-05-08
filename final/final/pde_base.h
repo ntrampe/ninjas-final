@@ -47,6 +47,8 @@ public:
   void addKnownPoint(const T aX, const T aY);
   void addKnownPoint(const point2d<T>& aPoint);
   
+  void clearPoints();
+  
   std::string matlabOutput(float aAnimationFactor = 0.0, const bool aDrawLines = false) const;
   
   T operator()(const T aX, const T aY) const;

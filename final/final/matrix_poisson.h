@@ -18,7 +18,7 @@ class matrix_poisson : public matrix_base<T>
 {
 protected:
 
-	// size of matrix
+	// slices of matrix
 	size_t m_slices;
   
   // the element returned for an element located outside

@@ -78,7 +78,7 @@ double actualSolution(double aX, double aY)
 
 void run(const size_t aN, pde_base<double>& aPDE);
 
-void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
+void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
