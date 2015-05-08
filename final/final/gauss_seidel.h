@@ -19,20 +19,30 @@ class gauss_seidel
 {
 public:
 
+	//Description: Default constructor for gauss_seidel class
+	//Pre:         None
+	//Post:        Creates an instance of gauss_seidel with error tolerance of 0.0000001
 	gauss_seidel();
 
+	//Description: Constructor for gauss_seidel class
+	//Pre:         None
+	//Post:        Creates an instance of gauss_seidel with error tolerance equalt to parameter
 	gauss_seidel(const double aErrorTolerance);
 
+	//Description: Destructor for gauss_seidel
+	//Pre:         gauss_seidel has not been destroyed already
+	//Post:        gauss_seidel is destroyed and memory is freed
 	~gauss_seidel();
 
-	//Description: Perform Gaussian Elimination with Scaled Partial Pivoting
+	//Description: Perform Gauss-Seidel Iteration
 	//Pre:         matrix aA must be a (n x n) matrix
 	//             vector aB must be of size n
+	//			   division (/), *, +=, and - operators must be defined for type T
 	//Post:        vector aX will contain the size n solution to Ax = b
 	bool operator()(vector<T>& aX, const matrix_base<T>& aA, const vector<T>& aB);
 
 private:
-	T m_error_tol;
+	double m_error_tol;
 
 };
 
