@@ -92,6 +92,7 @@ void run(const size_t aN, pde_base<double>& aPDE)
 
   std::cout << "N = " << aN << std::endl;
   
+	//call function that runs all the solving methods
   runSolvers(x, m, b); 
 
   // changing the previous for loops with while loops prevents

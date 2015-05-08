@@ -43,23 +43,26 @@ typedef enum
 
 
 //Description: Calculates and returns the actual solution for the given problem
-//Pre:
-//Post:
+//Pre: None
+//Post: returns the numerical solution at a certain (x,y) point
 double actualSolution(double aX, double aY)
 {
   return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
 
-//Description: Calculates and returns the actual solution for the 
-//Pre:
-//Post:
+//Description: Builds the Poisson matrix based on aN and solves it using different methods
+//Pre: None
+//Post: 
 void run(const size_t aN, pde_base<double>& aPDE);
 
-//Description: Calculates and returns the actual solution for the 
+//Description:
 //Pre:
 //Post:
 void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
 
+//Description:
+//Pre:
+//Post:
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
