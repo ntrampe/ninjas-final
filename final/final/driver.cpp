@@ -23,169 +23,7 @@ int main(int argc, const char * argv[])
   
   return 0;
 
-	/* SHOULD THIS BE REMOVED???  
-  // file containing matrix data
-  std::string fileName;
-  std::string typeStr;
-  kMatrixType type;
-  
-  seedRandom();
-  
-  if (argc < 2)
-  {
-    std::cout << "Please specify a file:" << std::endl;
-    std::cin >> fileName;
-  }
-  else
-  {
-    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-help") == 0)
-    {
-      std::cout << "\nusage: ./driver <file> <matrix type>\n" << std::endl;
-      std::cout << "<file> = file containing matrix and vector\n" << std::endl;
-      std::cout << "<matrix type> = number representing matrix type as follows:\n" << std::endl;
-      displayMatrixTypes();
-      std::cout << std::endl;
-      
-      return 0;
-    }
-    else
-    {
-      fileName = argv[1];
-    }
-  }
-  
-  // the user has the option to enter a matrix type
-  // if the user doesn't enter anything the matrix will be
-  // treated as dense
-  
-  if (argc < 3)
-  {
-    type = kMatrixTypeDense;
-  }
-  else
-  {
-    type = static_cast<kMatrixType>(atoi(argv[2]));
-  }
-  
-  std::cout << "\nFinding solution for input...\n" << std::endl;
-  
-  solveFile(fileName.c_str(), type);
-  
-  std::cout << "\nTesting...\n" << std::endl;
-  
-  testMatrices();
-  
-  return 0;
-
-	*/
 }
-
-/* Possible Removal 
-void solveFile(const char * aFile, kMatrixType aType)
-{
-  // coefficient matrix
-  matrix_base<double>* a;
-  
-  // presentation matrix
-  // for displaying to user
-  // includes b vector
-  matrix<double> p;
-  
-  // b vector
-  vector<double> b;
-  
-  // solution vector
-  vector<double> x;
-  
-  switch (aType)
-  {
-    case kMatrixTypeDense:
-      a = new matrix<double>;
-      break;
-      
-    case kMatrixTypeTriangularUpper:
-      a = new matrix_triangular_upper<double>;
-      break;
-      
-    case kMatrixTypeTriangularLower:
-      a = new matrix_triangular_lower<double>;
-      break;
-      
-    case kMatrixTypeDiagonal:
-      a = new matrix_diagonal<double>;
-      break;
-      
-    case kMatrixTypeTridiagonal:
-      a = new matrix_tridiagonal<double>;
-      break;
-      
-    case kMatrixTypeSymmetrical:
-      a = new matrix_symmetrical<double>;
-      break;
-      
-    default:
-      break;
-  }
-  
-  // open file
-  if (openFile(a, b, aFile))
-  {
-    // copy a over to b
-    p = *a;
-    
-    // create augmented matrix
-    p.insertVectorAtColumn(b, p.columns());
-    
-    // display augmented matrix to user
-    std::cout << "Augmented " << a->name() << " Input:" << std::endl << std::endl;
-    std::cout << p << std::endl;
-    std::cout << std::endl;
-    
-    // perform Gaussian Elimination
-    if (a->solveMatrix(b, x))
-    {
-      std::cout << "Solution: x = " << x << std::endl;
-    }
-    else
-    {
-      std::cout << "No Solution :(" << std::endl;
-    }
-  }
-  else
-  {
-    std::cout << "The file '" << aFile << "' could not be found!" << std::endl;
-  }
-  
-  delete a;
-}
-*/
-
-/* Possible Removal
-bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile)
-{
-  std::ifstream file(aFile);
-  size_t size = 0;
-  
-  aVector.clear();
-  
-  if (file.is_open())
-  {
-    file >> size;
-    
-    aMatrix->resize(size, size);
-    aVector.reserve(size, true);
-    
-    file >> *aMatrix;
-    file >> aVector;
-    
-    file.close();
-    
-    return true;
-  }
-  
-  return false;
-}
-*/
 
 void run(const size_t aN, pde_base<double>& aPDE)
 {
@@ -287,12 +125,6 @@ void run(const size_t aN, pde_base<double>& aPDE)
 }
 
 
-void createSystem(matrix_poisson<double>& aMatrix, vector<double>& aB, vector<double>& aXMapping)
-{
-  
-}
-
-
 void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b)
 {
   runtime timer;
@@ -303,7 +135,7 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
   timer.end();
 
   std::cout << "Gaussian Elimination Method:" << std::endl;
-//  std::cout << "Solution: " << x << std::endl;
+ 	//std::cout << "Solution: " << x << std::endl;
   std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 
   timer.begin();
@@ -311,7 +143,7 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
   timer.end();
 
 	std::cout << "Cholesky Method:" << std::endl;
-//  std::cout << "Solution: " << x << std::endl;
+	//std::cout << "Solution: " << x << std::endl;
   std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 
   std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
@@ -323,7 +155,7 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
     timer.end();
     std::cout << "Error Tolerance: " << error_tol << std::endl;
-//  	std::cout << "Solution: " << x << std::endl;
+		//std::cout << "Solution: " << x << std::endl;
 		std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
 	}
 
@@ -334,18 +166,6 @@ bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const v
 {
   return aMethod(aX, aMatrix, aB);
 }
-
-/* Possible Removal
-void displayMatrixTypes()
-{
-  std::cout << "0 = Dense" << std::endl;
-  std::cout << "1 = Upper Triangular" << std::endl;
-  std::cout << "2 = Lower Triangular" << std::endl;
-  std::cout << "3 = Diagonal" << std::endl;
-  std::cout << "4 = Tridiagonal" << std::endl;
-  std::cout << "5 = Symmetrical" << std::endl;
-}
-*/
 
 void testMatrices()
 {

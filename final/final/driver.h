@@ -4,7 +4,7 @@
 //  Class:        CS 5201 - Clayton Price
 //  Assignment:   Final - Solving Poisson's Equation
 //
-//  Description:  This is the driver header for Assignment 6
+//  Description:  This is the driver header for Assignment 7
 //
 
 #ifndef final_driver_h
@@ -82,8 +82,6 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
-
-//void displayMatrixTypes();
 
 //Description: Run tests for matrix classes
 //Pre:         none
