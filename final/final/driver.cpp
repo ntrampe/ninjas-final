@@ -161,7 +161,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE)
   std::cout << "Time: " << timer.elapsed() << std::endl;
   std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 
-	/*
+
   timer.begin();
 	solveMatrix(x, m, b, cholesky<double>());
   timer.end();
@@ -184,7 +184,6 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE)
 		std::cout << "Time: " << timer.elapsed() << std::endl;
     std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
 	}
-	*/
 
 }
 
