@@ -4,23 +4,23 @@
 //  Class:        CS 5201 - Clayton Price
 //  Assignment:   Final - Solving Poisson's Equation
 //
-//  Description:  This is the driver implementation for Assignment 6
-//                This program reads in a matrix, vector and optionally a matrix type
-//                then solves the system
+//  Description:  This is the driver implementation for Assignment 7
+//                
 //
 
 #include "driver.h"
 
 int main(int argc, const char * argv[])
 {
-  pde_test<double> pde(-2,2);
+  pde_test<double> pde(0,M_PI);
   
-  run(100, pde);
+  run(9, pde);
   
-  std::cout << pde.matlabOutput(0.1, false) << std::endl;
+  //std::cout << pde.matlabOutput(0.5, false) << std::endl;
   
   return 0;
-  
+
+	/* SHOULD THIS BE REMOVED???  
   // file containing matrix data
   std::string fileName;
   std::string typeStr;
@@ -73,9 +73,11 @@ int main(int argc, const char * argv[])
   testMatrices();
   
   return 0;
+
+	*/
 }
 
-
+/* Possible Removal 
 void solveFile(const char * aFile, kMatrixType aType)
 {
   // coefficient matrix
@@ -153,8 +155,9 @@ void solveFile(const char * aFile, kMatrixType aType)
   
   delete a;
 }
+*/
 
-
+/* Possible Removal
 bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile)
 {
   std::ifstream file(aFile);
@@ -179,7 +182,7 @@ bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char 
   
   return false;
 }
-
+*/
 
 void run(const size_t aN, pde_base<double>& aPDE)
 {
@@ -197,9 +200,8 @@ void run(const size_t aN, pde_base<double>& aPDE)
   double tolerance = inc / 2.0;
   size_t count = 0;
   double bValue = 0;
-  int seidel_iters = 10;
   std::stringstream ssX, ssY, ssZ;
-  runtime timer;
+
   
   b.reserve(SIZE, true);
   xMapping.reserve(SIZE, true);
@@ -247,35 +249,13 @@ void run(const size_t aN, pde_base<double>& aPDE)
     }
   }
 
-  solveMatrix(x, m, b, cholesky<double>());
+  //solveMatrix(x, m, b, cholesky<double>());
   
-//  std::cout << "N = " << aN << std::endl;
-//  
-//  timer.begin();
-//  solveMatrix(x, m, b, gauss_elim<double>());
-//  timer.end();
-//
-//  std::cout << "Gaussian Elimination Method:" << std::endl;
-//  std::cout << "time: " << timer.elapsed() << std::endl;
-//  
-//  timer.begin();
-//	solveMatrix(x, m, b, cholesky<double>());
-//  timer.end();
-//
-//	std::cout << "Cholesky Method:" << std::endl;
-//  std::cout << "time - " << timer.elapsed() << std::endl;
-//
-//  std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
-//  
-//	for (int i = 0; i < seidel_iters; i++)
-//	{
-//		double error_tol = pow(10, -i)*0.1;
-//    timer.begin();
-//		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
-//    timer.end();
-//    std::cout << "error tolerance - " << error_tol << "\ntime - " << timer.elapsed() << std::endl;
-//	}
-  
+	for (int n = 5; n <= 10; n++)
+	{
+		runSolvers(n, x, m, b);
+	}  
+
   // changing the previous for loops with while loops prevents
   // round-off error
   
@@ -306,6 +286,43 @@ void run(const size_t aN, pde_base<double>& aPDE)
   }
 }
 
+void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m, const vector<double>& b)
+{
+  runtime timer;
+  int seidel_iters = 10;
+
+  std::cout << "N = " << aN << std::endl;
+  
+  timer.begin();
+  solveMatrix(x, m, b, gauss_elim<double>());
+  timer.end();
+
+  std::cout << "Gaussian Elimination Method:" << std::endl;
+  std::cout << "Solution: " << x << std::endl;
+  std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+
+  timer.begin();
+	solveMatrix(x, m, b, cholesky<double>());
+  timer.end();
+
+	std::cout << "Cholesky Method:" << std::endl;
+  std::cout << "Solution: " << x << std::endl;
+  std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+
+  std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
+  
+	for (int i = 0; i < seidel_iters; i++)
+	{
+		double error_tol = pow(10, -i)*0.1;
+    timer.begin();
+		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
+    timer.end();
+    std::cout << "Error Tolerance: " << error_tol << std::endl;
+  	std::cout << "Solution: " << x << std::endl;
+		std::cout << "Time: " << timer.elapsed() << std::endl << std::endl;
+	}
+
+}
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)
@@ -313,7 +330,7 @@ bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const v
   return aMethod(aX, aMatrix, aB);
 }
 
-
+/* Possible Removal
 void displayMatrixTypes()
 {
   std::cout << "0 = Dense" << std::endl;
@@ -323,7 +340,7 @@ void displayMatrixTypes()
   std::cout << "4 = Tridiagonal" << std::endl;
   std::cout << "5 = Symmetrical" << std::endl;
 }
-
+*/
 
 void testMatrices()
 {
