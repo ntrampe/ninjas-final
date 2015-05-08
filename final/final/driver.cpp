@@ -13,11 +13,11 @@
 
 int main(int argc, const char * argv[])
 {
-  pde_test<double> pde(-10,10);
+  pde_test<double> pde(-2,2);
   
-  run(25, pde);
+  run(100, pde);
   
-  std::cout << pde.matlabOutput(0.5, false) << std::endl;
+  std::cout << pde.matlabOutput(0.1, false) << std::endl;
   
   return 0;
   

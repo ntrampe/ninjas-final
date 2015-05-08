@@ -37,6 +37,8 @@
 		E10D31211AF40661003E12BE /* pde_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pde_test.h; sourceTree = "<group>"; };
 		E10D31221AF41F2B003E12BE /* runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = runtime.h; sourceTree = "<group>"; };
 		E10D31231AF41F2B003E12BE /* runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = runtime.cpp; sourceTree = "<group>"; };
+		E10EE2AA1AFB05D400DBB714 /* pde_notes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pde_notes.hpp; sourceTree = "<group>"; };
+		E10EE2AB1AFB05D400DBB714 /* pde_notes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pde_notes.h; sourceTree = "<group>"; };
 		E123134A1AF2B2BA00BD0088 /* cholesky.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cholesky.hpp; sourceTree = "<group>"; };
 		E123134C1AF2B2BA00BD0088 /* cholesky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cholesky.h; sourceTree = "<group>"; };
 		E13BB6751AEF1BFC00A0CB5F /* matrix_poisson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix_poisson.h; sourceTree = "<group>"; };
@@ -138,6 +140,8 @@
 				E10210C21AF3DE18005D8F41 /* pde_base.hpp */,
 				E10D31211AF40661003E12BE /* pde_test.h */,
 				E10D311E1AF40661003E12BE /* pde_test.hpp */,
+				E10EE2AB1AFB05D400DBB714 /* pde_notes.h */,
+				E10EE2AA1AFB05D400DBB714 /* pde_notes.hpp */,
 				E10D31201AF40661003E12BE /* pde_final.h */,
 				E10D311F1AF40661003E12BE /* pde_final.hpp */,
 				E123134C1AF2B2BA00BD0088 /* cholesky.h */,
