@@ -13,12 +13,13 @@
 int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
+
+//  solvePDE(25, pde);
+//  std::cout << pde.matlabOutput() << std::endl;
   
   for (size_t n = 5; n <= 20; n++)
   {
     runSolvers(n, pde);
-		//This outputs the matlab code used to create the 3D models
-		//std::cout << pde.matlabOutput(0.5, false) << std::endl;
   }
   
   return 0;
