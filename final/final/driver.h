@@ -7,8 +7,8 @@
 //  Description:  This is the driver header for Assignment 6
 //
 
-#ifndef hw3_driver_h
-#define hw3_driver_h
+#ifndef final_driver_h
+#define final_driver_h
 
 #include <iostream>
 #include <iomanip>
@@ -52,7 +52,7 @@ double actualSolution(double aX, double aY)
 //             contained in aFile
 //Pre:         see openFile for format conditions
 //Post:        results are diaplayed in console
-void solveFile(const char * aFile, kMatrixType aType);
+//void solveFile(const char * aFile, kMatrixType aType);
 
 //Description: Open a file for matrix input
 //Pre:         file should be in proper format
@@ -74,14 +74,16 @@ void solveFile(const char * aFile, kMatrixType aType);
 //                x[i]    = the ith element of aVector
 //
 //Post:        aMatrix, aVector are set up with the contents of a file called aFile
-bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
+//bool openFile(matrix_base<double>* aMatrix, vector<double>& aVector, const char * aFile);
 
 void run(const size_t aN, pde_base<double>& aPDE);
+
+void runSolvers(const size_t aN, vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
-void displayMatrixTypes();
+//void displayMatrixTypes();
 
 //Description: Run tests for matrix classes
 //Pre:         none
