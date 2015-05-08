@@ -43,13 +43,12 @@ typedef enum
 
 
 //Description: Calculates and returns the actual solution for the given problem
-//Pre:
-//Post:
+//Pre: None
+//Post: returns the numerical solution at a certain (x,y) point
 double actualSolution(double aX, double aY)
 {
   return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
-
 
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none

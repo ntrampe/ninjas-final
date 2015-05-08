@@ -1,16 +1,15 @@
 //
 //  Filename:     cholesky.h
-//  Programmer:   Nicholas Trampe
+//  Programmer:   Nicholas Trampe, James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   4 - A Parameterized Matrix Class and Gaussian Elimination
+//  Assignment:   7 - A Parameterized Matrix Class and Cholesky Decomposition
 //
 //  Description:  This is the cholesky function class definition.
-//                This function class performs Gaussian Elimination
-//                with Scaled Partial Pivoting
+//                
 //
 
-#ifndef __hw4__cholesky__
-#define __hw4__cholesky__
+#ifndef __final__cholesky__
+#define __final__cholesky__
 
 #include "matrix.h"
 #include "config.h"
@@ -21,13 +20,14 @@ class cholesky
 {
 public:
 
-	//Description: Perform Gaussian Elimination with Scaled Partial Pivoting
+	//Description: Perform Cholesky Decomposition
 	//Pre:         matrix aA must be a (n x n) matrix
 	//             vector aB must be of size n
+	//			   division (/), *, +, and - operators must be defined for type T
 	//Post:        vector aX will contain the size n solution to Ax = b
 	bool operator()(vector<T>& aX, const matrix_base<T>& aA, const vector<T>& aB);
 };
 
 #include "cholesky.hpp"
 
-#endif /* defined(__hw4__cholesky__) */
+#endif /* defined(__final__cholesky__) */
