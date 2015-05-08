@@ -18,6 +18,7 @@ class pde_notes : public pde_base<T>
 {
 protected:
   
+  // boundary functions
   virtual T xLower(T aY) const;
   virtual T xUpper(T aY) const;
   virtual T yLower(T aX) const;
@@ -25,8 +26,19 @@ protected:
   
 public:
   
+  //Description:  default constructor
+  //Pre:          none
+  //Post:         sets bounds to (0,1)
   pde_notes() : pde_base<T>() {}
+  
+  //Description:  bounds constructor
+  //Pre:          none
+  //Post:         sets bounds to aBounds
   pde_notes(point2d<T> aBounds) : pde_base<T>(aBounds) {}
+  
+  //Description:  bounds contructor
+  //Pre:          none
+  //Post:         sets bounds to (aLowerBound, aUpperBound)
   pde_notes(const T aLowerBound, const T aUpperBound) : pde_base<T>(aLowerBound, aUpperBound) {}
 };
 
