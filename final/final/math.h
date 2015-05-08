@@ -8,8 +8,8 @@
 //
 //
 
-#ifndef __hw6__math__
-#define __hw6__math__
+#ifndef __final__math__
+#define __final__math__
 
 #include <iostream>
 #include <cmath>
@@ -36,4 +36,4 @@ bool equivalent(const double& aLHS, const double& aRHS, const double& aEpsilon =
 //Description: Seed random
 void seedRandom();
 
-#endif /* defined(__hw6__math__) */
+#endif /* defined(__final__math__) */

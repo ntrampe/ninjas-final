@@ -2,7 +2,7 @@
 //  Filename:     cholesky.h
 //  Programmer:   Nicholas Trampe, James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   7 - A Parameterized Matrix Class and Cholesky Decomposition
+//  Assignment:   Final - Solving Poisson's Equation
 //
 //  Description:  This is the cholesky function class definition.
 //                

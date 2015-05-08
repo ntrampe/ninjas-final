@@ -4,7 +4,7 @@
 //  Class:        CS 5201 - Clayton Price
 //  Assignment:   Final - Solving Poisson's Equation
 //
-//  Description:  
+//  Description:  Class used to get measure the runtime of different solving methods
 //
 
 /*

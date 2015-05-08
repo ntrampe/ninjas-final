@@ -8,8 +8,8 @@
 //                The matrix_poisson template class represents an (n x n) symmetrical matrix
 //
 
-#ifndef __hw6__matrix_poisson__
-#define __hw6__matrix_poisson__
+#ifndef __final__matrix_poisson__
+#define __final__matrix_poisson__
 
 #include "matrix_base.h"
 
@@ -167,4 +167,4 @@ public:
 
 #include "matrix_poisson.hpp"
 
-#endif /* defined(__matrix_poisson__) */
+#endif /* defined(__final__matrix_poisson__) */

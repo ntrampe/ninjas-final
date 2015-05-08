@@ -2,7 +2,7 @@
 //  Filename:     gauss_seidel.h
 //  Programmer:   James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   7 - A Gauss-Seidel Iteration Class
+//  Assignment:   Final - Solving Poisson's Equation
 //
 //  Description:  This is the gauss-seidel iteration function class definition.
 //

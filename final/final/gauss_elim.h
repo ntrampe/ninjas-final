@@ -2,7 +2,7 @@
 //  Filename:     gauss_elim.h
 //  Programmer:   James Kellerman
 //  Class:        CS 5201 - Clayton Price
-//  Assignment:   7 - A Gaussian Elimination Class
+//  Assignment:   Final - Solving Poisson's Equation
 //
 //  Description:  This is the gaussian elimination function class definition.
 //                This function class performs Gaussian Elimination
