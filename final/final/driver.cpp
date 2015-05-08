@@ -12,7 +12,7 @@
 
 int main(int argc, const char * argv[])
 {
-  pde_test<double> pde(0,M_PI);
+  pde_final<double> pde(0,M_PI);
   
   for (size_t n = 5; n <= 20; n++)
   {
@@ -92,7 +92,9 @@ void run(const size_t aN, pde_base<double>& aPDE)
 
   std::cout << "N = " << aN << std::endl;
   
-  runSolvers(x, m, b); 
+  runSolvers(x, m, b);
+  
+  std::cout << "Error: " << checkError(x, xMapping) << std::endl;
 
   // changing the previous for loops with while loops prevents
   // round-off error
@@ -160,6 +162,20 @@ void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<do
 	}
 
 }
+
+
+double checkError(const vector<double>& aX, const vector<point2d<double>>& aXMapping)
+{
+  double res = 0;
+  
+  for (size_t i = 0; i < aX.size(); i++)
+  {
+    res += fabs((aX[i] - actualSolution(aXMapping[i].x(), aXMapping[i].y())));
+  }
+  
+  return (res / aX.size());
+}
+
 
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod)

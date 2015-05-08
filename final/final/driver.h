@@ -60,6 +60,8 @@ void run(const size_t aN, pde_base<double>& aPDE);
 //Post:
 void runSolvers(vector<double>& x, const matrix_base<double>& m, const vector<double>& b);
 
+double checkError(const vector<double>& aX, const vector<point2d<double>>& aXMapping);
+
 template <class T_method>
 bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const vector<double>& aB, T_method aMethod);
 
