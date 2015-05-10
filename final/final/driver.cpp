@@ -10,7 +10,7 @@
 
 #include "driver.h"
 
-int main(int argc, const char * argv[])
+int main()
 {
   pde_final<double> pde(0,M_PI);
 
@@ -18,9 +18,9 @@ int main(int argc, const char * argv[])
 //  solvePDE(25, pde);
 //  std::cout << pde.matlabOutput() << std::endl;
   
-  runSolvers(50, pde);
+  runSolvers(20, pde);
   
-//  testMatrices();
+  testMatrices();
   
   return 0;
 }
