@@ -207,40 +207,38 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
   // NOTE:  a lot of redundant output code
   //        a possible improvement could be a table class to easily output tables
   
-  const size_t density = aPDE.density();
+  const size_t DENSITY = aPDE.density();
+  const int TABLE_1_SIZE = 5;
+  const int TABLE_2_SIZE = 3;
+  const int TABLE_1_WIDTHS[TABLE_1_SIZE] = {5,10,22,15,16};
+  const int TABLE_2_WIDTHS[TABLE_2_SIZE] = {16,10,16};
+  const char* TABLE_1_HEADERS[TABLE_1_SIZE] =
+      {"N", "Cholesky", "Gaussian Elimination", "Gauss-Seidel", "Solution Error"};
+  const char* TABLE_2_HEADERS[TABLE_2_SIZE] =
+      {"Error Tolerance", "Time", "Solution Error"};
+  const int SEIDEL_ITERATIONS = 12;
+  
   matrix_poisson<double>* m;
   vector<point2d<double>> xMapping;
   vector<double> b;
   vector<double> x;
   vector<double> times;
   runtime timer;
-  vector<int> table1Widths;
-  vector<int> table2Widths;
-  int seidel_iters = 12;
   double seidel_tol = 0;
-  size_t start = (aShouldIterate ? 2 : density);
+  size_t start = (aShouldIterate ? 2 : DENSITY);
   std::stringstream ss;
   std::string ssLine;
-  
-  table1Widths.push_back(5);
-  table1Widths.push_back(10);
-  table1Widths.push_back(22);
-  table1Widths.push_back(15);
-  table1Widths.push_back(16);
-  
-  table2Widths.push_back(16);
-  table2Widths.push_back(10);
-  table2Widths.push_back(16);
   
   std::cout << "Variable Mesh Density (N)" << std::endl;
   
   if (aPrettyPrint)
   {
-    ss << "|" << std::setw(table1Widths[0]) << "N" << " |"
-    << std::setw(table1Widths[1]) << "Cholesky" << " |"
-    << std::setw(table1Widths[2]) << "Gaussian Elimination" << " |"
-    << std::setw(table1Widths[3]) << "Gauss-Seidel" << " |"
-    << std::setw(table1Widths[4]) << "Solution Error" << " |";
+    ss << "|";
+    
+    for (int i = 0; i < TABLE_1_SIZE; i++)
+    {
+      ss << std::setw(TABLE_1_WIDTHS[i]) << TABLE_1_HEADERS[i] << " |";
+    }
     
     ssLine = std::string(ss.str().length(), '-');
     
@@ -248,15 +246,15 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
   }
   else
   {
-    std::cout << "N"
-    << "\t" << "Cholesky"
-    << "\t" << "Gaussian Elimination"
-    << "\t" << "Gauss-Seidel"
-    << "\t" << "Solution Error"
-    << std::endl << std::endl;
+    for (int i = 0; i < TABLE_1_SIZE; i++)
+    {
+      std::cout << TABLE_1_HEADERS[i] << "\t";
+    }
+    
+    std::cout << std::endl << std::endl;
   }
   
-  for (size_t n = start; n <= density; n++)
+  for (size_t n = start; n <= DENSITY; n++)
   { 
     m = new matrix_poisson<double>(n);
     aPDE.setDensity(n);
@@ -282,11 +280,11 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     if (aPrettyPrint)
     {
-      std::cout << "|" << std::setw(table1Widths[0]) << n << " |"
-      << std::setw(table1Widths[1]) << times[0] << " |"
-      << std::setw(table1Widths[2]) << times[1] << " |"
-      << std::setw(table1Widths[3]) << times[2] << " |"
-      << std::setw(table1Widths[4]) << checkError(x, xMapping) << " |"
+      std::cout << "|" << std::setw(TABLE_1_WIDTHS[0]) << n << " |"
+      << std::setw(TABLE_1_WIDTHS[1]) << times[0] << " |"
+      << std::setw(TABLE_1_WIDTHS[2]) << times[1] << " |"
+      << std::setw(TABLE_1_WIDTHS[3]) << times[2] << " |"
+      << std::setw(TABLE_1_WIDTHS[4]) << checkError(x, xMapping) << " |"
       << std::endl;
     }
     else
@@ -306,13 +304,16 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
   ss.clear();
   ss.str(std::string());
   
-  std::cout << "\n\nVariable Error Tolerance (N = " << density << "):" << std::endl;
+  std::cout << "\n\nVariable Error Tolerance (N = " << DENSITY << "):" << std::endl;
   
   if (aPrettyPrint)
   {
-    ss << "|" << std::setw(table2Widths[0]) << "Error Tolerance" << " |"
-    << std::setw(table2Widths[1]) << "Time" << " |"
-    << std::setw(table2Widths[2]) << "Solution Error" << " |";
+    ss << "|";
+    
+    for (int i = 0; i < TABLE_2_SIZE; i++)
+    {
+      ss << std::setw(TABLE_2_WIDTHS[i]) << TABLE_2_HEADERS[i] << " |";
+    }
     
     ssLine = std::string(ss.str().length(), '-');
     
@@ -320,16 +321,18 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
   }
   else
   {
-    std::cout << "Error Tolerance"
-    << "\t" << "Time"
-    << "\t" << "Solution Error"
-    << std::endl << std::endl;
+    for (int i = 0; i < TABLE_2_SIZE; i++)
+    {
+      std::cout << TABLE_2_HEADERS[i] << "\t";
+    }
+    
+    std::cout << std::endl << std::endl;
   }
   
-  for (double i = 1; i <= seidel_iters; i++)
+  for (double i = 1; i <= SEIDEL_ITERATIONS; i++)
   {
-    m = new matrix_poisson<double>(density);
-    aPDE.setDensity(density);
+    m = new matrix_poisson<double>(DENSITY);
+    aPDE.setDensity(DENSITY);
     seidel_tol = pow(10, -i);
     createSystem(aPDE, b, xMapping);
     
@@ -341,9 +344,9 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     if (aPrettyPrint)
     {
-      std::cout << "|" << std::setw(table2Widths[0]) << seidel_tol << " |"
-      << std::setw(table2Widths[1]) << timer.elapsed() << " |"
-      << std::setw(table2Widths[2]) << checkError(x, xMapping) << " |"
+      std::cout << "|" << std::setw(TABLE_2_WIDTHS[0]) << seidel_tol << " |"
+      << std::setw(TABLE_2_WIDTHS[1]) << timer.elapsed() << " |"
+      << std::setw(TABLE_2_WIDTHS[2]) << checkError(x, xMapping) << " |"
       << std::endl;
     }
     else
