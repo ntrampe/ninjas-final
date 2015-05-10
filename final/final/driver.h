@@ -42,6 +42,9 @@ typedef enum
 } kMatrixType;
 
 
+void printMessage(const std::string& aMessage);
+
+
 //Description: Calculates and returns the actual solution for the given problem
 //Pre: None
 //Post: returns the numerical solution at a certain (x,y) point

@@ -10,19 +10,46 @@
 
 #include "driver.h"
 
-int main()
+int main(int argc, const char * argv[])
 {
   pde_final<double> pde(0,M_PI);
+  size_t meshDensity;
 
 //	MATLAB OUTPUT
 //  solvePDE(25, pde);
 //  std::cout << pde.matlabOutput() << std::endl;
   
-  runSolvers(20, pde);
+  printMessage("Object-Oriented Numerical Modeling Final!");
   
-//  testMatrices();
+  if (argc < 2)
+  {
+    std::cout << "Please specify a mesh density:" << std::endl;
+    std::cin >> meshDensity;
+  }
+  else
+  {
+    meshDensity = atoi(argv[1]);
+  }
+  
+  printMessage("Comparing Techniques...");
+  
+  runSolvers(meshDensity, pde);
+
+  printMessage("Testing...");
+  
+  testMatrices();
   
   return 0;
+}
+
+
+void printMessage(const std::string& aMessage)
+{
+  std::string line = std::string(aMessage.length(), '-');
+  
+  std::cout << line << std::endl;
+  std::cout << aMessage << std::endl;
+  std::cout << line << "\n\n" << std::endl;
 }
 
 
@@ -139,25 +166,46 @@ void solvePDE(const size_t aN, pde_base<double>& aPDE)
 
 void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
 {
+  // NOTE:  a lot of redundant output code
+  //        a possible improvement could be a table class to easily output tables
+  
   matrix_poisson<double>* m;
   vector<point2d<double>> xMapping;
   vector<double> b;
   vector<double> x;
   vector<double> times;
   runtime timer;
-  int width = 25;
+  vector<int> table1Widths;
+  vector<int> table2Widths;
   int seidel_iters = 12;
   double seidel_tol = 0;
-  size_t start = (aShouldIterate ? 5 : aN);
+  size_t start = (aShouldIterate ? 2 : aN);
+  std::stringstream ss;
+  std::string ssLine;
+  
+  table1Widths.push_back(5);
+  table1Widths.push_back(10);
+  table1Widths.push_back(22);
+  table1Widths.push_back(15);
+  table1Widths.push_back(16);
+  
+  table2Widths.push_back(16);
+  table2Widths.push_back(10);
+  table2Widths.push_back(16);
+  
+  std::cout << "Variable Mesh Density (N)" << std::endl;
   
   if (aPrettyPrint)
   {
-    std::cout << std::setw(3) << "N"
-    << std::setw(width) << "Cholesky"
-    << std::setw(width) << "Gaussian Elimination"
-    << std::setw(width) << "Gauss-Seidel"
-    << std::setw(width) << "Error"
-    << std::endl << std::endl;
+    ss << "|" << std::setw(table1Widths[0]) << "N" << " |"
+    << std::setw(table1Widths[1]) << "Cholesky" << " |"
+    << std::setw(table1Widths[2]) << "Gaussian Elimination" << " |"
+    << std::setw(table1Widths[3]) << "Gauss-Seidel" << " |"
+    << std::setw(table1Widths[4]) << "Solution Error" << " |";
+    
+    ssLine = std::string(ss.str().length(), '-');
+    
+    std::cout << ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
   }
   else
   {
@@ -165,7 +213,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     << "\t" << "Cholesky"
     << "\t" << "Gaussian Elimination"
     << "\t" << "Gauss-Seidel"
-    << "\t" << "Error"
+    << "\t" << "Solution Error"
     << std::endl << std::endl;
   }
   
@@ -194,11 +242,11 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     
     if (aPrettyPrint)
     {
-      std::cout << std::setw(3) << n
-      << std::setw(width) << times[0]
-      << std::setw(width) << times[1]
-      << std::setw(width) << times[2]
-      << std::setw(width) << checkError(x, xMapping)
+      std::cout << "|" << std::setw(table1Widths[0]) << n << " |"
+      << std::setw(table1Widths[1]) << times[0] << " |"
+      << std::setw(table1Widths[2]) << times[1] << " |"
+      << std::setw(table1Widths[3]) << times[2] << " |"
+      << std::setw(table1Widths[4]) << checkError(x, xMapping) << " |"
       << std::endl;
     }
     else
@@ -212,20 +260,29 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     }
   }
   
-  std::cout << "\nGauss-Seidel Error Tolerance (N = " << aN << "):\n" << std::endl;
+  std::cout << ssLine << std::endl;
+  
+  
+  ss.clear();
+  ss.str(std::string());
+  
+  std::cout << "\n\nVariable Error Tolerance (N = " << aN << "):" << std::endl;
   
   if (aPrettyPrint)
   {
-    std::cout << std::setw(width) << "Tolerance"
-    << std::setw(width) << "Time"
-    << std::setw(width) << "Error"
-    << std::endl << std::endl;
+    ss << "|" << std::setw(table2Widths[0]) << "Error Tolerance" << " |"
+    << std::setw(table2Widths[1]) << "Time" << " |"
+    << std::setw(table2Widths[2]) << "Solution Error" << " |";
+    
+    ssLine = std::string(ss.str().length(), '-');
+    
+    std::cout << ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
   }
   else
   {
-    std::cout << "Tolerance"
+    std::cout << "Error Tolerance"
     << "\t" << "Time"
-    << "\t" << "Error"
+    << "\t" << "Solution Error"
     << std::endl << std::endl;
   }
   
@@ -243,9 +300,9 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     
     if (aPrettyPrint)
     {
-      std::cout << std::setw(width) << seidel_tol
-      << std::setw(width) << timer.elapsed()
-      << std::setw(width) << checkError(x, xMapping)
+      std::cout << "|" << std::setw(table2Widths[0]) << seidel_tol << " |"
+      << std::setw(table2Widths[1]) << timer.elapsed() << " |"
+      << std::setw(table2Widths[2]) << checkError(x, xMapping) << " |"
       << std::endl;
     }
     else
@@ -256,6 +313,8 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
       << std::endl;
     }
   }
+  
+  std::cout << ssLine << std::endl;
   
   std::cout << std::endl;
 }
