@@ -20,7 +20,7 @@ int main()
   
   runSolvers(20, pde);
   
-  testMatrices();
+//  testMatrices();
   
   return 0;
 }
@@ -137,7 +137,7 @@ void solvePDE(const size_t aN, pde_base<double>& aPDE)
 }
 
 
-void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate)
+void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
 {
   matrix_poisson<double>* m;
   vector<point2d<double>> xMapping;
@@ -145,9 +145,29 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
   vector<double> x;
   vector<double> times;
   runtime timer;
+  int width = 25;
+  int seidel_iters = 12;
+  double seidel_tol = 0;
   size_t start = (aShouldIterate ? 5 : aN);
   
-  std::cout << std::setw(3) << "N" << std::setw(12) << "Cholesky" << std::setw(25) << "Gaussian Elimination"<< std::setw(15) << "Gauss-Seidel" << std::setw(12) << "Error" << std::endl << std::endl;
+  if (aPrettyPrint)
+  {
+    std::cout << std::setw(3) << "N"
+    << std::setw(width) << "Cholesky"
+    << std::setw(width) << "Gaussian Elimination"
+    << std::setw(width) << "Gauss-Seidel"
+    << std::setw(width) << "Error"
+    << std::endl << std::endl;
+  }
+  else
+  {
+    std::cout << "N"
+    << "\t" << "Cholesky"
+    << "\t" << "Gaussian Elimination"
+    << "\t" << "Gauss-Seidel"
+    << "\t" << "Error"
+    << std::endl << std::endl;
+  }
   
   for (size_t n = start; n <= aN; n++)
   { 
@@ -172,13 +192,71 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     
     delete m;
     
-    std::cout << std::setw(3) << n
-    << std::setw(12) << times[0]
-    << std::setw(25) << times[1]
-    << std::setw(15) << times[2]
-    << std::setw(12) << checkError(x, xMapping)
-    << std::endl;
+    if (aPrettyPrint)
+    {
+      std::cout << std::setw(3) << n
+      << std::setw(width) << times[0]
+      << std::setw(width) << times[1]
+      << std::setw(width) << times[2]
+      << std::setw(width) << checkError(x, xMapping)
+      << std::endl;
+    }
+    else
+    {
+      std::cout << n
+      << "\t" << times[0]
+      << "\t" << times[1]
+      << "\t" << times[2]
+      << "\t" << checkError(x, xMapping)
+      << std::endl;
+    }
   }
+  
+  std::cout << "\nGauss-Seidel Error Tolerance (N = " << aN << "):\n" << std::endl;
+  
+  if (aPrettyPrint)
+  {
+    std::cout << std::setw(width) << "Tolerance"
+    << std::setw(width) << "Time"
+    << std::setw(width) << "Error"
+    << std::endl << std::endl;
+  }
+  else
+  {
+    std::cout << "Tolerance"
+    << "\t" << "Time"
+    << "\t" << "Error"
+    << std::endl << std::endl;
+  }
+  
+  for (double i = 1; i <= seidel_iters; i++)
+  {
+    m = new matrix_poisson<double>(aN);
+    seidel_tol = pow(10, -i);
+    createSystem(aN, aPDE, b, xMapping);
+    
+    timer.begin();
+    solveMatrix(x, *m, b, gauss_seidel<double>(seidel_tol));
+    timer.end();
+    
+    delete m;
+    
+    if (aPrettyPrint)
+    {
+      std::cout << std::setw(width) << seidel_tol
+      << std::setw(width) << timer.elapsed()
+      << std::setw(width) << checkError(x, xMapping)
+      << std::endl;
+    }
+    else
+    {
+      std::cout << seidel_tol
+      << "\t" << timer.elapsed()
+      << "\t" << checkError(x, xMapping)
+      << std::endl;
+    }
+  }
+  
   std::cout << std::endl;
 }
 

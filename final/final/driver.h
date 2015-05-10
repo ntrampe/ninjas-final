@@ -65,7 +65,7 @@ void solvePDE(const size_t aN, pde_base<double>& aPDE);
 //Description: Runs each method on aPDE of mesh size aN
 //Pre:         none
 //Post:        outputs each method's running time and error
-void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate = true);
+void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate = true, const bool aPrettyPrint = true);
 
 
 //Description: Checks how close an approximation is the the actual solution
