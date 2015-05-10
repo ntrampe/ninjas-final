@@ -5,7 +5,7 @@
 //  Assignment:   Final - Solving Poisson's Equation
 //
 //  Description:  This is the matrix_poisson class definition.
-//                The matrix_poisson template class represents an (n x n) symmetrical matrix
+//                The matrix_poisson template class represents an (n x n) poisson matrix
 //
 
 #ifndef __final__matrix_poisson__

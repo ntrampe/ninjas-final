@@ -31,16 +31,6 @@
 #include "pde_final.h"
 #include "runtime.h"
 
-typedef enum
-{
-	kMatrixTypeDense = 0,
-	kMatrixTypeTriangularUpper = 1,
-	kMatrixTypeTriangularLower = 2,
-	kMatrixTypeDiagonal = 3,
-	kMatrixTypeTridiagonal = 4,
-	kMatrixTypeSymmetrical = 5
-} kMatrixType;
-
 
 typedef enum
 {
@@ -53,12 +43,15 @@ typedef enum
 }kMenuChoice;
 
 
+//Description:  print a message
+//Pre:          none
+//Post:         outputs the message
 void printMessage(const std::string& aMessage);
 
 
-//Description: Calculates and returns the actual solution for the given problem
-//Pre: None
-//Post: returns the numerical solution at a certain (x,y) point
+//Description:  Calculates and returns the actual solution for the given problem
+//Pre:          None
+//Post:         returns the numerical solution at a certain (x,y) point
 double actualSolution(double aX, double aY)
 {
   return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
