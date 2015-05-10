@@ -42,6 +42,17 @@ typedef enum
 } kMatrixType;
 
 
+typedef enum
+{
+  kMenuChoiceQuit = 0,
+  kMenuChoiceChangeMeshDensity = 1,
+  kMenuChoiceSolve = 2,
+  kMenuChoiceCompare = 3,
+  kMenuChoiceMatlab = 4,
+  kMenuChoiceTest = 5
+}kMenuChoice;
+
+
 void printMessage(const std::string& aMessage);
 
 

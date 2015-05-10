@@ -10,34 +10,83 @@
 
 #include "driver.h"
 
-int main(int argc, const char * argv[])
+int main()
 {
   pde_final<double> pde(0,M_PI);
-  size_t meshDensity;
-
-//	MATLAB OUTPUT
-//  solvePDE(25, pde);
-//  std::cout << pde.matlabOutput() << std::endl;
+  kMenuChoice choice = kMenuChoiceQuit;
+  std::string input;
+  size_t meshDensity = 20;
   
-  printMessage("Object-Oriented Numerical Modeling Final!");
+  std::cout << std::string(25, '\n') << std::endl;
   
-  if (argc < 2)
+  do
   {
-    std::cout << "Please specify a mesh density:" << std::endl;
-    std::cin >> meshDensity;
-  }
-  else
-  {
-    meshDensity = atoi(argv[1]);
-  }
-  
-  printMessage("Comparing Techniques...");
-  
-  runSolvers(meshDensity, pde);
-
-  printMessage("Testing...");
-  
-  testMatrices();
+    std::cout << std::string(10, '\n') << std::endl;
+    std::cout << "Object-Oriented Numerical Modeling Final" << std::endl;
+    std::cout << std::string(25, '-') << std::endl;
+    std::cout << "1. Change Mesh Density" << std::endl;
+    std::cout << "2. Solve" << std::endl;
+    std::cout << "3. Compare Techniques" << std::endl;
+    std::cout << "4. Output Matlab" << std::endl;
+    std::cout << "5. Run Tests" << std::endl;
+    std::cout << "0. Quit" << std::endl;
+    std::cout << std::string(25, '-') << std::endl;
+    
+    std::cout << "\nMesh Density: " << meshDensity << "\nBounds: " << pde.bounds() << std::endl;
+    
+    std::cout << "\nChoice: ";
+    
+    std::cin >> input;
+    choice = static_cast<kMenuChoice>(atoi(input.c_str()));
+    
+    
+    switch (choice)
+    {
+      case kMenuChoiceChangeMeshDensity:
+        std::cout << "Enter Mesh Density:" << std::endl;
+        std::cin >> input;
+        
+        meshDensity = static_cast<size_t>(atoi(input.c_str()));
+        
+        break;
+        
+      case kMenuChoiceSolve:
+        
+        printMessage("Solving...");
+        
+        solvePDE(meshDensity, pde);
+        
+        break;
+        
+      case kMenuChoiceCompare:
+        
+        printMessage("Comparing Techniques...");
+        
+        runSolvers(meshDensity, pde);
+        
+        break;
+        
+      case kMenuChoiceMatlab:
+        
+        std::cout << pde.matlabOutput() << std::endl;
+        
+        break;
+        
+      case kMenuChoiceTest:
+        
+        printMessage("Testing...");
+        
+        testMatrices();
+        
+        std::cin.ignore();
+        
+        break;
+        
+      default:
+        break;
+    }
+    
+  } while (choice != kMenuChoiceQuit);
   
   return 0;
 }

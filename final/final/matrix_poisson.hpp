@@ -13,7 +13,7 @@
 template <class T>
 matrix_poisson<T>::matrix_poisson()
 {
-	setupMatrix(1, 1);
+	setupMatrix(4, 4);
 
 	this->initMatrix();
 }
@@ -110,11 +110,6 @@ void matrix_poisson<T>::resize(const size_t aRows, const size_t aColumns)
     throw std::invalid_argument("matrix_poisson: provided rows != columns");
   }
   
-  if (sqrt(aRows) != floor(sqrt(aRows)))
-  {
-    
-  }
-  
   m_slices = sqrt(aRows) + 1;
 }
 
@@ -199,8 +194,9 @@ void matrix_poisson<T>::convertCoordinatesToIndex(size_t& aIndex, const size_t a
 template <class T>
 void matrix_poisson<T>::convertIndexToCoordinates(size_t& aRow, size_t& aColumn, const size_t aIndex) const
 {
-  aRow = 0;
-  aColumn = 0;
+  //supress warnings
+  aRow = aIndex;
+  aColumn = aIndex;
   
   throw std::logic_error("matrix_poisson: call to convertIndexToCoordinates is ambiguous as it's not a one-to-one function");
 }
@@ -269,6 +265,7 @@ T matrix_poisson<T>::at(const size_t aRow, const size_t aColumn) const
 template <class T>
 void matrix_poisson<T>::setupMatrix(const size_t aRow, const size_t aColumn)
 {
+  m_slices = sqrt(std::max(aRow, aColumn)) + 1;
   m_outsideElement = T();
 }
 
