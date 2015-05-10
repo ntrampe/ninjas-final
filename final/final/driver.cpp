@@ -12,25 +12,34 @@
 
 int main()
 {
-  pde_final<double> pde(0,M_PI);
+  runMenu();
+  
+  return 0;
+}
+
+
+void runMenu()
+{
+  pde_final<double> pde(20, 0,M_PI);
   kMenuChoice choice = kMenuChoiceQuit;
   std::string input;
-  size_t meshDensity = 20;
+  bool solved = false;
   
   do
   {
     std::cout << std::endl;
-	std::cout << std::string(40, '-') << std::endl;
+    std::cout << std::string(40, '-') << std::endl;
     std::cout << "Object-Oriented Numerical Modeling Final" << std::endl;
     std::cout << std::string(40, '-') << std::endl;
     std::cout << "1. Change Mesh Density" << std::endl;
     std::cout << "2. Compare Techniques" << std::endl;
-    std::cout << "3. Output Matlab" << std::endl;
-    std::cout << "4. Run Tests" << std::endl;
+    std::cout << "3. Solve" << std::endl;
+    std::cout << "4. Output Matlab" << std::endl;
+    std::cout << "5. Run Tests" << std::endl;
     std::cout << "0. Quit" << std::endl;
     std::cout << std::string(25, '-') << std::endl;
     
-    std::cout << "\nMesh Density: " << meshDensity << "\nBounds: " << pde.bounds() << std::endl;
+    std::cout << "\nMesh Density: " << pde.density() << "\nBounds: " << pde.bounds() << std::endl;
     
     std::cout << "\nChoice: ";
     
@@ -44,7 +53,8 @@ int main()
         std::cout << "Enter Mesh Density:" << std::endl;
         std::cin >> input;
         
-        meshDensity = static_cast<size_t>(atoi(input.c_str()));
+        pde.setDensity(static_cast<size_t>(atoi(input.c_str())));
+        solved = false;
         
         break;
         
@@ -52,13 +62,31 @@ int main()
         
         printMessage("Comparing Techniques...");
         
-        runSolvers(meshDensity, pde);
+        runSolvers(pde);
+        
+        break;
+        
+      case kMenuChoiceSolve:
+        
+        printMessage("Solving...");
+        
+        if (!solved)
+        {
+          solvePDE(pde);
+          solved = true;
+        }
+        
+        std::cout << pde.pointsOutput() << std::endl;
         
         break;
         
       case kMenuChoiceMatlab:
-
-		solvePDE(meshDensity, pde);
+        
+        if (!solved)
+        {
+          solvePDE(pde);
+          solved = true;
+        }
         
         std::cout << pde.matlabOutput() << std::endl;
         
@@ -79,8 +107,6 @@ int main()
     }
     
   } while (choice != kMenuChoiceQuit);
-  
-  return 0;
 }
 
 
@@ -94,12 +120,12 @@ void printMessage(const std::string& aMessage)
 }
 
 
-void createSystem(const size_t aN, const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping)
+void createSystem(const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping)
 {
-  const size_t SIZE = (aN-1)*(aN-1);
+  const size_t SIZE = (aPDE.density()-1)*(aPDE.density()-1);
   double lowerBound = aPDE.lowerBound();
   double upperBound = aPDE.upperBound();
-  double inc = fabs((upperBound - lowerBound)) / aN;
+  double inc = fabs((upperBound - lowerBound)) / aPDE.density();
   size_t count = 0;
   double bValue = 0;
   
@@ -155,48 +181,19 @@ void createSystem(const size_t aN, const pde_base<double>& aPDE, vector<double>&
 }
 
 
-void solvePDE(const size_t aN, pde_base<double>& aPDE)
+void solvePDE(pde_base<double>& aPDE)
 {
-  matrix_poisson<double> m(aN);
+  matrix_poisson<double> m(aPDE.density());
   vector<point2d<double>> xMapping;
   vector<double> b;
   vector<double> x;
   point2d<double> p;
-  double iBound = 0;
-  double jBound = 0;
-  double lowerBound = aPDE.lowerBound();
-  double upperBound = aPDE.upperBound();
-  double inc = fabs((upperBound - lowerBound)) / aN;
-  double tolerance = inc / 2.0;
   
   aPDE.clearPoints();
   
-  createSystem(aN, aPDE, b, xMapping);
+  createSystem(aPDE, b, xMapping);
   
   solveMatrix(x, m, b, cholesky<double>());
-  
-  // changing the previous for loops with while loops prevents
-  // round-off error
-  
-  iBound = lowerBound;
-  
-  while (std::abs(iBound-(upperBound+inc)) >= tolerance)
-  {
-    jBound = lowerBound;
-    
-    while (std::abs(jBound-(upperBound+inc)) >= tolerance)
-    {
-      if (equivalent(jBound, lowerBound) || equivalent(iBound, lowerBound) || equivalent(jBound, upperBound) || equivalent(iBound, upperBound))
-      {
-        p.set(jBound, iBound);
-        aPDE.addKnownPoint(p);
-      }
-      
-      jBound += inc;
-    }
-    
-    iBound += inc;
-  }
   
   for (size_t i = 0; i < x.size(); i++)
   {
@@ -205,11 +202,12 @@ void solvePDE(const size_t aN, pde_base<double>& aPDE)
 }
 
 
-void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
+void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
 {
   // NOTE:  a lot of redundant output code
   //        a possible improvement could be a table class to easily output tables
   
+  const size_t density = aPDE.density();
   matrix_poisson<double>* m;
   vector<point2d<double>> xMapping;
   vector<double> b;
@@ -220,7 +218,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
   vector<int> table2Widths;
   int seidel_iters = 12;
   double seidel_tol = 0;
-  size_t start = (aShouldIterate ? 2 : aN);
+  size_t start = (aShouldIterate ? 2 : density);
   std::stringstream ss;
   std::string ssLine;
   
@@ -258,10 +256,11 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
     << std::endl << std::endl;
   }
   
-  for (size_t n = start; n <= aN; n++)
+  for (size_t n = start; n <= density; n++)
   { 
     m = new matrix_poisson<double>(n);
-    createSystem(n, aPDE, b, xMapping);
+    aPDE.setDensity(n);
+    createSystem(aPDE, b, xMapping);
     times.clear();
     
     timer.begin();
@@ -307,7 +306,7 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
   ss.clear();
   ss.str(std::string());
   
-  std::cout << "\n\nVariable Error Tolerance (N = " << aN << "):" << std::endl;
+  std::cout << "\n\nVariable Error Tolerance (N = " << density << "):" << std::endl;
   
   if (aPrettyPrint)
   {
@@ -329,9 +328,10 @@ void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShoul
   
   for (double i = 1; i <= seidel_iters; i++)
   {
-    m = new matrix_poisson<double>(aN);
+    m = new matrix_poisson<double>(density);
+    aPDE.setDensity(density);
     seidel_tol = pow(10, -i);
-    createSystem(aN, aPDE, b, xMapping);
+    createSystem(aPDE, b, xMapping);
     
     timer.begin();
     solveMatrix(x, *m, b, gauss_seidel<double>(seidel_tol));

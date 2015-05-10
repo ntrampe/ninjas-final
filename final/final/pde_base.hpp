@@ -12,20 +12,23 @@
 template <class T>
 pde_base<T>::pde_base()
 {
+  m_density = 5;
   this->m_bounds.set(0,1);
 }
 
 
 template <class T>
-pde_base<T>::pde_base(point2d<T> aBounds)
+pde_base<T>::pde_base(const size_t aN, point2d<T> aBounds)
 {
+  m_density = aN;
   m_bounds = aBounds;
 }
 
 
 template <class T>
-pde_base<T>::pde_base(const T aLowerBound, const T aUpperBound)
+pde_base<T>::pde_base(const size_t aN, const T aLowerBound, const T aUpperBound)
 {
+  m_density = aN;
   m_bounds.set(aLowerBound, aUpperBound);
 }
 
@@ -34,6 +37,13 @@ template <class T>
 pde_base<T>::~pde_base()
 {
   m_points.clear();
+}
+
+
+template <class T>
+size_t pde_base<T>::density() const
+{
+  return m_density;
 }
 
 
@@ -59,6 +69,13 @@ T pde_base<T>::upperBound() const
 
 
 template <class T>
+void pde_base<T>::setDensity(const size_t aN)
+{
+  m_density = aN;
+}
+
+
+template <class T>
 void pde_base<T>::addPoint(const T aX, const T aY, const T aZ)
 {
   point2d<T> p(aX, aY);
@@ -75,20 +92,6 @@ void pde_base<T>::addPoint(const point2d<T>& aPoint, const T aZ)
 
 
 template <class T>
-void pde_base<T>::addKnownPoint(const T aX, const T aY)
-{
-  addPoint(aX, aY, this->operator()(aX, aY));
-}
-
-
-template <class T>
-void pde_base<T>::addKnownPoint(const point2d<T>& aPoint)
-{
-  addPoint(aPoint, this->operator()(aPoint.x(), aPoint.y()));
-}
-
-
-template <class T>
 void pde_base<T>::clearPoints()
 {
   m_points.clear();
@@ -98,7 +101,37 @@ void pde_base<T>::clearPoints()
 template <class T>
 std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLines) const
 {
+  T iBound = 0;
+  T jBound = 0;
+  T lowerBound = m_bounds.x();
+  T upperBound = m_bounds.y();
+  double inc = fabs((upperBound - lowerBound)) / m_density;
+  double tolerance = inc / 2.0;
   std::stringstream res, ssX, ssY, ssZ;
+  
+  // changing the previous for loops with while loops prevents
+  // round-off error
+  
+  iBound = lowerBound;
+  
+  while (std::abs(iBound-(upperBound+inc)) >= tolerance)
+  {
+    jBound = lowerBound;
+    
+    while (std::abs(jBound-(upperBound+inc)) >= tolerance)
+    {
+      if (equivalent(jBound, lowerBound) || equivalent(iBound, lowerBound) || equivalent(jBound, upperBound) || equivalent(iBound, upperBound))
+      { 
+        ssX << jBound << ", ";
+        ssY << iBound << ", ";
+        ssZ << this->operator()(jBound, iBound) << ", ";
+      }
+      
+      jBound += inc;
+    }
+    
+    iBound += inc;
+  }
   
   for (size_t i = 0; i < m_points.size(); i++)
   {
@@ -128,6 +161,21 @@ std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLi
     res << "axis vis3d;" << std::endl;
     res << "axis manual;" << std::endl;
     res << "while ishandle(fig); camorbit(" << aAnimationFactor << ",0.0); drawnow; end" << std::endl;
+  }
+  
+  return res.str();
+}
+
+
+template <class T>
+std::string pde_base<T>::pointsOutput() const
+{
+  std::stringstream res;
+  
+  for (size_t i = 0; i < m_points.size(); i++)
+  {
+    const point3d<T>* p = &m_points[i];
+    res << "u(" << std::setw(10) << p->x() << "," << std::setw(10) << p->y() << ") = " << std::setw(10) << p->z() << std::endl;
   }
   
   return res.str();

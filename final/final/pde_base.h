@@ -44,14 +44,15 @@ private:
   //Post:         returns the known value of the pde at (aX, bounds.y())
   virtual T yUpper(T aX) const = 0;
   
-  
+  // size of mesh
+  size_t m_density;
   
   // bounds of the pde
   // x = lowerbound
   // y = upperbound
   point2d<T> m_bounds;
   
-  // points
+  // unknown points
   vector<point3d<T>> m_points;
   
 public:
@@ -66,12 +67,12 @@ public:
   //Description:  bounds constructor
   //Pre:          none
   //Post:         sets bounds to aBounds
-  pde_base(point2d<T> aBounds);
+  pde_base(const size_t aN, point2d<T> aBounds);
   
   //Description:  bounds contructor
   //Pre:          none
   //Post:         sets bounds to (aLowerBound, aUpperBound)
-  pde_base(const T aLowerBound, const T aUpperBound);
+  pde_base(const size_t aN, const T aLowerBound, const T aUpperBound);
   
   //Description:  destructor
   //Pre:          none
@@ -81,6 +82,11 @@ public:
   
   //// Convienience
   
+  
+  //Description:  get density
+  //Pre:          none
+  //Post:         returns density
+  size_t density() const;
   
   //Description:  get bounds
   //Pre:          none
@@ -98,6 +104,11 @@ public:
   T upperBound() const;
   
   
+  //Description:  set density
+  //Pre:          none
+  //Post:         sets density
+  void setDensity(const size_t aN);
+  
   //Description:  add unknown point
   //Pre:          none
   //Post:         adds (aX, aY, aZ) to points
@@ -107,16 +118,6 @@ public:
   //Pre:          none
   //Post:         adds (aPoint.x(), aPoint.y(), aZ) to points
   void addPoint(const point2d<T>& aPoint, const T aZ);
-  
-  //Description:  add known point
-  //Pre:          (aX, aY) should be on the boundary
-  //Post:         adds point from boundary to points
-  void addKnownPoint(const T aX, const T aY);
-  
-  //Description:  add known point
-  //Pre:          aPoint should be on the boundary
-  //Post:         adds point from boundary to points
-  void addKnownPoint(const point2d<T>& aPoint);
   
   //Description:  clear points
   //Pre:          none
@@ -128,6 +129,10 @@ public:
   //Post:         returns matlab code
   std::string matlabOutput(float aAnimationFactor = 0.0, const bool aDrawLines = false) const;
   
+  //Description:  get unknown points
+  //Pre:          none
+  //Post:         returns unknown points
+  std::string pointsOutput() const;
   
   //// Operators
   

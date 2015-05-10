@@ -34,12 +34,12 @@ public:
   //Description:  bounds constructor
   //Pre:          none
   //Post:         sets bounds to aBounds
-  pde_final(point2d<T> aBounds) : pde_base<T>(aBounds) {}
+  pde_final(const size_t aN, point2d<T> aBounds) : pde_base<T>(aN, aBounds) {}
   
   //Description:  bounds contructor
   //Pre:          none
   //Post:         sets bounds to (aLowerBound, aUpperBound)
-  pde_final(const T aLowerBound, const T aUpperBound) : pde_base<T>(aLowerBound, aUpperBound) {}
+  pde_final(const size_t aN, const T aLowerBound, const T aUpperBound) : pde_base<T>(aN, aLowerBound, aUpperBound) {}
 };
 
 #include "pde_final.hpp"

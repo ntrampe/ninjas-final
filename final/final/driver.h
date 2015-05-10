@@ -47,8 +47,9 @@ typedef enum
   kMenuChoiceQuit = 0,
   kMenuChoiceChangeMeshDensity = 1,
   kMenuChoiceCompare = 2,
-  kMenuChoiceMatlab = 3,
-  kMenuChoiceTest = 4
+  kMenuChoiceSolve = 3,
+  kMenuChoiceMatlab = 4,
+  kMenuChoiceTest = 5
 }kMenuChoice;
 
 
@@ -63,22 +64,28 @@ double actualSolution(double aX, double aY)
   return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
 
+
+//Description: Starts menu
+//Pre:         none
+//Post:        outputs menu
+void runMenu();
+
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none
 //Post:        aB and aXMapping are populated with the approprate values for N
-void createSystem(const size_t aN, const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping);
+void createSystem(const pde_base<double>& aPDE, vector<double>& aB, vector<point2d<double>>& aXMapping);
 
 
-//Description: Solves a aPDE for aN
+//Description: Solves a aPDE
 //Pre:         none
 //Post:        aPDE is populated with the solution
-void solvePDE(const size_t aN, pde_base<double>& aPDE);
+void solvePDE(pde_base<double>& aPDE);
 
 
 //Description: Runs each method on aPDE of mesh size aN
 //Pre:         none
 //Post:        outputs each method's running time and error
-void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate = true, const bool aPrettyPrint = true);
+void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate = true, const bool aPrettyPrint = true);
 
 
 //Description: Checks how close an approximation is the the actual solution
