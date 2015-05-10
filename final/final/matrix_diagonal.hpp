@@ -64,45 +64,6 @@ void matrix_diagonal<T>::replaceVectorAtColumn(const vector<T>& aVector, const s
 }
 
 
-template <class T>
-bool matrix_diagonal<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
-{
-	//// Scale pivots to 1
-
-	matrix_triangular_lower<T> aA;
-	vector<T> b;
-
-	b = aB;
-	aA = *this;
-
-	for (size_t col = 0; col < aA.size(); col++)
-	{
-		if (aA(col, col) != 0 && aA(col, col) != 1)
-		{
-			b[col] = b[col] / aA(col, col);
-		}
-	}
-
-	aX = b;
-
-	// check for no solution
-	// could move this check into the previous loop,
-	// but this is prettier
-	for (size_t i = 0; i < aX.size(); i++)
-	{
-		if (aX[i] != aX[i])
-		{
-			// aX[i] is not a number
-			// no solution
-			return false;
-		}
-	}
-
-	// aX now contains the solution
-	return true;
-}
-
-
 template<class T>
 matrix_diagonal<T>& matrix_diagonal<T>::operator=(const matrix_base<T>& aRHS)
 {

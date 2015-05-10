@@ -11,7 +11,7 @@
 template <class T>
 gauss_seidel<T>::gauss_seidel()
 {
-	m_error_tol = 0.0000001;
+	m_error_tol = 0.0000000001;
 }
 
 template <class T>

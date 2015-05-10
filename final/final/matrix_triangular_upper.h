@@ -82,13 +82,6 @@ public:
 	virtual void replaceVectorAtColumn(const vector<T>& aVector, const size_t aColumn);
 
 
-	//Description: Solve the matrix as a system of equations
-	//             uses backward substitution
-	//Pre:         vector aB's size must be equal to the matrix rows
-	//Post:        aX will contain the solution of Ax = b, x = aX
-	virtual bool solveMatrix(const vector<T>& aB, vector<T>& aX);
-
-
 	//// Operators
 
 

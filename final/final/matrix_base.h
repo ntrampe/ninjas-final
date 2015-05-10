@@ -171,7 +171,7 @@ public:
 	//Pre:         none
 	//Post:        sets rows to aRows and columns to aColumns
 	//             each element stays in its old (row, column) location
-	void resize(const size_t aRows, const size_t aColumns);
+	virtual void resize(const size_t aRows, const size_t aColumns);
 
 
 	//Description: Determine equality by rows, columns and elements,
@@ -212,12 +212,6 @@ public:
 
 
 	//// Row operations
-
-
-	//Description: Solve the matrix as a system of equations
-	//Pre:         vector aB's size must be equal to the matrix rows
-	//Post:        aX will contain the solution of Ax = b, x = aX
-	virtual bool solveMatrix(const vector<T>& aB, vector<T>& aX) = 0;
 
 	//Description: Determine if the matrix is in row echelon form
 	//Pre:         none

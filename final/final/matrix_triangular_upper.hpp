@@ -57,68 +57,6 @@ void matrix_triangular_upper<T>::replaceVectorAtColumn(const vector<T>& aVector,
 
 
 template <class T>
-bool matrix_triangular_upper<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
-{
-	//// Backward Substitution
-
-	// sum of the coefficients and old
-	// computed x values in backwards
-	// substitution
-	double csum = 0;
-
-	// create solution array
-	aX.clear();
-	aX.reserve(this->columns(), true);
-
-	// backward substitution
-	// solve for the unknown variables from the bottom up
-	for (int row = (int)this->columns() - 1; row >= 0; row--)
-	{
-		csum = 0;
-
-		// compute sum of the coefficients times the old
-		// x values
-		for (size_t col = row; col < this->columns(); col++)
-		{
-			csum += this->at(row, col) * aX[col];
-		}
-
-		// compute the new x by subtracting the sum from the
-		// right-hand side of the equation and dividing by the
-		// coefficient corresponding to the current x
-		//
-		// xi = (an - (a1 + a2 + ... + an-1 (not including ai))) / ai
-		//
-		// where i = row
-		aX[row] = (aB[row] - csum) / this->at(row, row);
-
-		// fix rounding errors (e.g. 0 != 0.000000000001)
-		// for display purposes
-		if (equivalent(aX[row], 0))
-		{
-			aX[row] = 0;
-		}
-	}
-
-	// check for no solution
-	// could move this check into the back substitution loop,
-	// but this is prettier
-	for (size_t i = 0; i < aX.size(); i++)
-	{
-		if (aX[i] != aX[i])
-		{
-			// aX[i] is not a number
-			// no solution
-			return false;
-		}
-	}
-
-	// aX now contains the solution
-	return true;
-}
-
-
-template <class T>
 matrix_triangular_upper<T>& matrix_triangular_upper<T>::operator=(const matrix_base<T>& aRHS)
 {
 	matrix_base<T>::operator=(aRHS);

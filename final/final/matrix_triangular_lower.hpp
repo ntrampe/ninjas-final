@@ -57,54 +57,6 @@ void matrix_triangular_lower<T>::replaceVectorAtColumn(const vector<T>& aVector,
 
 
 template <class T>
-bool matrix_triangular_lower<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
-{
-	//// Scale pivots to 1 and use forward elimination
-
-	matrix_triangular_lower<T> aA;
-	vector<T> b;
-
-	b = aB;
-	aA = *this;
-
-	for (size_t col = 0; col < aA.size(); col++)
-	{
-		if (aA(col, col) != 0 && aA(col, col) != 1)
-		{
-			b[col] = b[col] / aA(col, col);
-
-			aA(col, col) = 1;
-		}
-
-		for (size_t row = col + 1; row < aA.size(); row++)
-		{
-			b[row] = -aA(row, col) * b[col] + b[row];
-
-			aA(row, col) = 0;
-		}
-	}
-
-	aX = b;
-
-	// check for no solution
-	// could move this check into the back substitution loop,
-	// but this is prettier
-	for (size_t i = 0; i < aX.size(); i++)
-	{
-		if (aX[i] != aX[i])
-		{
-			// aX[i] is not a number
-			// no solution
-			return false;
-		}
-	}
-
-	// aX now contains the solution
-	return true;
-}
-
-
-template <class T>
 matrix_triangular_lower<T>& matrix_triangular_lower<T>::operator=(const matrix_base<T>& aRHS)
 {
 	matrix_base<T>::operator=(aRHS);

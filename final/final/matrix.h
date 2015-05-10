@@ -144,13 +144,6 @@ public:
 	double determinant() const;
 
 
-	//Description: Solve the matrix as a system of equations
-	//             uses Gaussian Elimination with scaled partial pivoting
-	//Pre:         vector aB's size must be equal to the matrix rows
-	//Post:        aX will contain the solution of Ax = b, x = aX
-	virtual bool solveMatrix(const vector<T>& aB, vector<T>& aX);
-
-
 	//// Operators
 
 	// NOTE:  I use the base class in all the operations because

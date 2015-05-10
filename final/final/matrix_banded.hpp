@@ -152,17 +152,6 @@ void matrix_banded<T>::replaceVectorAtColumn(const vector<T>& aVector, const siz
 }
 
 
-template <class T>
-bool matrix_banded<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
-{
-	//ehhhh
-
-	matrix<T> m(*this);
-
-	return m.solveMatrix(aB, aX);
-}
-
-
 template<class T>
 matrix_banded<T>& matrix_banded<T>::operator=(const matrix_banded<T>& aRHS)
 {

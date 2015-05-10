@@ -18,13 +18,11 @@ int main(int argc, const char * argv[])
 //  solvePDE(25, pde);
 //  std::cout << pde.matlabOutput() << std::endl;
   
-  for (size_t n = 5; n <= 20; n++)
-  {
-    runSolvers(n, pde);
-  }
+  runSolvers(50, pde);
+  
+//  testMatrices();
   
   return 0;
-
 }
 
 
@@ -139,51 +137,49 @@ void solvePDE(const size_t aN, pde_base<double>& aPDE)
 }
 
 
-void runSolvers(const size_t aN, const pde_base<double>& aPDE)
+void runSolvers(const size_t aN, const pde_base<double>& aPDE, const bool aShouldIterate)
 {
-  matrix_poisson<double> m(aN);
+  matrix_poisson<double>* m;
   vector<point2d<double>> xMapping;
   vector<double> b;
   vector<double> x;
+  vector<double> times;
   runtime timer;
-  int seidel_iters = 10;
+  size_t start = (aShouldIterate ? 5 : aN);
   
-  std::cout << "N = " << aN << std::endl;
+  std::cout << std::setw(3) << "N" << std::setw(12) << "Cholesky" << std::setw(25) << "Gaussian Elimination"<< std::setw(15) << "Gauss-Seidel" << std::setw(12) << "Error" << std::endl << std::endl;
   
-  createSystem(aN, aPDE, b, xMapping);
-  
-  timer.begin();
-  solveMatrix(x, m, b, gauss_elim<double>());
-  timer.end();
-
-  std::cout << "Gaussian Elimination Method:" << std::endl;
- 	//std::cout << "Solution: " << x << std::endl;
-  std::cout << "Time: " << timer.elapsed() << std::endl;
-  std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
-
-  timer.begin();
-	solveMatrix(x, m, b, cholesky<double>());
-  timer.end();
-
-	std::cout << "Cholesky Method:" << std::endl;
-	//std::cout << "Solution: " << x << std::endl;
-  std::cout << "Time: " << timer.elapsed() << std::endl;
-  std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
-
-  std::cout << "Gauss-Seidel Iteration Method: " << std::endl;
-  
-	for (int i = 0; i < seidel_iters; i++)
-	{
-		double error_tol = pow(10, -i)*0.1;
+  for (size_t n = start; n <= aN; n++)
+  { 
+    m = new matrix_poisson<double>(n);
+    createSystem(n, aPDE, b, xMapping);
+    times.clear();
+    
     timer.begin();
-		solveMatrix(x, m, b, gauss_seidel<double>(error_tol));
+    solveMatrix(x, *m, b, cholesky<double>());
     timer.end();
-    std::cout << "Error Tolerance: " << error_tol << std::endl;
-		//std::cout << "Solution: " << x << std::endl;
-		std::cout << "Time: " << timer.elapsed() << std::endl;
-    std::cout << "Error: " << checkError(x, xMapping) << "%" << std::endl << std::endl;
-	}
-
+    times.push_back(timer.elapsed());
+    
+    timer.begin();
+    solveMatrix(x, *m, b, gauss_elim<double>());
+    timer.end();
+    times.push_back(timer.elapsed());
+    
+    timer.begin();
+    solveMatrix(x, *m, b, gauss_seidel<double>());
+    timer.end();
+    times.push_back(timer.elapsed());
+    
+    delete m;
+    
+    std::cout << std::setw(3) << n
+    << std::setw(12) << times[0]
+    << std::setw(25) << times[1]
+    << std::setw(15) << times[2]
+    << std::setw(12) << checkError(x, xMapping)
+    << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 
@@ -208,9 +204,7 @@ bool solveMatrix(vector<double>& aX, const matrix_base<double>& aMatrix, const v
 
 
 void testMatrices()
-{
-  //TODO: use gtest or something because this is horrible
-  
+{ 
   // seed random
   srand(static_cast<unsigned int>(time(NULL)));
   
@@ -238,6 +232,8 @@ void testMatrices()
   matrix_diagonal<double> mDiagonal;
   matrix_tridiagonal<double> mTridiagonal;
   matrix_symmetrical<double> mSymmetrical;
+  matrix_poisson<double> mPoisson;
+  matrix_poisson<double>* mPoissonPtr;
   
   // insert matrices into vector
   mats.push_back(&mDense);
@@ -247,6 +243,7 @@ void testMatrices()
   mats.push_back(&mDiagonal);
   mats.push_back(&mTridiagonal);
   mats.push_back(&mSymmetrical);
+  mats.push_back(&mPoisson);
   
   //// TEST: tests
   
@@ -256,14 +253,13 @@ void testMatrices()
   ////  this also tests polymorphism
   
   for (size_t size = START_SIZE; size > START_SIZE - 2; size--)
-  {
-    zero.resize(size, size);
-    
+  { 
     for (size_t i = 0; i < mats.size(); i++)
     {
       matrix_base<double>* matrix = mats[i];
       
       matrix->resize(size, size);
+      zero.resize(matrix->rows(), matrix->columns());
       matrix->randomize();
       
       
@@ -470,6 +466,66 @@ void testMatrices()
   }
   
   test(dummyBool, "BANDED MATRIX MEMORY");
+  
+  dummyBool = true;
+  
+  for (size_t n = 5; n < 50 && dummyBool == true; n++)
+  {
+    mPoissonPtr = new matrix_poisson<double>(n);
+    
+    if (mPoissonPtr->memorySize() != 2)
+    {
+      dummyBool = false;
+    }
+    
+    if (mPoissonPtr->rows() != (n-1)*(n-1) ||
+        mPoissonPtr->columns() != (n-1)*(n-1) )
+    {
+      dummyBool = false;
+    }
+    
+    for (size_t row = 0; row < mPoissonPtr->rows(); row++)
+    {
+      for (size_t col = 0; col < mPoissonPtr->columns(); col++)
+      {
+        if (row == col)
+        {
+          if (mPoissonPtr->operator()(row, col) != 1)
+          {
+            dummyBool = false;
+          }
+        }
+        else if (row == col+1 && (row % (mPoissonPtr->slices() - 1) != 0))
+        {
+          
+          for (size_t i = 1; i < row; i++)
+          {
+            if (i % (mPoissonPtr->slices() - 1) != 0)
+            {
+              if (mPoissonPtr->operator()(row, col) != -0.25)
+              {
+                dummyBool = false;
+              }
+            }
+          }
+        }
+        else if (row == col+(mPoissonPtr->slices() - 1))
+        {
+          for (size_t i = (mPoissonPtr->slices() - 1); i < row; i++)
+          {
+            if (mPoissonPtr->operator()(row, col) != -0.25)
+            {
+              dummyBool = false;
+            }
+          }
+        }
+      }
+    }
+    
+    delete mPoissonPtr;
+  }
+  
+  test(dummyBool, "POISSON MATRIX CONSTRUCTION");
 }
 
 

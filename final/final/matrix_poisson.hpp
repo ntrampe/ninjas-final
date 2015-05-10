@@ -103,11 +103,28 @@ std::string matrix_poisson<T>::name() const
 
 
 template <class T>
+void matrix_poisson<T>::resize(const size_t aRows, const size_t aColumns)
+{
+  if (aRows != aColumns)
+  {
+    throw std::invalid_argument("matrix_poisson: provided rows != columns");
+  }
+  
+  if (sqrt(aRows) != floor(sqrt(aRows)))
+  {
+    
+  }
+  
+  m_slices = sqrt(aRows) + 1;
+}
+
+
+template <class T>
 void matrix_poisson<T>::replaceVectorAtRow(const vector<T>& aVector, const size_t aRow)
 {
 	if (aRow >= this->size())
 	{
-		throw std::out_of_range("matrix: provided row >= matrix rows");
+		throw std::out_of_range("matrix_poisson: provided row >= matrix rows");
 	}
 
 	if (aVector.size() != this->size())
@@ -139,114 +156,6 @@ void matrix_poisson<T>::replaceVectorAtColumn(const vector<T>& aVector, const si
 	{
 		this->at(aColumn, i) = aVector[i];
 	}
-}
-
-
-template <class T>
-bool matrix_poisson<T>::solveMatrix(const vector<T>& aB, vector<T>& aX)
-{
-	//// Cholesky Decomposition
-
-	matrix_poisson<T> aL(*this);
-	matrix_poisson<T> aA;
-	vector<T> y;
-	double sum = 0;
-
-	y.reserve(size(), true);
-	y = aB;
-
-	for (int k = 0; k < static_cast<int>(size()); k++)
-	{
-		for (int i = 0; i <= k-1; i++)
-		{
-			sum = 0;
-			for (int j = 0; j <= i-1; j++)
-			{
-				sum = sum + aL(i,j) * aL(k,j);
-			}
-			aL(k,i) = (aL(k,i) - sum)/aL(i,i);
-		}
-
-		sum = 0;
-
-		for (int j = 0; j <= k-1; j++)
-		{
-			sum = sum + aL(k,j) * aL(k,j);
-		}
-
-		aL(k,k) = sqrt(aL(k,k) - sum);
-	}
-
-	aA = aL;
-
-	for (size_t col = 0; col < aA.size(); col++)
-	{
-		if (aA(col, col) != 0 && aA(col, col) != 1)
-		{
-			y[col] = y[col] / aA(col, col);
-
-			aA(col, col) = 1;
-		}
-
-		for (size_t row = col + 1; row < aA.size(); row++)
-		{
-			y[row] = -aA(row, col) * y[col] + y[row];
-
-			aA(row, col) = 0;
-		}
-	}
-
-	double csum = 0;
-
-	// create solution array
-	aX.clear();
-	aX.reserve(aL.columns(), true);
-
-	// backward substitution
-	// solve for the unknown variables from the bottom up
-	for (int row = (int)aL.columns() - 1; row >= 0; row--)
-	{
-		csum = 0;
-
-		// compute sum of the coefficients times the old
-		// x values
-		for (size_t col = row; col < aL.columns(); col++)
-		{
-			csum += aL(row, col) * aX[col];
-		}
-
-		// compute the new x by subtracting the sum from the
-		// right-hand side of the equation and dividing by the
-		// coefficient corresponding to the current x
-		//
-		// xi = (an - (a1 + a2 + ... + an-1 (not including ai))) / ai
-		//
-		// where i = row
-		aX[row] = (y[row] - csum) / aL(row, row);
-
-		// fix rounding errors (e.g. 0 != 0.000000000001)
-		// for display purposes
-		if (equivalent(aX[row], 0))
-		{
-			aX[row] = 0;
-		}
-	}
-
-	// check for no solution
-	// could move this check into the back substitution loop,
-	// but this is prettier
-	for (size_t i = 0; i < aX.size(); i++)
-	{
-		if (aX[i] != aX[i])
-		{
-			// aX[i] is not a number
-			// no solution
-			return false;
-		}
-	}
-
-	// aX now contains the solution
-	return true;
 }
 
 
@@ -284,48 +193,16 @@ void matrix_poisson<T>::convertCoordinatesToIndex(size_t& aIndex, const size_t a
   {
     aIndex = 1;
   }
-  
-//  if (realRow == realCol)
-//  {
-//    aIndex = realRow;
-//  }
-//  else if (realRow == realCol+1 && (realRow % (m_slices - 1) != 0))
-//  {
-//    aIndex = matrix_base<T>::lengthOfDiagonal(0);
-//    
-//    for (size_t i = 1; i < realRow; i++)
-//    {
-//      if (i % (m_slices - 1) != 0)
-//      {
-//        aIndex++;
-//      }
-//    }
-//  }
-//  else if (realRow == realCol+(m_slices - 1))
-//  {
-//    aIndex =  matrix_base<T>::lengthOfDiagonal(0) + 
-//    matrix_base<T>::lengthOfDiagonal(1) - (m_slices-1-1);
-//    
-//    for (size_t i = (m_slices - 1); i < realRow; i++)
-//    {
-//      aIndex++;
-//    }
-//  }
 }
 
 
 template <class T>
 void matrix_poisson<T>::convertIndexToCoordinates(size_t& aRow, size_t& aColumn, const size_t aIndex) const
 {
-	if (aIndex >= this->memorySize())
-	{
-		throw std::out_of_range("matrix_poisson: provided index >= memory size");
-	}
-
-	aRow = 0;
-	aColumn = 0;
-
-  //TODO
+  aRow = 0;
+  aColumn = 0;
+  
+  throw std::logic_error("matrix_poisson: call to convertIndexToCoordinates is ambiguous as it's not a one-to-one function");
 }
 
 

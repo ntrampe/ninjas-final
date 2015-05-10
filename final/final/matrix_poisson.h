@@ -115,14 +115,31 @@ public:
 	//Post:        returns number of columns/rows in matrix
 	size_t size() const;
   
+  //Description: Retrieve slices
+  //Pre:         none
+  //Post:        returns number of columns/rows in matrix
   size_t slices() const;
+  
+  //Description: Retrieve meshSize
+  //Pre:         none
+  //Post:        returns size of mesh
   size_t meshSize() const;
+  
+  //Description: Retrieve band
+  //Pre:         none
+  //Post:        returns band
   size_t band() const;
 
 	//Description: Name of matrix
 	//Pre:         none
 	//Post:        returns user-defined name of matrix class
 	virtual std::string name() const;
+  
+  //Description: Resize the matrix while preserving the data
+  //Pre:         none
+  //Post:        sets rows to aRows and columns to aColumns
+  //             each element stays in its old (row, column) location
+  virtual void resize(const size_t aRows, const size_t aColumns);
 
 
 	//// Column / Row Manipulation
@@ -141,13 +158,6 @@ public:
 	//Post:        the matrix will have the contents of aVector at aColumn
 	//             only traverses triangular elements
 	virtual void replaceVectorAtColumn(const vector<T>& aVector, const size_t aColumn);
-
-
-	//Description: Solve the matrix as a system of equations
-	//             uses Cholesky Decomposition
-	//Pre:         vector aB's size must be equal to the matrix rows
-	//Post:        aX will contain the solution of Ax = b, x = aX
-	virtual bool solveMatrix(const vector<T>& aB, vector<T>& aX);
 
 	//// Operators
 
