@@ -46,10 +46,9 @@ typedef enum
 {
   kMenuChoiceQuit = 0,
   kMenuChoiceChangeMeshDensity = 1,
-  kMenuChoiceSolve = 2,
-  kMenuChoiceCompare = 3,
-  kMenuChoiceMatlab = 4,
-  kMenuChoiceTest = 5
+  kMenuChoiceCompare = 2,
+  kMenuChoiceMatlab = 3,
+  kMenuChoiceTest = 4
 }kMenuChoice;
 
 

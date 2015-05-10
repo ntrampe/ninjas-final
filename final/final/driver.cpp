@@ -17,18 +17,16 @@ int main()
   std::string input;
   size_t meshDensity = 20;
   
-  std::cout << std::string(25, '\n') << std::endl;
-  
   do
   {
-    std::cout << std::string(10, '\n') << std::endl;
+    std::cout << std::endl;
+	std::cout << std::string(40, '-') << std::endl;
     std::cout << "Object-Oriented Numerical Modeling Final" << std::endl;
-    std::cout << std::string(25, '-') << std::endl;
+    std::cout << std::string(40, '-') << std::endl;
     std::cout << "1. Change Mesh Density" << std::endl;
-    std::cout << "2. Solve" << std::endl;
-    std::cout << "3. Compare Techniques" << std::endl;
-    std::cout << "4. Output Matlab" << std::endl;
-    std::cout << "5. Run Tests" << std::endl;
+    std::cout << "2. Compare Techniques" << std::endl;
+    std::cout << "3. Output Matlab" << std::endl;
+    std::cout << "4. Run Tests" << std::endl;
     std::cout << "0. Quit" << std::endl;
     std::cout << std::string(25, '-') << std::endl;
     
@@ -50,14 +48,6 @@ int main()
         
         break;
         
-      case kMenuChoiceSolve:
-        
-        printMessage("Solving...");
-        
-        solvePDE(meshDensity, pde);
-        
-        break;
-        
       case kMenuChoiceCompare:
         
         printMessage("Comparing Techniques...");
@@ -67,6 +57,8 @@ int main()
         break;
         
       case kMenuChoiceMatlab:
+
+		solvePDE(meshDensity, pde);
         
         std::cout << pde.matlabOutput() << std::endl;
         
