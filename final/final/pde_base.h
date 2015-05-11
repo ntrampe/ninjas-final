@@ -108,6 +108,11 @@ public:
 	//Pre:          none
 	//Post:         sets density
 	void setDensity(const size_t aN);
+  
+  //Description:  set bounds
+  //Pre:          none
+  //Post:         sets bounds
+  void setBounds(const point2d<T> aBounds);
 
 	//Description:  add unknown point
 	//Pre:          none

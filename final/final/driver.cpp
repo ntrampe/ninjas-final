@@ -23,6 +23,7 @@ void runMenu()
 	pde_final<double> pde(20, 0,M_PI);
 	kMenuChoice choice = kMenuChoiceQuit;
 	std::string input;
+  point2d<double> bounds = pde.bounds();
 	bool solved = false;
 
 	do
@@ -32,10 +33,11 @@ void runMenu()
 		std::cout << "Object-Oriented Numerical Modeling Final" << std::endl;
 		std::cout << std::string(40, '-') << std::endl;
 		std::cout << "1. Change Mesh Density" << std::endl;
-		std::cout << "2. Compare Techniques" << std::endl;
-		std::cout << "3. Solve" << std::endl;
-		std::cout << "4. Output Matlab" << std::endl;
-		std::cout << "5. Run Tests" << std::endl;
+    std::cout << "2. Change Bounds" << std::endl;
+		std::cout << "3. Compare Techniques" << std::endl;
+		std::cout << "4. Solve" << std::endl;
+		std::cout << "5. Output Matlab" << std::endl;
+		std::cout << "6. Run Tests" << std::endl;
 		std::cout << "0. Quit" << std::endl;
 		std::cout << std::string(25, '-') << std::endl;
 
@@ -57,6 +59,15 @@ void runMenu()
 			solved = false;
 
 			break;
+        
+      case kMenuChoiceChangeBounds:
+        std::cout << "Enter Bounds: 'X Y'" << std::endl;
+        std::cin >> bounds;
+        
+        pde.setBounds(bounds);
+        solved = false;
+        
+        break;
 
 		case kMenuChoiceCompare:
 

@@ -84,6 +84,12 @@ public:
 	//Description: output vector data
 	template <class U>
 	friend std::ostream& operator<<(std::ostream& aOutput, const point2d<U>& aPoint);
+  
+  //Pre:         aInput must be in the form (X, Y)
+  //Post:        populates aPoint with contents of aInput
+  //Description: input point data
+  template <class U>
+  friend std::istream& operator>>(std::istream& aInput, point2d<U>& aPoint);
 };
 
 #include "point2d.hpp"

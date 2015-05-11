@@ -76,6 +76,13 @@ void pde_base<T>::setDensity(const size_t aN)
 
 
 template <class T>
+void pde_base<T>::setBounds(const point2d<T> aBounds)
+{
+  m_bounds = aBounds;
+}
+
+
+template <class T>
 void pde_base<T>::addPoint(const T aX, const T aY, const T aZ)
 {
 	point2d<T> p(aX, aY);

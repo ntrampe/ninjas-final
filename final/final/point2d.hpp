@@ -89,3 +89,17 @@ std::ostream& operator<<(std::ostream& aOutput, const point2d<U>& aPoint)
 
 	return aOutput;
 }
+
+
+template <class U>
+std::istream& operator>>(std::istream& aInput, point2d<U>& aPoint)
+{
+  U x, y;
+  
+  aInput >> x;
+  aInput >> y;
+  
+  aPoint.set(x,y);
+  
+  return aInput;
+}
