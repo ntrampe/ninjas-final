@@ -78,11 +78,22 @@ bool pde_base<T>::solved() const
 template <class T>
 std::string pde_base<T>::description() const
 {
-  std::stringstream res;
+  std::stringstream resSS;
+  std::string res, temp;
   
-  res << typeid(*this).name() << "_" << density() << "_" << lowerBound() << "_" << upperBound();
+  resSS << density() << fabs(lowerBound()) << fabs(upperBound());
   
-  return res.str();
+  res = resSS.str();
+  
+  //remove periods
+  size_t start_pos = 0;
+  while((start_pos = res.find(".", start_pos)) != std::string::npos)
+  {
+    res.replace(start_pos, 1, "");
+    start_pos += res.length(); 
+  }
+  
+  return res;
 }
 
 
@@ -170,7 +181,11 @@ std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLi
 		ssY << m_points[i].y() << (i == m_points.size()-1 ? "" : ", ");
 		ssZ << m_points[i].z() << (i == m_points.size()-1 ? "" : ", ");
 	}
-
+  
+  res << "% Class =\t" << typeid(*this).name() << std::endl;
+  res << "% Density =\t" << density() << std::endl;
+  res << "% Bounds =\t" << bounds() << std::endl;
+  res << "\n" << std::endl;
 	res << "clear;" << std::endl;
 	res << "X = [" << ssX.str() << "];" << std::endl;
 	res << "Y = [" << ssY.str() << "];" << std::endl;
@@ -186,10 +201,12 @@ std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLi
 	{
 		res << "set(fig,'EdgeColor','None');" << std::endl;
 	}
+  
+  res << "axis vis3d;" << std::endl;
+  res << "axis tight;" << std::endl;
 
 	if (aAnimationFactor != 0)
 	{
-		res << "axis vis3d;" << std::endl;
 		res << "axis manual;" << std::endl;
 		res << "while ishandle(fig); camorbit(" << aAnimationFactor << ",0.0); drawnow; end" << std::endl;
 	}
