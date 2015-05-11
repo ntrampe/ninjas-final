@@ -102,6 +102,12 @@ public:
 	//Pre:          none
 	//Post:         returns upper bound
 	T upperBound() const;
+  
+  
+  //Description:  has the pde been solved
+  //Pre:          none
+  //Post:         returns true if any unknown points have been calculated
+  bool solved() const;
 
 
 	//Description:  set density

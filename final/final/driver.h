@@ -64,6 +64,11 @@ double actualSolution(double aX, double aY)
 //Post:        outputs menu
 void runMenu();
 
+//Description: Prompts user to solve pde
+//Pre:         none
+//Post:        solves pde based on method chosen
+void promptForSolve(pde_base<double>& aPDE);
+
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none
 //Post:        aB and aXMapping are populated with the approprate values for N
@@ -73,7 +78,8 @@ void createSystem(const pde_base<double>& aPDE, vector<double>& aB, vector<point
 //Description: Solves a aPDE
 //Pre:         none
 //Post:        aPDE is populated with the solution
-void solvePDE(pde_base<double>& aPDE);
+template <class T_method>
+void solvePDE(pde_base<double>& aPDE, T_method aMethod);
 
 
 //Description: Runs each method on aPDE of mesh size aN

@@ -69,9 +69,19 @@ T pde_base<T>::upperBound() const
 
 
 template <class T>
+bool pde_base<T>::solved() const
+{
+  return (m_points.size() > 0);
+}
+
+
+template <class T>
 void pde_base<T>::setDensity(const size_t aN)
 {
 	m_density = aN;
+  
+  // remove invalid points
+  clearPoints();
 }
 
 
@@ -79,6 +89,9 @@ template <class T>
 void pde_base<T>::setBounds(const point2d<T> aBounds)
 {
   m_bounds = aBounds;
+  
+  // remove invalid points
+  clearPoints();
 }
 
 
