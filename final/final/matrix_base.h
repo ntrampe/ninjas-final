@@ -139,8 +139,8 @@ public:
 	//Pre:         none
 	//Post:        returns user-defined description of matrix class
 	virtual std::string description() const;
-  
-  size_t lengthOfDiagonal(const size_t aRow) const;
+
+	size_t lengthOfDiagonal(const size_t aRow) const;
 
 	//Description: Clear the matrix
 	//Pre:         none
@@ -157,9 +157,9 @@ public:
 	//Post:        sets all the elements to incremental values starting at aStart
 	virtual void order(const T aStart = T());
 
-  //Description: Prints matrix memory in order
-  //Pre:         none
-  //Post:        outputs all the elements in index order
+	//Description: Prints matrix memory in order
+	//Pre:         none
+	//Post:        outputs all the elements in index order
 	void printMemory() const;
 
 	//Description: If any element is near zero, set it to exactly zero

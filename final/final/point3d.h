@@ -48,29 +48,29 @@ public:
 	//Pre:         none
 	//Post:        sets point3d location to (aX, aY, aZ)
 	void set(const T aX, const T aY, const T aZ);
-  
-  //Description: Set z location
-  //Pre:         none
-  //Post:        sets point3d location to (m_x, m_y, aZ)
-  void setZ(const T aZ);
-  
-  //Description: Get z
-  //Pre:         none
-  //Post:        returns z location
-  T z() const;
-  
-  point3d<T>& operator=(const point3d<T>& aRHS);
-  template <class U>
-  friend bool operator==(const point3d<U>& aLHS, const point3d<U>& aRHS);
-  template <class U>
-  friend bool operator!=(const point3d<U>& aLHS, const point3d<U>& aRHS);
-  
-  //Pre:         none
-  //             class used in template needs to overload << operator
-  //Post:        outputs aVector elements to aOutput
-  //Description: output vector data
-  template <class U>
-  friend std::ostream& operator<<(std::ostream& aOutput, const point3d<U>& aPoint3d);
+
+	//Description: Set z location
+	//Pre:         none
+	//Post:        sets point3d location to (m_x, m_y, aZ)
+	void setZ(const T aZ);
+
+	//Description: Get z
+	//Pre:         none
+	//Post:        returns z location
+	T z() const;
+
+	point3d<T>& operator=(const point3d<T>& aRHS);
+	template <class U>
+	friend bool operator==(const point3d<U>& aLHS, const point3d<U>& aRHS);
+	template <class U>
+	friend bool operator!=(const point3d<U>& aLHS, const point3d<U>& aRHS);
+
+	//Pre:         none
+	//             class used in template needs to overload << operator
+	//Post:        outputs aVector elements to aOutput
+	//Description: output vector data
+	template <class U>
+	friend std::ostream& operator<<(std::ostream& aOutput, const point3d<U>& aPoint3d);
 };
 
 #include "point3d.hpp"

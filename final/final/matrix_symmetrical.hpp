@@ -38,7 +38,7 @@ matrix_symmetrical<T>::matrix_symmetrical(const matrix_symmetrical<T>& aCopy)
 template <class T>
 matrix_symmetrical<T>::matrix_symmetrical(const matrix_base<T>& aCopy)
 {
-  *this = aCopy;
+	*this = aCopy;
 }
 
 
@@ -263,8 +263,8 @@ void matrix_symmetrical<T>::convertCoordinatesToIndex(size_t& aIndex, const size
 	{
 		aIndex += i+1;
 	}
-  
-  aIndex += realCol;
+
+	aIndex += realCol;
 }
 
 

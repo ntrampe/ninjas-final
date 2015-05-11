@@ -190,7 +190,7 @@ void matrix_base<T>::resize(const size_t aRows, const size_t aColumns)
 template <class T>
 size_t matrix_base<T>::lengthOfDiagonal(const size_t aRow) const
 {
-  return columns() - aRow;
+	return columns() - aRow;
 }
 
 
@@ -223,7 +223,7 @@ void matrix_base<T>::vectorAtRow(const size_t aRow, vector<T>& aVector) const
 		throw std::out_of_range("matrix_base: provided row >= matrix rows");
 	}
 
-  aVector.clear();
+	aVector.clear();
 
 	for (size_t i = 0; i < columns(); i++)
 	{
@@ -240,7 +240,7 @@ void matrix_base<T>::vectorAtColumn(const size_t aColumn, vector<T>& aVector) co
 		throw std::out_of_range("matrix_base: provided column >= matrix column");
 	}
 
-  aVector.clear();
+	aVector.clear();
 
 	for (size_t i = 0; i < rows(); i++)
 	{
@@ -334,9 +334,9 @@ void matrix_base<T>::switchRows(const size_t aSource, const size_t aDestination)
 
 	if (aSource != aDestination)
 	{
-    vector<T> temp, dest;
-    this->vectorAtRow(aSource, temp);
-    this->vectorAtRow(aDestination, dest);
+		vector<T> temp, dest;
+		this->vectorAtRow(aSource, temp);
+		this->vectorAtRow(aDestination, dest);
 		this->replaceVectorAtRow(dest, aSource);
 		this->replaceVectorAtRow(temp, aDestination);
 	}
@@ -350,9 +350,9 @@ void matrix_base<T>::scaleRow(const size_t aSource, const double aScalar, const 
 	{
 		throw std::out_of_range("matrix_base: row scaling must occur within matrix");
 	}
-  
-  vector<T> temp;
-  this->vectorAtRow(aSource, temp);
+
+	vector<T> temp;
+	this->vectorAtRow(aSource, temp);
 	this->replaceVectorAtRow(aScalar * temp, aDestination);
 }
 

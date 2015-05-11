@@ -20,10 +20,10 @@ protected:
 
 	// slices of matrix
 	size_t m_slices;
-  
-  // the element returned for an element located outside
-  // of the triangular area
-  T m_outsideElement;
+
+	// the element returned for an element located outside
+	// of the triangular area
+	T m_outsideElement;
 
 	//Description: Convert (aRow, aColumn) to the corresponding index in m_data
 	//Pre:         aRow and aColumns should be within the dimensions of the matrix
@@ -36,29 +36,29 @@ protected:
 	//             m_data[aIndex] element
 	virtual void convertIndexToCoordinates(size_t& aRow, size_t& aColumn, const size_t aIndex) const;
 
-  //Description: Determine if an element is in the diagonal area
-  //Pre:         aRow and aColumn should be within the dimensions of the matrix
-  //Post:        returns true if an element is in the diagonal area
-  virtual bool withinData(const size_t aRow, const size_t aColumn) const;
-  
-  //Description: Retrieve an element to modify
-  //Pre:         aRow and aColumn must be within the matrix bounds
-  //Post:        returns a reference to the element at (aRow, aColumn)
-  //             if (aRow, aColumn) is outside the diagonal area,
-  //             m_outsideElement is returned
-  virtual T& at(const size_t aRow, const size_t aColumn);
-  
-  //Description: Retrieve an element to read only
-  //Pre:         aRow and aColumn must be within the matrix bounds
-  //Post:        returns a copy of the element at (aRow, aColumn)
-  //             if (aRow, aColumn) is outside the diagonal area,
-  //             m_outsideElement is returned
-  virtual T at(const size_t aRow, const size_t aColumn) const;
-  
-  //Description: Allocate and initialize memory for data array
-  //Pre:         if aMemorySize == 0, then memorySize() will be used
-  //Post:        creates a new m_data array and sets the elements to T()
-  virtual void initMatrix(const size_t aMemorySize = 0);
+	//Description: Determine if an element is in the diagonal area
+	//Pre:         aRow and aColumn should be within the dimensions of the matrix
+	//Post:        returns true if an element is in the diagonal area
+	virtual bool withinData(const size_t aRow, const size_t aColumn) const;
+
+	//Description: Retrieve an element to modify
+	//Pre:         aRow and aColumn must be within the matrix bounds
+	//Post:        returns a reference to the element at (aRow, aColumn)
+	//             if (aRow, aColumn) is outside the diagonal area,
+	//             m_outsideElement is returned
+	virtual T& at(const size_t aRow, const size_t aColumn);
+
+	//Description: Retrieve an element to read only
+	//Pre:         aRow and aColumn must be within the matrix bounds
+	//Post:        returns a copy of the element at (aRow, aColumn)
+	//             if (aRow, aColumn) is outside the diagonal area,
+	//             m_outsideElement is returned
+	virtual T at(const size_t aRow, const size_t aColumn) const;
+
+	//Description: Allocate and initialize memory for data array
+	//Pre:         if aMemorySize == 0, then memorySize() will be used
+	//Post:        creates a new m_data array and sets the elements to T()
+	virtual void initMatrix(const size_t aMemorySize = 0);
 
 	//Description: Set up member variables in terms of rows and columns
 	//Pre:         none
@@ -114,32 +114,32 @@ public:
 	//Pre:         none
 	//Post:        returns number of columns/rows in matrix
 	size_t size() const;
-  
-  //Description: Retrieve slices
-  //Pre:         none
-  //Post:        returns number of columns/rows in matrix
-  size_t slices() const;
-  
-  //Description: Retrieve meshSize
-  //Pre:         none
-  //Post:        returns size of mesh
-  size_t meshSize() const;
-  
-  //Description: Retrieve band
-  //Pre:         none
-  //Post:        returns band
-  size_t band() const;
+
+	//Description: Retrieve slices
+	//Pre:         none
+	//Post:        returns number of columns/rows in matrix
+	size_t slices() const;
+
+	//Description: Retrieve meshSize
+	//Pre:         none
+	//Post:        returns size of mesh
+	size_t meshSize() const;
+
+	//Description: Retrieve band
+	//Pre:         none
+	//Post:        returns band
+	size_t band() const;
 
 	//Description: Name of matrix
 	//Pre:         none
 	//Post:        returns user-defined name of matrix class
 	virtual std::string name() const;
-  
-  //Description: Resize the matrix while preserving the data
-  //Pre:         none
-  //Post:        sets rows to aRows and columns to aColumns
-  //             each element stays in its old (row, column) location
-  virtual void resize(const size_t aRows, const size_t aColumns);
+
+	//Description: Resize the matrix while preserving the data
+	//Pre:         none
+	//Post:        sets rows to aRows and columns to aColumns
+	//             each element stays in its old (row, column) location
+	virtual void resize(const size_t aRows, const size_t aColumns);
 
 
 	//// Column / Row Manipulation

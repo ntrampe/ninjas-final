@@ -12,27 +12,27 @@
 template <class T>
 T pde_notes<T>::xLower(T aY) const
 {
-  return cos(M_PI*aY);
+	return cos(M_PI*aY);
 }
 
 
 template <class T>
 T pde_notes<T>::xUpper(T aY) const
 {
-  return exp(M_PI)*cos(M_PI*aY);
+	return exp(M_PI)*cos(M_PI*aY);
 }
 
 
 template <class T>
 T pde_notes<T>::yLower(T aX) const
 {
-  return exp(M_PI*aX);
+	return exp(M_PI*aX);
 }
 
 
 template <class T>
 T pde_notes<T>::yUpper(T aX) const
 {
-  return -exp(M_PI*aX);
+	return -exp(M_PI*aX);
 }
 

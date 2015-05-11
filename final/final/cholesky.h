@@ -5,7 +5,7 @@
 //  Assignment:   Final - Solving Poisson's Equation
 //
 //  Description:  This is the cholesky function class definition.
-//                
+//
 //
 
 #ifndef __final__cholesky__

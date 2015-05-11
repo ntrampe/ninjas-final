@@ -71,19 +71,19 @@ public:
 	//Pre:         none
 	//Post:        returns y location
 	T y() const;
-  
-  point2d<T>& operator=(const point2d<T>& aRHS);
-  template <class U>
-  friend bool operator==(const point2d<U>& aLHS, const point2d<U>& aRHS);
-  template <class U>
-  friend bool operator!=(const point2d<U>& aLHS, const point2d<U>& aRHS);
-  
-  //Pre:         none
-  //             class used in template needs to overload << operator
-  //Post:        outputs aVector elements to aOutput
-  //Description: output vector data
-  template <class U>
-  friend std::ostream& operator<<(std::ostream& aOutput, const point2d<U>& aPoint);
+
+	point2d<T>& operator=(const point2d<T>& aRHS);
+	template <class U>
+	friend bool operator==(const point2d<U>& aLHS, const point2d<U>& aRHS);
+	template <class U>
+	friend bool operator!=(const point2d<U>& aLHS, const point2d<U>& aRHS);
+
+	//Pre:         none
+	//             class used in template needs to overload << operator
+	//Post:        outputs aVector elements to aOutput
+	//Description: output vector data
+	template <class U>
+	friend std::ostream& operator<<(std::ostream& aOutput, const point2d<U>& aPoint);
 };
 
 #include "point2d.hpp"

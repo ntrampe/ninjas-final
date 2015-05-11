@@ -17,29 +17,29 @@ template <class T>
 class pde_test : public pde_base<T>
 {
 protected:
-  
-  // boundary functions
-  virtual T xLower(T aY) const;
-  virtual T xUpper(T aY) const;
-  virtual T yLower(T aX) const;
-  virtual T yUpper(T aX) const;
-  
+
+	// boundary functions
+	virtual T xLower(T aY) const;
+	virtual T xUpper(T aY) const;
+	virtual T yLower(T aX) const;
+	virtual T yUpper(T aX) const;
+
 public:
-  
-  //Description:  default constructor
-  //Pre:          none
-  //Post:         sets bounds to (0,1)
-  pde_test() : pde_base<T>() {}
-  
-  //Description:  bounds constructor
-  //Pre:          none
-  //Post:         sets bounds to aBounds
-  pde_test(const size_t aN, point2d<T> aBounds) : pde_base<T>(aN, aBounds) {}
-  
-  //Description:  bounds contructor
-  //Pre:          none
-  //Post:         sets bounds to (aLowerBound, aUpperBound)
-  pde_test(const size_t aN, const T aLowerBound, const T aUpperBound) : pde_base<T>(aN, aLowerBound, aUpperBound) {}
+
+	//Description:  default constructor
+	//Pre:          none
+	//Post:         sets bounds to (0,1)
+	pde_test() : pde_base<T>() {}
+
+	//Description:  bounds constructor
+	//Pre:          none
+	//Post:         sets bounds to aBounds
+	pde_test(const size_t aN, point2d<T> aBounds) : pde_base<T>(aN, aBounds) {}
+
+	//Description:  bounds contructor
+	//Pre:          none
+	//Post:         sets bounds to (aLowerBound, aUpperBound)
+	pde_test(const size_t aN, const T aLowerBound, const T aUpperBound) : pde_base<T>(aN, aLowerBound, aUpperBound) {}
 };
 
 #include "pde_test.hpp"

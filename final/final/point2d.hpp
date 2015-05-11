@@ -54,38 +54,38 @@ T point2d<T>::y() const
 template <class T>
 point2d<T>& point2d<T>::operator=(const point2d<T>& aRHS)
 {
-  if (this != &aRHS)
-  {
-    setX(aRHS.x());
-    setY(aRHS.y());
-  }
-  
-  return *this;
+	if (this != &aRHS)
+	{
+		setX(aRHS.x());
+		setY(aRHS.y());
+	}
+
+	return *this;
 }
 
 
 template <class U>
 bool operator==(const point2d<U>& aLHS, const point2d<U>& aRHS)
 {
-  return (aLHS.x() == aRHS.x() && aLHS.y() == aRHS.y());
+	return (aLHS.x() == aRHS.x() && aLHS.y() == aRHS.y());
 }
 
 
 template <class U>
 bool operator!=(const point2d<U>& aLHS, const point2d<U>& aRHS)
 {
-  return !(aLHS == aRHS);
+	return !(aLHS == aRHS);
 }
 
 
 template <class U>
 std::ostream& operator<<(std::ostream& aOutput, const point2d<U>& aPoint)
 {
-  std::stringstream ss;
-  
-  ss << "(" << aPoint.x() << ", " << aPoint.y() << ")";
-  
-  aOutput << ss.str();
-  
-  return aOutput;
+	std::stringstream ss;
+
+	ss << "(" << aPoint.x() << ", " << aPoint.y() << ")";
+
+	aOutput << ss.str();
+
+	return aOutput;
 }

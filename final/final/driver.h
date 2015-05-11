@@ -34,13 +34,13 @@
 
 typedef enum
 {
-  kMenuChoiceQuit = 0,
-  kMenuChoiceChangeMeshDensity = 1,
-  kMenuChoiceCompare = 2,
-  kMenuChoiceSolve = 3,
-  kMenuChoiceMatlab = 4,
-  kMenuChoiceTest = 5
-}kMenuChoice;
+	kMenuChoiceQuit = 0,
+	kMenuChoiceChangeMeshDensity = 1,
+	kMenuChoiceCompare = 2,
+	kMenuChoiceSolve = 3,
+	kMenuChoiceMatlab = 4,
+	kMenuChoiceTest = 5
+} kMenuChoice;
 
 
 //Description:  print a message
@@ -54,7 +54,7 @@ void printMessage(const std::string& aMessage);
 //Post:         returns the numerical solution at a certain (x,y) point
 double actualSolution(double aX, double aY)
 {
-  return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
+	return ( 1.0 / sinh(M_PI) ) * ( sin(aX) * sinh(M_PI - aY) + sin(aY) * sinh(M_PI - aX));
 }
 
 
