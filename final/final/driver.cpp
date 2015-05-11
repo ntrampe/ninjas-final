@@ -22,18 +22,25 @@ void runMenu()
 {
   pde_final<double> pde(20, 0,M_PI);
   kMenuChoice choice = kMenuChoiceQuit;
-  std::string input;
+  std::string input = "";
+  std::string message = "";
   float animFactor = 0.0;
   bool drawLines = false;
-  bool outputToFile = false;
   bool shouldIterate = false;
   bool prettyPrint = false;
   point2d<double> bounds = pde.bounds();
   std::ofstream file;
+  std::stringstream fileName;
   
   do
   {
-    std::cout << std::string(2, '\n') << std::endl;
+    std::cout << std::string(50, '\n') << std::endl;
+    
+    if (message != "")
+    {
+      std::cout << "*** " << message << " ***\n\n" << std::endl;
+    }
+    
     std::cout << std::string(40, '-') << std::endl;
     std::cout << "Object-Oriented Numerical Modeling Final" << std::endl;
     std::cout << std::string(40, '-') << std::endl;
@@ -53,6 +60,7 @@ void runMenu()
     std::cin >> input;
     choice = static_cast<kMenuChoice>(atoi(input.c_str()));
     
+    message = "";
     
     switch (choice)
     {
@@ -62,6 +70,8 @@ void runMenu()
         
         pde.setDensity(static_cast<size_t>(atoi(input.c_str())));
         
+        message = "Density set";
+        
         break;
         
       case kMenuChoiceChangeBounds:
@@ -69,6 +79,8 @@ void runMenu()
         std::cin >> bounds;
         
         pde.setBounds(bounds);
+        
+        message = "Bounds Set";
         
         break;
         
@@ -80,9 +92,21 @@ void runMenu()
         std::cout << "Print Pretty? (1 or 0): ";
         std::cin >> prettyPrint;
         
+        std::cout << std::string(50, '\n') << std::endl;
         printMessage("Comparing Techniques...");
         
-        runSolvers(pde, shouldIterate, prettyPrint);
+        input = runSolvers(pde, shouldIterate, prettyPrint);
+        
+        fileName.clear();
+        fileName.str(std::string());
+        
+        fileName << "compare" << pde.description() << ".txt";
+        
+        file.open(fileName.str());
+        file.clear();
+        file << input;
+        file.close();
+        message = "Comparison output stored in '" + fileName.str() + "'";
         
         break;
         
@@ -92,7 +116,19 @@ void runMenu()
         
         if (pde.solved())
         {
-          std::cout << pde.pointsOutput() << std::endl;
+          std::cout << "Print Pretty? (1 or 0): ";
+          std::cin >> prettyPrint;
+          
+          fileName.clear();
+          fileName.str(std::string());
+          
+          fileName << "sol" << pde.description() << ".txt";
+          
+          file.open(fileName.str());
+          file.clear();
+          file << pde.pointsOutput(prettyPrint);
+          file.close();
+          message = "Solution output stored in '" + fileName.str() + "'";
         }
         
         break;
@@ -103,26 +139,26 @@ void runMenu()
         
         if (pde.solved())
         {
+          printMessage("Matlab Inputs");
           std::cout << "Enter Animation Factor: ";
           std::cin >> animFactor;
           
           std::cout << "Should Draw Lines? (1 or 0): ";
           std::cin >> drawLines;
           
-          std::cout << "Output to file? (1 or 0): ";
-          std::cin >> outputToFile;
+          fileName.clear();
+          fileName.str(std::string());
           
-          if (outputToFile)
-          {
-            file.open("matlab_output.txt");
-            file.clear();
-            file << pde.matlabOutput(animFactor, drawLines) << std::endl;
-            std::cout << "\n*** Matlab output stored in 'matlab_output.txt' ***" << std::endl;
-          }
-          else
-          {
-            std::cout << pde.matlabOutput(animFactor, drawLines) << std::endl;
-          }
+          fileName << "ml" << pde.description() << ".m";
+          
+          file.open(fileName.str());
+          file.clear();
+          file << pde.matlabOutput(animFactor, drawLines) << std::endl;
+          file.close();
+          message = "Matlab output stored in '" + fileName.str() + "'";
+          
+//          std::string command = "open " + fileName.str();
+//          system(command.c_str());
         }
         
         break;
@@ -145,10 +181,11 @@ void runMenu()
 }
 
 
-void promptForSolve(pde_base<double>& aPDE)
+unsigned int promptForSolve(pde_base<double>& aPDE)
 {
-  int method = 0;
+  unsigned int method = 0;
   
+  std::cout << std::string(50, '\n') << std::endl;
   std::cout << "\nChoose Technique:" << std::endl;
   std::cout << std::string(40, '-') << std::endl;
   std::cout << "1. Cholesky" << std::endl;
@@ -167,6 +204,7 @@ void promptForSolve(pde_base<double>& aPDE)
   
   if (method != 0)
   {
+    std::cout << std::string(50, '\n') << std::endl;
     printMessage("Solving...");
   }
   
@@ -187,6 +225,10 @@ void promptForSolve(pde_base<double>& aPDE)
     default:
       break;
   }
+  
+  std::cout << std::string(50, '\n') << std::endl;
+  
+  return method;
 }
 
 
@@ -283,7 +325,7 @@ void solvePDE(pde_base<double>& aPDE, T_method aMethod)
 }
 
 
-void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
+std::string runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aPrettyPrint)
 {
   // NOTE:  a lot of redundant output code
   //        a possible improvement could be a table class to easily output tables
@@ -308,9 +350,10 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
   double seidel_tol = 0;
   size_t start = (aShouldIterate ? 2 : DENSITY);
   std::stringstream ss;
+  std::stringstream res;
   std::string ssLine;
   
-  std::cout << "Variable Mesh Density (N)" << std::endl;
+  res << "Variable Mesh Density (N)" << std::endl;
   
   if (aPrettyPrint)
   {
@@ -323,16 +366,16 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     ssLine = std::string(ss.str().length(), '-');
     
-    std::cout << ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
+    res<< ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
   }
   else
   {
     for (int i = 0; i < TABLE_1_SIZE; i++)
     {
-      std::cout << TABLE_1_HEADERS[i] << "\t";
+      res << TABLE_1_HEADERS[i] << "\t";
     }
     
-    std::cout << std::endl << std::endl;
+    res << std::endl << std::endl;
   }
   
   for (size_t n = start; n <= DENSITY; n++)
@@ -361,7 +404,7 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     if (aPrettyPrint)
     {
-      std::cout << "|" << std::setw(TABLE_1_WIDTHS[0]) << n << " |"
+      res << "|" << std::setw(TABLE_1_WIDTHS[0]) << n << " |"
       << std::setw(TABLE_1_WIDTHS[1]) << times[0] << " |"
       << std::setw(TABLE_1_WIDTHS[2]) << times[1] << " |"
       << std::setw(TABLE_1_WIDTHS[3]) << times[2] << " |"
@@ -370,7 +413,7 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     }
     else
     {
-      std::cout << n
+      res << n
       << "\t" << times[0]
       << "\t" << times[1]
       << "\t" << times[2]
@@ -379,13 +422,13 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     }
   }
   
-  std::cout << ssLine << std::endl;
+  res << ssLine << std::endl;
   
   
   ss.clear();
   ss.str(std::string());
   
-  std::cout << "\n\nVariable Error Tolerance (N = " << DENSITY << "):" << std::endl;
+  res << "\n\nVariable Error Tolerance (N = " << DENSITY << "):" << std::endl;
   
   if (aPrettyPrint)
   {
@@ -398,16 +441,16 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     ssLine = std::string(ss.str().length(), '-');
     
-    std::cout << ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
+    res << ssLine << " \n" << ss.str() << "\n" << ssLine << std::endl;
   }
   else
   {
     for (int i = 0; i < TABLE_2_SIZE; i++)
     {
-      std::cout << TABLE_2_HEADERS[i] << "\t";
+      res << TABLE_2_HEADERS[i] << "\t";
     }
     
-    std::cout << std::endl << std::endl;
+    res << std::endl << std::endl;
   }
   
   for (double i = 1; i <= SEIDEL_ITERATIONS; i++)
@@ -425,23 +468,25 @@ void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate, const bool aP
     
     if (aPrettyPrint)
     {
-      std::cout << "|" << std::setw(TABLE_2_WIDTHS[0]) << seidel_tol << " |"
+      res << "|" << std::setw(TABLE_2_WIDTHS[0]) << seidel_tol << " |"
       << std::setw(TABLE_2_WIDTHS[1]) << timer.elapsed() << " |"
       << std::setw(TABLE_2_WIDTHS[2]) << checkError(x, xMapping) << " |"
       << std::endl;
     }
     else
     {
-      std::cout << seidel_tol
+      res << seidel_tol
       << "\t" << timer.elapsed()
       << "\t" << checkError(x, xMapping)
       << std::endl;
     }
   }
   
-  std::cout << ssLine << std::endl;
+  res << ssLine << std::endl;
   
-  std::cout << std::endl;
+  res << std::endl;
+  
+  return res.str();
 }
 
 

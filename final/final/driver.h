@@ -15,6 +15,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
+#include <typeinfo>
 
 #include "matrix.h"
 #include "matrix_triangular_upper.h"
@@ -29,6 +30,7 @@
 #include "gauss_seidel.h"
 #include "pde_test.h"
 #include "pde_final.h"
+#include "pde_notes.h"
 #include "runtime.h"
 
 
@@ -67,7 +69,7 @@ void runMenu();
 //Description: Prompts user to solve pde
 //Pre:         none
 //Post:        solves pde based on method chosen
-void promptForSolve(pde_base<double>& aPDE);
+unsigned int promptForSolve(pde_base<double>& aPDE);
 
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none
@@ -84,8 +86,8 @@ void solvePDE(pde_base<double>& aPDE, T_method aMethod);
 
 //Description: Runs each method on aPDE of mesh size aN
 //Pre:         none
-//Post:        outputs each method's running time and error
-void runSolvers(pde_base<double>& aPDE, const bool aShouldIterate = true, const bool aPrettyPrint = true);
+//Post:        returns each method's running time and error
+std::string runSolvers(pde_base<double>& aPDE, const bool aShouldIterate = true, const bool aPrettyPrint = true);
 
 
 //Description: Checks how close an approximation is the the actual solution

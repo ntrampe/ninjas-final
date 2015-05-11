@@ -109,6 +109,11 @@ public:
   //Post:         returns true if any unknown points have been calculated
   bool solved() const;
 
+  
+  //Description:  pde description
+  //Pre:          none
+  //Post:         returns pde description
+  std::string description() const;
 
 	//Description:  set density
 	//Pre:          none
@@ -143,7 +148,7 @@ public:
 	//Description:  get unknown points
 	//Pre:          none
 	//Post:         returns unknown points
-	std::string pointsOutput() const;
+	std::string pointsOutput(const bool aPrettyPrint = true) const;
 
 	//// Operators
 

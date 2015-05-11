@@ -76,6 +76,17 @@ bool pde_base<T>::solved() const
 
 
 template <class T>
+std::string pde_base<T>::description() const
+{
+  std::stringstream res;
+  
+  res << typeid(*this).name() << "_" << density() << "_" << lowerBound() << "_" << upperBound();
+  
+  return res.str();
+}
+
+
+template <class T>
 void pde_base<T>::setDensity(const size_t aN)
 {
 	m_density = aN;
@@ -188,14 +199,28 @@ std::string pde_base<T>::matlabOutput(float aAnimationFactor, const bool aDrawLi
 
 
 template <class T>
-std::string pde_base<T>::pointsOutput() const
+std::string pde_base<T>::pointsOutput(const bool aPrettyPrint) const
 {
 	std::stringstream res;
+  
+  
+  if (!aPrettyPrint)
+  {
+    res << "x\ty\tz" << std::endl;
+  }
 
 	for (size_t i = 0; i < m_points.size(); i++)
 	{
-		const point3d<T>* p = &m_points[i];
-		res << "u(" << std::setw(10) << p->x() << "," << std::setw(10) << p->y() << ") = " << std::setw(10) << p->z() << std::endl;
+		const point3d<T> p = m_points[i];
+    
+    if (aPrettyPrint)
+    {
+      res << "u(" << std::setw(10) << p.x() << "," << std::setw(10) << p.y() << ") = " << std::setw(10) << p.z() << std::endl;
+    }
+    else
+    {
+      res << p.x() << "\t" << p.y() << "\t" << p.z() << std::endl;
+    }
 	}
 
 	return res.str();
