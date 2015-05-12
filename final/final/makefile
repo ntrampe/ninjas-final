@@ -9,7 +9,7 @@
 # Generic GNU g++ compiler flags
 CXX = /usr/bin/g++
 
-CXXFLAGS = -std=c++11 -g -Wall -W -pedantic-errors -O3
+CXXFLAGS = -std=c++11 -g -Wall -W -pedantic-errors -O3 -pthread
 SOURCES = $(wildcard *.cpp)
 HEADERS = $(wildcard *.h)
 OBJECTS =  $(SOURCES:%.cpp=%.o)
