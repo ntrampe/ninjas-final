@@ -31,6 +31,7 @@ void runMenu()
   point2d<double> bounds = pde.bounds();
   std::ofstream file;
   std::stringstream fileName;
+  pthread_t thread;
   
   do
   {
@@ -93,7 +94,10 @@ void runMenu()
         std::cin >> prettyPrint;
         
         std::cout << std::string(50, '\n') << std::endl;
-        printMessage("Comparing Techniques...");
+        
+        loading = true;
+        pthread_create(&thread, NULL, 
+                       startLoading, (void *)"Comparing Techniques");
         
         input = runSolvers(pde, shouldIterate, prettyPrint);
         
@@ -107,6 +111,8 @@ void runMenu()
         file << input;
         file.close();
         message = "Comparison output stored in '" + fileName.str() + "'";
+        
+        loading = false;
         
         break;
         
@@ -184,6 +190,8 @@ void runMenu()
 unsigned int promptForSolve(pde_base<double>& aPDE)
 {
   unsigned int method = 0;
+  pthread_t thread;
+  loading = true;
   
   std::cout << std::string(50, '\n') << std::endl;
   std::cout << "\nChoose Technique:" << std::endl;
@@ -205,7 +213,9 @@ unsigned int promptForSolve(pde_base<double>& aPDE)
   if (method != 0)
   {
     std::cout << std::string(50, '\n') << std::endl;
-    printMessage("Solving...");
+    
+    pthread_create(&thread, NULL, 
+                   startLoading, (void *)"Solving");
   }
   
   switch (method)
@@ -226,9 +236,29 @@ unsigned int promptForSolve(pde_base<double>& aPDE)
       break;
   }
   
+  loading = false;
+  
   std::cout << std::string(50, '\n') << std::endl;
   
   return method;
+}
+
+
+void *startLoading(void *aMessage)
+{
+  char* mes = (char*)aMessage;
+  
+  std::cout << mes;
+  
+  while (loading)
+  {
+    std::cout << ".";
+    std::cout.flush();
+    
+    sleep(1);
+  }
+  
+  pthread_exit(NULL);
 }
 
 

@@ -16,6 +16,8 @@
 #include <vector>
 #include <cmath>
 #include <typeinfo>
+#include <pthread.h>
+#include <unistd.h>
 
 #include "matrix.h"
 #include "matrix_triangular_upper.h"
@@ -70,6 +72,9 @@ void runMenu();
 //Pre:         none
 //Post:        solves pde based on method chosen
 unsigned int promptForSolve(pde_base<double>& aPDE);
+
+bool loading = false;
+void *startLoading(void *aMessage);
 
 //Description: Creates the b and xMapping vectors for some N
 //Pre:         none
