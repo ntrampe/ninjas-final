@@ -168,7 +168,7 @@ void matrix_poisson<T>::convertCoordinatesToIndex(size_t& aIndex, const size_t a
 {
 	if (!this->withinData(aRow, aColumn))
 	{
-		throw std::out_of_range("matrix_poisson: provided row, column must be within diagonal");
+		throw std::out_of_range("matrix_poisson: provided row, column must be within data");
 	}
 
 	size_t realRow = aRow;
@@ -219,7 +219,9 @@ bool matrix_poisson<T>::withinData(const size_t aRow, const size_t aColumn) cons
 		realCol = aRow;
 	}
 
-	if ((realRow != realCol) && !((realRow == realCol+1 && (realRow % (m_slices - 1) != 0))) && !(realRow == realCol+(m_slices - 1)))
+	if ((realRow != realCol) &&
+      !((realRow == realCol+1 && (realRow % (m_slices - 1) != 0))) &&
+      !(realRow == realCol+(m_slices - 1)))
 	{
 		return false;
 	}
